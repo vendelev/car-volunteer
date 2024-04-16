@@ -1,0 +1,7 @@
+services:
+  php:
+    build: .
+    ports:
+      - 9000:80
+    volumes:
+      - .:/var/www
