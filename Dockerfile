@@ -7,4 +7,4 @@ RUN apk update \
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR /vaw/www
+WORKDIR /var/www
