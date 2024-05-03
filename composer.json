@@ -1,4 +1,6 @@
 {
+    "name": "vendelev/carrier",
+    "description": "TelegramBot для автоматизации логистики авто-волонтеров",
     "license": "MIT",
     "type": "project",
     "require": {
@@ -6,19 +8,19 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "boshurik/telegram-bot-bundle": "^5.0.2",
-        "ramsey/uuid": "^4.7.5",
-        "symfony/console": "^7.0.6",
-        "symfony/dotenv": "^7.0.4",
+        "ramsey/uuid": "^4.7.6",
+        "symfony/console": "^7.0.7",
+        "symfony/dotenv": "^7.0.7",
         "symfony/flex": "^2.4.5",
-        "symfony/framework-bundle": "^7.0.6",
-        "symfony/runtime": "^7.0.3",
-        "symfony/yaml": "^7.0.3"
+        "symfony/framework-bundle": "^7.0.7",
+        "symfony/runtime": "^7.0.7",
+        "symfony/yaml": "^7.0.7"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.42",
         "phpstan/phpstan": "^1.10.67",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.9.1"
+        "squizlabs/php_codesniffer": "^3.9.2"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
