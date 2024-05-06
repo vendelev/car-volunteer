@@ -1,23 +1,31 @@
 {
+    "name": "vendelev/carrier",
+    "description": "TelegramBot для автоматизации логистики авто-волонтеров",
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ramsey/uuid": "^4.7.5",
-        "symfony/console": "^7.0.6",
-        "symfony/dotenv": "^7.0.4",
+        "doctrine/dbal": "^3.8.4",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/orm": "^3.1.3",
+        "ramsey/uuid": "^4.7.6",
+        "symfony/console": "^7.0.7",
+        "symfony/dotenv": "^7.0.7",
         "symfony/flex": "^2.4.5",
-        "symfony/framework-bundle": "^7.0.6",
-        "symfony/runtime": "^7.0.3",
-        "symfony/yaml": "^7.0.3"
+        "symfony/framework-bundle": "^7.0.7",
+        "symfony/messenger": "~7.0.7",
+        "symfony/runtime": "^7.0.7",
+        "symfony/yaml": "^7.0.7",
+        "telegram-bot/api": "^2.5.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.42",
         "phpstan/phpstan": "^1.10.67",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.9"
+        "squizlabs/php_codesniffer": "^3.9.2"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -76,6 +84,9 @@
             "composer normalize --diff",
             "composer bump",
             "vendor/bin/phpcbf"
+        ],
+        "hardclear": [
+            "rm -rf ./var/cache/*"
         ],
         "phpcs": [
             "vendor/bin/phpcs"
