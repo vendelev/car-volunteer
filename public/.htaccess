@@ -1,0 +1,16 @@
+AddDefaultCharset UTF-8
+Options -Indexes +FollowSymLinks
+DirectoryIndex index.php index.html
+
+<FilesMatch ".(htaccess|editorconfig|gitignore|gitlab-ci.yml)|daemon|offline-busild.sh|README.md$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php?$1 [L,QSA]
