@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Telegram\EntryPoint\BotCommand;
 
+use CarVolunteer\Domain\CommandHandler;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Module\Telegram\Application\CommandLocator;
 use CarVolunteer\Repository\UserRepository;
-use Symfony\Component\Messenger\MessageBusInterface;
 use TelegramBot\Api\BotApi;
 
-final readonly class StartHandler
+final readonly class StartHandler implements CommandHandler
 {
     public function __construct(
         private BotApi $api,
         private UserRepository $userRepository,
-        private MessageBusInterface $bus
+        private CommandLocator $commandLocator,
     ) {
     }
 
@@ -23,12 +24,8 @@ final readonly class StartHandler
         return '/start';
     }
 
-    public function __invoke(TelegramMessage $message): void
+    public function handle(TelegramMessage $message): void
     {
-        if ($message->command !== self::getCommandName()) {
-            return;
-        }
-
         $dbUser = $this->userRepository->find($message->user->id);
 
         if ($dbUser === null) {
@@ -36,7 +33,6 @@ final readonly class StartHandler
             $this->api->sendMessage($message->user->id, 'Вы зарегистрированы, обратитесь к админу для добавления роли');
         }
 
-        $message->command = HelpHandler::getCommandName();
-        $this->bus->dispatch($message);
+        $this->commandLocator->get(HelpHandler::getCommandName())?->handle($message);
     }
 }

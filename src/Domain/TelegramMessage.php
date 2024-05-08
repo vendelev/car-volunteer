@@ -9,7 +9,7 @@ use TelegramBot\Api\Types\Update;
 final class TelegramMessage
 {
     public function __construct(
-        public int $id,
+        public string $id,
         public string $command,
         public TelegramUser $user,
     ) {
@@ -19,21 +19,27 @@ final class TelegramMessage
     {
         $message = $income->getMessage();
         if ($message !== null) {
-            $user = new TelegramUser((string)$message->getFrom()?->getId(), (string)$message->getFrom()?->getUsername());
+            $user = new TelegramUser(
+                id: (string)$message->getFrom()?->getId(),
+                username: (string)$message->getFrom()?->getUsername()
+            );
             return new self(
-                (int)$message->getMessageId(),
-                (string)$message->getText(),
-                $user,
+                id: (string)$message->getMessageId(),
+                command: (string)$message->getText(),
+                user: $user,
             );
         }
 
         $callback = $income->getCallbackQuery();
         if ($callback !== null) {
-            $user = new TelegramUser((string)$callback->getFrom()->getId(), $callback->getFrom()->getUsername());
+            $user = new TelegramUser(
+                id: (string)$callback->getFrom()->getId(),
+                username: (string)$callback->getFrom()->getUsername()
+            );
             return new self(
-                $callback->getMessage()->getMessageId(),
-                $callback->getData(),
-                $user,
+                id: (string)$callback->getMessage()?->getMessageId(),
+                command: (string)$callback->getData(),
+                user: $user,
             );
         }
 
