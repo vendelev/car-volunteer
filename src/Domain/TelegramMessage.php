@@ -6,7 +6,7 @@ namespace CarVolunteer\Domain;
 
 use TelegramBot\Api\Types\Update;
 
-final readonly class TelegramMessage
+final class TelegramMessage
 {
     public function __construct(
         public int $id,
@@ -19,7 +19,7 @@ final readonly class TelegramMessage
     {
         $message = $income->getMessage();
         if ($message !== null) {
-            $user = new TelegramUser((int)$message->getFrom()?->getId(), (string)$message->getFrom()?->getUsername());
+            $user = new TelegramUser((string)$message->getFrom()?->getId(), (string)$message->getFrom()?->getUsername());
             return new self(
                 (int)$message->getMessageId(),
                 (string)$message->getText(),
@@ -29,7 +29,7 @@ final readonly class TelegramMessage
 
         $callback = $income->getCallbackQuery();
         if ($callback !== null) {
-            $user = new TelegramUser($callback->getFrom()->getId(), $callback->getFrom()->getUsername());
+            $user = new TelegramUser((string)$callback->getFrom()->getId(), $callback->getFrom()->getUsername());
             return new self(
                 $callback->getMessage()->getMessageId(),
                 $callback->getData(),

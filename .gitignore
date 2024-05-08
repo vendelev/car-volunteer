@@ -19,3 +19,4 @@ phpstan.neon
 ###< squizlabs/php_codesniffer ###
 
 /compose.override.yaml
+/config/secrets/auth_roles.json
