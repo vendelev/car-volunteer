@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Domain;
+namespace CarVolunteer\Module\Telegram\Domain;
 
+use CarVolunteer\Domain\TelegramUser;
 use TelegramBot\Api\Types\Update;
 
 final class TelegramMessage

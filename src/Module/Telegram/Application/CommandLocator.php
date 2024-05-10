@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Telegram\Application;
 
-use CarVolunteer\Domain\CommandHandler;
+use CarVolunteer\Module\Telegram\Domain\CommandHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;

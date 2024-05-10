@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Repository;
 
-use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Entity\User;
+use CarVolunteer\Module\Telegram\Domain\TelegramMessage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

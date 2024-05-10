@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Telegram\EntryPoint\BotCommand;
 
-use CarVolunteer\Domain\CommandHandler;
-use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Module\Telegram\Application\CommandLocator;
+use CarVolunteer\Module\Telegram\Domain\CommandHandler;
+use CarVolunteer\Module\Telegram\Domain\TelegramMessage;
 use CarVolunteer\Repository\UserRepository;
 use TelegramBot\Api\BotApi;
 
@@ -33,6 +33,6 @@ final readonly class StartHandler implements CommandHandler
             $this->api->sendMessage($message->user->id, 'Вы зарегистрированы, обратитесь к админу для добавления роли');
         }
 
-        $this->commandLocator->get(HelpHandler::getCommandName())?->handle($message);
+        //$this->commandLocator->get(HelpHandler::getCommandName())?->handle($message);
     }
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use CarVolunteer\Domain\CommandHandler;
 use CarVolunteer\Module\Telegram\Application\Authorization;
 use CarVolunteer\Module\Telegram\Application\CommandLocator;
+use CarVolunteer\Module\Telegram\Domain\CommandHandler;
 use CarVolunteer\Module\Telegram\EntryPoint\BotCommand\CreateOrderHandler;
 use CarVolunteer\Module\Telegram\EntryPoint\BotCommand\HelpHandler;
 use CarVolunteer\Module\Telegram\EntryPoint\BotCommand\StartHandler;
