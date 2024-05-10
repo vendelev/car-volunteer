@@ -20,7 +20,7 @@ doctrine:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src'
-                prefix: 'CarVolunteer\Entity'
+                prefix: 'CarVolunteer'
 #                alias: CarVolunteer
 #        controller_resolver:
 #            auto_mapping: true
