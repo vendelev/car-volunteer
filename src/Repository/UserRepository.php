@@ -18,9 +18,7 @@ final class UserRepository extends ServiceEntityRepository
 
     public function save(TelegramMessage $message): void
     {
-        $dbUser = new User;
-        $dbUser->setId($message->user->id);
-        $dbUser->setUsername($message->user->username);
+        $dbUser = new User($message->user->id, $message->user->username);
 
         $this->getEntityManager()->persist($dbUser);
         $this->getEntityManager()->flush();

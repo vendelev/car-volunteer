@@ -5,36 +5,23 @@ declare(strict_types=1);
 namespace CarVolunteer\Entity;
 
 use CarVolunteer\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user', schema: 'telegram')]
 final class User
 {
-    #[ORM\Id]
-    #[ORM\Column]
-    private string $id;
-
-    #[ORM\Column(length: 255)]
-    private string $username;
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
+    /**
+     * @param string $id
+     * @param string $username
+     */
+    public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: Types::STRING)]
+        public string $id,
+        #[ORM\Column(type: Types::STRING, length: 255)]
+        public string $username
+    ) {
     }
 }

@@ -99,7 +99,8 @@
         "test": [
             "@clear",
             "@phpcs",
-            "@phpstan"
+            "@phpstan",
+            "bin/console doctrine:schema:validate"
         ]
     }
 }
