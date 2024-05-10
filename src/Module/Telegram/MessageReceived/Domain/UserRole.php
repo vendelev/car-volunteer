@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Domain;
+namespace CarVolunteer\Module\Telegram\MessageReceived\Domain;
 
 enum UserRole: string
 {

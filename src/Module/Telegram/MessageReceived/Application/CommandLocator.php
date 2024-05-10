@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\Application;
+namespace CarVolunteer\Module\Telegram\MessageReceived\Application;
 
-use CarVolunteer\Module\Telegram\Domain\CommandHandler;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\CommandHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class CommandLocator implements ContainerInterface
 {
-    /** @var array<string, class-string<CommandHandler>> */
+    /** @var array<string, class-string<\CarVolunteer\Module\Telegram\MessageReceived\Domain\CommandHandler>> */
     private array $routes;
 
     /**
@@ -21,7 +21,7 @@ final class CommandLocator implements ContainerInterface
         #[AutowireLocator(CommandHandler::class)]
         private readonly ServiceLocator $locator,
     ) {
-        /** @var class-string<CommandHandler> $service */
+        /** @var class-string<\CarVolunteer\Module\Telegram\MessageReceived\Domain\CommandHandler> $service */
         foreach ($locator->getProvidedServices() as $service) {
             $this->routes[$service::getCommandName()] = $service;
         }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\Repository;
+namespace CarVolunteer\Module\Telegram\User\Repository;
 
 use CarVolunteer\Domain\TelegramUser;
-use CarVolunteer\Module\Telegram\Entity\User;
+use CarVolunteer\Module\Telegram\User\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\Application;
+namespace CarVolunteer\Module\Telegram\MessageReceived\Application;
 
 use CarVolunteer\Domain\TelegramUser;
-use CarVolunteer\Domain\UserRole;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\UserRole;
 
 final readonly class Authorization
 {

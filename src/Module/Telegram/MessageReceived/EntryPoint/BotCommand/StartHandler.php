@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\EntryPoint\BotCommand;
+namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BotCommand;
 
-use CarVolunteer\Domain\Event\UserEnroled;
-use CarVolunteer\Module\Telegram\Application\CommandLocator;
-use CarVolunteer\Module\Telegram\Domain\CommandHandler;
-use CarVolunteer\Module\Telegram\Domain\TelegramMessage;
+use CarVolunteer\Domain\UserEnroledEvent;
+use CarVolunteer\Module\Telegram\MessageReceived\Application\CommandLocator;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\CommandHandler;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\TelegramMessage;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class StartHandler implements CommandHandler
@@ -25,7 +25,7 @@ final readonly class StartHandler implements CommandHandler
 
     public function handle(TelegramMessage $message): void
     {
-        $this->messageBus->dispatch(new UserEnroled($message->user));
+        $this->messageBus->dispatch(new UserEnroledEvent($message->user));
         $this->commandLocator->get(HelpHandler::getCommandName())?->handle($message);
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\EntryPoint\BotCommand;
+namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BotCommand;
 
-use CarVolunteer\Module\Telegram\Domain\CommandHandler;
-use CarVolunteer\Module\Telegram\Domain\TelegramMessage;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\CommandHandler;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\TelegramMessage;
 use TelegramBot\Api\BotApi;
 
 final readonly class HelpHandler implements CommandHandler

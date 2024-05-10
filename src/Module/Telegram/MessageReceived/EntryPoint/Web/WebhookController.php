@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\EntryPoint\Web;
+namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\Web;
 
-use CarVolunteer\Module\Telegram\Application\CommandLocator;
-use CarVolunteer\Module\Telegram\Domain\TelegramMessage;
+use CarVolunteer\Module\Telegram\MessageReceived\Application\CommandLocator;
+use CarVolunteer\Module\Telegram\MessageReceived\Domain\TelegramMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\EntryPoint\MessageCommand;
+namespace CarVolunteer\Module\Telegram\User\EntryPoint\MessageCommand;
 
-use CarVolunteer\Domain\Event\UserEnroled;
-use CarVolunteer\Module\Telegram\Repository\UserRepository;
+use CarVolunteer\Domain\UserEnroledEvent;
+use CarVolunteer\Module\Telegram\User\Repository\UserRepository;
 use TelegramBot\Api\BotApi;
 
 final readonly class RegisterUserCommand
@@ -15,7 +15,7 @@ final readonly class RegisterUserCommand
         private BotApi $api,
     ) {
     }
-    public function __invoke(UserEnroled $message): void
+    public function __invoke(UserEnroledEvent $message): void
     {
         $dbUser = $this->userRepository->find($message->user->id);
 

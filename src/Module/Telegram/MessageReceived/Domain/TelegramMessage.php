@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\Domain;
+namespace CarVolunteer\Module\Telegram\MessageReceived\Domain;
 
 use CarVolunteer\Domain\TelegramUser;
 use TelegramBot\Api\Types\Update;

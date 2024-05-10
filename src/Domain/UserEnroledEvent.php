@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Domain\Event;
+namespace CarVolunteer\Domain;
 
-use CarVolunteer\Domain\TelegramUser;
-
-final class UserEnroled
+final class UserEnroledEvent
 {
     public function __construct(
         public TelegramUser $user

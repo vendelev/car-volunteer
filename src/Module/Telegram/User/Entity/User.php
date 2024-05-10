@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\Entity;
+namespace CarVolunteer\Module\Telegram\User\Entity;
 
-use CarVolunteer\Module\Telegram\Repository\UserRepository;
+use CarVolunteer\Module\Telegram\User\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
