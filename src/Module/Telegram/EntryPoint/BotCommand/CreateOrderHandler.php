@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\CreateOrder\EntryPoint\BotCommand;
+namespace CarVolunteer\Module\Telegram\EntryPoint\BotCommand;
 
-use CarVolunteer\Component\Authorization\Application\Authorization;
 use CarVolunteer\Domain\CommandHandler;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Module\Telegram\Application\Authorization;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
