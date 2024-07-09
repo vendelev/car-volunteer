@@ -21,13 +21,18 @@
         "symfony/monolog-bundle": "^3.10.0",
         "symfony/runtime": "^7.0.7",
         "symfony/yaml": "^7.0.7",
-        "telegram-bot/api": "^2.5.0"
+        "telegram-bot/api": "^2.5.0",
+        "telephantast/message-bus": "*"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.42",
         "phpstan/phpstan": "^1.10.67",
+        "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.9.2"
+        "squizlabs/php_codesniffer": "^3.9.2",
+        "symfony/browser-kit": "7.0.*",
+        "symfony/css-selector": "7.0.*",
+        "symfony/phpunit-bridge": "^7.1"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -42,7 +47,7 @@
     "conflict": {
         "symfony/symfony": "*"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
