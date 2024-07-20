@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 use CarVolunteer\Domain\ActionHandler;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
-use CarVolunteer\Module\Telegram\MessageReceived\Application\MessageEventDataFactory;
-use CarVolunteer\Module\Telegram\MessageReceived\Application\UseCases\ParseIncomeMessage;
-use CarVolunteer\Module\Telegram\MessageReceived\Application\UseCases\CreateReceiveMessageContext;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BusHandler\RunActionHandler;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BusHandler\SendMessageHandler;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\TelegramAction\HelpAction;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\TelegramAction\StartAction;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\Web\WebhookController;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\MessageEventDataFactory;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\IncomeMessageParser;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageContextFactory;
+use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\BusHandler\RunActionHandler;
+use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\HelpAction;
+use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\StartAction;
+use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\Web\WebhookController;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use TelegramBot\Api\BotApi;
@@ -34,12 +33,11 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $b
         ->set(BotApi::class)
             ->arg('$token', '%env(TELEGRAM_BOT_TOKEN)%')
 
-        ->set(ParseIncomeMessage::class)
-        ->set(CreateReceiveMessageContext::class)
+        ->set(IncomeMessageParser::class)
+        ->set(ReceiveMessageContextFactory::class)
         ->set(MessageEventDataFactory::class)
 
         ->set(RunActionHandler::class)
-        ->set(SendMessageHandler::class)
 
         ->set(StartAction::class)
         ->set(HelpAction::class)

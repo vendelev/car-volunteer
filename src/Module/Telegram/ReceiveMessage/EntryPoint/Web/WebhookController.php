@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\Web;
+namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\Web;
 
-use CarVolunteer\Module\Telegram\MessageReceived\Application\UseCases\ParseIncomeMessage;
-use CarVolunteer\Module\Telegram\MessageReceived\Application\UseCases\CreateReceiveMessageContext;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\IncomeMessageParser;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageContextFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,16 +14,16 @@ use Telephantast\MessageBus\MessageBus;
 final readonly class WebhookController
 {
     public function __construct(
-        private MessageBus                  $messageBus,
-        private ParseIncomeMessage          $getMessage,
-        private CreateReceiveMessageContext $getContext
+        private MessageBus                   $messageBus,
+        private IncomeMessageParser          $getMessage,
+        private ReceiveMessageContextFactory $getContext
     ) {
     }
 
     #[Route('/', name: 'telegram_webhook')]
     public function index(Request $request): Response
     {
-        $incomeMessage = $this->getMessage->handle($request);
+        $incomeMessage = $this->getMessage->parse($request);
 
         if ($incomeMessage) {
             /** @uses RunActionHandler::receiveMessage() */

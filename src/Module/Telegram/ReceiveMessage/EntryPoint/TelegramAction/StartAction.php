@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionHandler;
 use CarVolunteer\Domain\Conversation\StartNewConversationCommand;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
-use CarVolunteer\Module\Telegram\MessageReceived\Domain\User;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\User;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 

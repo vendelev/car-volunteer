@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\Domain;
+namespace CarVolunteer\Module\Telegram\ReceiveMessage\Domain;
 
 final class User
 {

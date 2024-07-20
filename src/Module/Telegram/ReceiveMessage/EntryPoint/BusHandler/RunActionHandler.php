@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BusHandler;
+namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\BusHandler;
 
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\Conversation\GetLastConversationQuery;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
-use CarVolunteer\Module\Telegram\MessageReceived\Domain\ReceiveMessageEvent;
-use CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\TelegramAction\HelpAction;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\ReceiveMessageEvent;
+use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\HelpAction;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 use Psr\Log\LoggerInterface;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;

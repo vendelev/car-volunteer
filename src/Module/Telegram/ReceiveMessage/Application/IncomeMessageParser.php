@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\Application\UseCases;
+namespace CarVolunteer\Module\Telegram\ReceiveMessage\Application;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,14 +13,14 @@ use Throwable;
 /**
  * Получение из реквеста Телеграм сообщения
  */
-final readonly class ParseIncomeMessage
+final readonly class IncomeMessageParser
 {
     public function __construct(
         private LoggerInterface $logger
     ) {
     }
 
-    public function handle(Request $request): ?Update
+    public function parse(Request $request): ?Update
     {
         $content = $request->getContent();
         $this->logger->debug($content);
