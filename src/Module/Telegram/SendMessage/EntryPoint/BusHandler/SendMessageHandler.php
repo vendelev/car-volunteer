@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\MessageReceived\EntryPoint\BusHandler;
+namespace CarVolunteer\Module\Telegram\SendMessage\EntryPoint\BusHandler;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
