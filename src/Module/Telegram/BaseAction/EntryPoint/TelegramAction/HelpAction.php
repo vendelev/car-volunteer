@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Telegram\BaseAction\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionHandler;
 use CarVolunteer\Domain\TelegramMessage;

@@ -8,8 +8,6 @@ use CarVolunteer\Module\Telegram\ReceiveMessage\Application\MessageEventDataFact
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\IncomeMessageParser;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageContextFactory;
 use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\BusHandler\RunActionHandler;
-use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\HelpAction;
-use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\StartAction;
 use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\Web\WebhookController;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -38,8 +36,5 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $b
         ->set(MessageEventDataFactory::class)
 
         ->set(RunActionHandler::class)
-
-        ->set(StartAction::class)
-        ->set(HelpAction::class)
     ;
 };
