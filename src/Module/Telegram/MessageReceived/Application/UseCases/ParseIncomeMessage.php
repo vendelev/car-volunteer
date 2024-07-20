@@ -13,10 +13,11 @@ use Throwable;
 /**
  * Получение из реквеста Телеграм сообщения
  */
-final readonly class GetIncomeMessage
+final readonly class ParseIncomeMessage
 {
-    public function __construct(private LoggerInterface $logger)
-    {
+    public function __construct(
+        private LoggerInterface $logger
+    ) {
     }
 
     public function handle(Request $request): ?Update

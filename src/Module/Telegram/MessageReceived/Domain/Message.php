@@ -1,0 +1,14 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CarVolunteer\Module\Telegram\MessageReceived\Domain;
+
+final class Message
+{
+    public function __construct(
+        public string $messageId,
+        public string $text,
+    ) {
+    }
+}
