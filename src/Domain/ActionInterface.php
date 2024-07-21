@@ -6,9 +6,11 @@ namespace CarVolunteer\Domain;
 
 use Telephantast\MessageBus\MessageContext;
 
-interface ActionHandler
+interface ActionInterface
 {
-    public static function getActionName(): string;
+    public static function getRoute(): string;
+
+    public static function getTitle(): ?string;
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): void;
 }

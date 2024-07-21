@@ -10,7 +10,6 @@ use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\ReceiveMessageEvent;
-use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\TelegramAction\HelpAction;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 use Psr\Log\LoggerInterface;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
@@ -30,7 +29,7 @@ final readonly class RunActionHandler
         $user = $event->user;
 
         if ($user === null) {
-            $this->logger->alert('Не найден пользователь');
+            $this->logger->alert('Не найден пользователь в сообщении');
             return;
         }
 
@@ -49,7 +48,7 @@ final readonly class RunActionHandler
                 $user->id,
                 'Потерял нить сообщений, нажмите кнопку "Помощь"',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Помощь', 'callback_data' => HelpAction::getActionName()]],
+                    [['text' => 'Помощь', 'callback_data' => '/help']],
                 ])
             ));
 

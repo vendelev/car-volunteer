@@ -10,7 +10,7 @@ use TelegramBot\Api\Types\Update;
 use Telephantast\MessageBus\MessageBus;
 use Telephantast\MessageBus\MessageContext;
 
-final readonly class ReceiveMessageContextFactory
+final readonly class ReceiveMessageEventFactory
 {
     public function __construct(
         private MessageBus $messageBus,

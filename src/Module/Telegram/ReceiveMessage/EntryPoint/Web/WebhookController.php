@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\Web;
 
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\IncomeMessageParser;
-use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageContextFactory;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageEventFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +16,7 @@ final readonly class WebhookController
     public function __construct(
         private MessageBus                   $messageBus,
         private IncomeMessageParser          $getMessage,
-        private ReceiveMessageContextFactory $getContext
+        private ReceiveMessageEventFactory $getContext
     ) {
     }
 
