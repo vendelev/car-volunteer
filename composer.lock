@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c534c161025917e0828d7e93f3ab8128",
+    "content-hash": "0b0233ada7d9783515822b6e504ac99b",
     "packages": [
         {
             "name": "brick/math",
@@ -4648,6 +4648,63 @@
                 "source": "https://github.com/telephantast/message-bus/tree/main"
             },
             "time": "2024-05-20T09:36:44+00:00"
+        },
+        {
+            "name": "vendelev/hardcore-php",
+            "version": "dev-start",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:vendelev/HardcorePhp.git",
+                "reference": "f0ab4c05dacead01da7e5033f47a3df05af1363a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vendelev/HardcorePhp/zipball/f0ab4c05dacead01da7e5033f47a3df05af1363a",
+                "reference": "f0ab4c05dacead01da7e5033f47a3df05af1363a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-iconv": "*",
+                "php": "^8.3",
+                "psr/container": "^2.0.2",
+                "ramsey/uuid": "^4.7.6",
+                "symfony/console": "^7.0.7",
+                "symfony/framework-bundle": "^7.0.7",
+                "symfony/monolog-bundle": "^3.10.0",
+                "symfony/runtime": "^7.0.7",
+                "symfony/yaml": "^7.0.7",
+                "telegram-bot/api": "^2.5.0",
+                "telephantast/message-bus": "*"
+            },
+            "conflict": {
+                "symfony/symfony": "*"
+            },
+            "type": "library",
+            "extra": {
+                "symfony": {
+                    "allow-contrib": false,
+                    "require": "7.0.*"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CarVolunteer\\": "src/",
+                    "HardcorePhp\\Infrastructure\\MessageBusBundle\\": "src/MessageBusBundle",
+                    "HardcorePhp\\Infrastructure\\Uuid\\": "src/Uuid"
+                },
+                "files": [
+                    "src/MessageBusBundle/functions.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "support": {
+                "source": "https://github.com/vendelev/HardcorePhp/tree/start",
+                "issues": "https://github.com/vendelev/HardcorePhp/issues"
+            },
+            "time": "2024-07-22T18:44:07+00:00"
         }
     ],
     "packages-dev": [
@@ -8155,6 +8212,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "vendelev/hardcore-php": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
