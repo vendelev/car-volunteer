@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Telegram\BaseAction\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
+use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
@@ -28,7 +29,7 @@ final readonly class HelpAction implements ActionInterface
         return 'Помощь';
     }
 
-    public function handle(TelegramMessage $message, MessageContext $messageContext): void
+    public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $routes = $this->actionLocator->getAll();
         $buttons = [];
@@ -44,5 +45,7 @@ final readonly class HelpAction implements ActionInterface
             'Список доступных действий',
             new InlineKeyboardMarkup([$buttons])
         ));
+
+        return new Conversation(self::getRoute());
     }
 }

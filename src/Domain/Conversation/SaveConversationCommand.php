@@ -6,10 +6,11 @@ namespace CarVolunteer\Domain\Conversation;
 
 use Telephantast\Message\Message;
 
-final readonly class StartNewConversationCommand implements Message
+final readonly class SaveConversationCommand implements Message
 {
     public function __construct(
-        public string $action
+        public string $userId,
+        public Conversation $conversation,
     ) {
     }
 }

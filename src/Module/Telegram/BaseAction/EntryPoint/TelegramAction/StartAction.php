@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Telegram\BaseAction\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
-use CarVolunteer\Domain\Conversation\StartNewConversationCommand;
+use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
@@ -23,7 +23,7 @@ final readonly class StartAction implements ActionInterface
         return null;
     }
 
-    public function handle(TelegramMessage $message, MessageContext $messageContext): void
+    public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $messageContext->dispatch(
             new SendMessageCommand(
@@ -34,6 +34,7 @@ final readonly class StartAction implements ActionInterface
                 ])
             )
         );
-        $messageContext->dispatch(new StartNewConversationCommand(self::getRoute()));
+
+        return new Conversation(self::getRoute());
     }
 }

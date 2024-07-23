@@ -7,7 +7,8 @@ namespace CarVolunteer\Domain\Conversation;
 final readonly class Conversation
 {
     public function __construct(
-        public ?string $action
+        public ?string $actionRoute,
+        public ?object $playLoad = null,
     ) {
     }
 }

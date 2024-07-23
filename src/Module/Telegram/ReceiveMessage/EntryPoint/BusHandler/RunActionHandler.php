@@ -6,6 +6,7 @@ namespace CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\BusHandler;
 
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\Conversation\GetLastConversationQuery;
+use CarVolunteer\Domain\Conversation\SaveConversationCommand;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
@@ -36,12 +37,13 @@ final readonly class RunActionHandler
         $message = $event->message;
         $callback = $event->callbackData;
 
-        /** @var Conversation $conversation */
+        //todo переделать на middleware: получение и сохранение?
+        /** @var Conversation|null $conversation */
         $conversation = $messageContext->dispatch(new GetLastConversationQuery($user->id));
 
         $action = $this->actionLocator->get($message->text ?? '')
             ?? $this->actionLocator->get($callback->data ?? '')
-            ?? $conversation->action;
+            ?? $this->actionLocator->get($conversation->actionRoute ?? '');
 
         if ($action === null) {
             $messageContext->dispatch(new SendMessageCommand(
@@ -55,9 +57,11 @@ final readonly class RunActionHandler
             return;
         }
 
-        $action->handle(
+        $result = $action->handle(
             new TelegramMessage($user->id, $message->text ?? '', $conversation),
             $messageContext
         );
+
+        $messageContext->dispatch(new SaveConversationCommand($user->id, $result));
     }
 }
