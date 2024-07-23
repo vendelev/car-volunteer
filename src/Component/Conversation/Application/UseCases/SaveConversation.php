@@ -6,13 +6,13 @@ namespace CarVolunteer\Component\Conversation\Application\UseCases;
 
 use CarVolunteer\Component\Conversation\Domain\Entity\Conversation;
 use CarVolunteer\Domain\Conversation\Conversation as ConversationDTO;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 final readonly class SaveConversation
 {
     public function __construct(
-        private EntityManager $entityManager,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

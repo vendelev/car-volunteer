@@ -17,7 +17,7 @@ final readonly class GetLastConversationHandler
     }
 
     #[Handler]
-    public function handleQuery(GetLastConversationQuery $query): Conversation
+    public function handleQuery(GetLastConversationQuery $query): ?Conversation
     {
         return $this->useCase->handle($query->userId);
     }
