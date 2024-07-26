@@ -8,7 +8,7 @@ final readonly class Conversation
 {
     public function __construct(
         public ?string $actionRoute,
-        public ?object $playLoad = null,
+        public ?array $playLoad = null,
     ) {
     }
 }

@@ -22,7 +22,7 @@ final readonly class SaveConversation
             Uuid::v7(),
             $userId,
             $conversation->actionRoute,
-            serialize($conversation->playLoad)
+            $conversation->playLoad
         );
 
         $this->entityManager->persist($entity);

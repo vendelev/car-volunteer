@@ -12,17 +12,18 @@ use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 #[ORM\Table(name: 'conversation', schema: 'conversation')]
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
+#[ORM\Index(name: 'last_conversation', columns: ['user_id', 'id'])]
 class Conversation
 {
     public function __construct(
         #[ORM\Id, ORM\Column(type: UuidType::class)]
         public Uuid $id,
-        #[ORM\Column(type: Types::STRING, length: 255)]
+        #[ORM\Column(type: Types::STRING, length: 20)]
         public string $userId,
         #[ORM\Column(type: Types::STRING, length: 255)]
         public string $actionRoute,
-        #[ORM\Column(type: Types::TEXT)]
-        public string $playLoad,
+        #[ORM\Column(type: Types::JSON, nullable: true)]
+        public ?array $playLoad,
     ) {
     }
 }

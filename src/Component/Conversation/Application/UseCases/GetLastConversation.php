@@ -25,6 +25,6 @@ final readonly class GetLastConversation
             return null;
         }
 
-        return new ConversationDTO($entity->actionRoute, unserialize($entity->playLoad));
+        return new ConversationDTO($entity->actionRoute, $entity->playLoad);
     }
 }
