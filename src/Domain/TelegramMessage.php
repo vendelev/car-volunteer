@@ -10,7 +10,7 @@ final readonly class TelegramMessage
 {
     public function __construct(
         public string $userId,
-        public string $message,
+        public ?string $message,
         public ?Conversation $conversation
     ) {
     }

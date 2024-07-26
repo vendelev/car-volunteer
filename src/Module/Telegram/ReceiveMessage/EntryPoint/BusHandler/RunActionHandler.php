@@ -41,9 +41,19 @@ final readonly class RunActionHandler
         /** @var Conversation|null $conversation */
         $conversation = $messageContext->dispatch(new GetLastConversationQuery($user->id));
 
-        $action = $this->actionLocator->get($message->text ?? '')
-            ?? $this->actionLocator->get($callback->data ?? '')
-            ?? $this->actionLocator->get($conversation->actionRoute ?? '');
+        $this->logger->debug($message->text ?? '-');
+        $this->logger->debug($callback->data ?? '-');
+
+        $messageText = null;
+        $action = $this->actionLocator->get($message->text ?? '-')
+            ?? $this->actionLocator->get($callback->data ?? '-');
+
+        if ($action === null) {
+            $action = $this->actionLocator->get($conversation->actionRoute ?? '-');
+            if ($action !== null && $callback === null) {
+                $messageText = $message->text ?? null;
+            }
+        }
 
         if ($action === null) {
             $messageContext->dispatch(new SendMessageCommand(
@@ -58,7 +68,7 @@ final readonly class RunActionHandler
         }
 
         $result = $action->handle(
-            new TelegramMessage($user->id, $message->text ?? '', $conversation),
+            new TelegramMessage($user->id, $messageText, $conversation),
             $messageContext
         );
 
