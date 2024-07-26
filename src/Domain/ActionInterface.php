@@ -11,7 +11,5 @@ interface ActionInterface
 {
     public static function getRoute(): string;
 
-    public static function getTitle(): ?string;
-
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation;
 }

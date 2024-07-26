@@ -29,6 +29,7 @@ final readonly class CreateAction implements RootActionInterface
             $message->userId,
             'Список доступных действий:',
             new InlineKeyboardMarkup([
+                //todo переделать на interface CreateActionInterface
                 [['text' => 'Создать заказ-наряд на посылку', 'callback_data' => '/createParcel']],
             ])
         ));
