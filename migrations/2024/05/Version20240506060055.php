@@ -19,11 +19,8 @@ final class Version20240506060055 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('create schema telegram');
-        $table = $schema->createTable('telegram.user');
-        $table->addColumn('id', 'string');
-        $table->addColumn('username', 'string');
-        $table->setPrimaryKey(['id']);
+        $this->addSql('CREATE SCHEMA telegram');
+        $this->addSql('CREATE TABLE telegram."user" (id VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
     }
 
     public function down(Schema $schema): void

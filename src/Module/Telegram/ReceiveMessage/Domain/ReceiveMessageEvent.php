@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Telegram\ReceiveMessage\Domain;
 
+use CarVolunteer\Module\Telegram\Domain\User;
 use Telephantast\Message\Event;
 
 final readonly class ReceiveMessageEvent implements Event
