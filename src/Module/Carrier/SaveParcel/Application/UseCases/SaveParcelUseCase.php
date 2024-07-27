@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\SaveParcel\Application\UseCases;
+namespace CarVolunteer\Module\Carrier\SaveParcel\Application\UseCases;
 
-use CarVolunteer\Module\ParcelOrder\Domain\Entity\Parcel as ParcelEntity;
-use CarVolunteer\Module\ParcelOrder\Domain\Dto\Parcel as ParcelDto;
+use CarVolunteer\Module\Carrier\Domain\Entity\Parcel as ParcelEntity;
+use CarVolunteer\Module\Carrier\Domain\Dto\Parcel as ParcelDto;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class SaveParcelUseCase

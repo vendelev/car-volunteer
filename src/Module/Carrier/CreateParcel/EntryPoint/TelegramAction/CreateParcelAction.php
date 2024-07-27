@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\CreateParcel\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Carrier\CreateParcel\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
-use CarVolunteer\Module\ParcelOrder\CreateParcel\Application\UseCases\CreateParcelUseCase;
-use CarVolunteer\Module\ParcelOrder\Domain\Dto\Parcel;
-use CarVolunteer\Module\ParcelOrder\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\CreateParcel\Application\UseCases\CreateParcelUseCase;
+use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
+use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

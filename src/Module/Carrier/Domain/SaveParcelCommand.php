@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\Domain;
+namespace CarVolunteer\Module\Carrier\Domain;
 
-use CarVolunteer\Module\ParcelOrder\Domain\Dto\Parcel;
+use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
 use Telephantast\Message\Message;
 
 final readonly class SaveParcelCommand implements Message

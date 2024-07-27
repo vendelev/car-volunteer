@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\Domain\Dto;
+namespace CarVolunteer\Module\Carrier\Domain\Dto;
 
-use CarVolunteer\Module\ParcelOrder\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 final class Parcel

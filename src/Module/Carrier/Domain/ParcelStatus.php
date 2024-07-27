@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\Domain;
+namespace CarVolunteer\Module\Carrier\Domain;
 
 enum ParcelStatus: string
 {

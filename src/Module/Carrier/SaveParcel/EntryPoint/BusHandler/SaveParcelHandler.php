@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\SaveParcel\EntryPoint\BusHandler;
+namespace CarVolunteer\Module\Carrier\SaveParcel\EntryPoint\BusHandler;
 
-use CarVolunteer\Module\ParcelOrder\Domain\SaveParcelCommand;
-use CarVolunteer\Module\ParcelOrder\SaveParcel\Application\UseCases\SaveParcelUseCase;
+use CarVolunteer\Module\Carrier\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\SaveParcel\Application\UseCases\SaveParcelUseCase;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 
 final readonly class SaveParcelHandler

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\ParcelOrder\CreateParcel\Application\UseCases;
+namespace CarVolunteer\Module\Carrier\CreateParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
-use CarVolunteer\Module\ParcelOrder\Domain\Dto\Parcel;
-use CarVolunteer\Module\ParcelOrder\Domain\ParcelStatus;
-use CarVolunteer\Module\ParcelOrder\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
+use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Domain\SaveParcelCommand;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
