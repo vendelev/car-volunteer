@@ -12,6 +12,7 @@ final class Parcel
     public function __construct(
         public readonly Uuid   $id,
         public ParcelStatus    $status,
+        public ?string         $title = null,
         public ?string         $description = null,
         public ?string         $driverId = null,
         public ?string         $date = null,

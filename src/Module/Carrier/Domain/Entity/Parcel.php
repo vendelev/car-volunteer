@@ -6,12 +6,13 @@ namespace CarVolunteer\Module\Carrier\Domain\Entity;
 
 use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Infrastructure\Repository\ParcelRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use HardcorePhp\Infrastructure\Uuid\DoctrineDBAL\UuidType;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
-#[ORM\Table(name: 'parcel', schema: 'parcel')]
+#[ORM\Table(name: 'parcel', schema: 'carrier')]
 #[ORM\Entity(repositoryClass: ParcelRepository::class)]
 readonly class Parcel
 {
@@ -22,8 +23,12 @@ readonly class Parcel
         public string $authorId,
         #[ORM\Column(type: Types::STRING, length: 255)]
         public string $status,
+        #[ORM\Column(type: Types::STRING, length: 255)]
+        public string $title,
         #[ORM\Column(type: Types::TEXT)]
-        public string $description
+        public string $description,
+        #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+        public DateTimeImmutable $createAt,
     ) {
     }
 }

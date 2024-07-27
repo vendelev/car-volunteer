@@ -23,9 +23,11 @@ final class CreateParcelUseCase
 
         if ($parcel->status === ParcelStatus::New) {
             $result = $this->step1($parcel);
-        } elseif ($parcel->status === ParcelStatus::WaitDescription && $message !== null) {
+        } elseif ($parcel->status === ParcelStatus::WaitTitle && $message !== null) {
             $result = $this->step2($parcel, $message);
-            $this->messageContext->dispatch(new SaveParcelCommand(userId: $userId, parcel: $result));
+        } elseif ($parcel->status === ParcelStatus::WaitDescription && $message !== null) {
+            $result = $this->step3($parcel, $message);
+            $messageContext->dispatch(new SaveParcelCommand(userId: $userId, parcel: $result));
         } else {
             $result = $parcel;
         }
@@ -35,14 +37,24 @@ final class CreateParcelUseCase
 
     private function step1(Parcel $parcel): Parcel
     {
+        $parcel->status = ParcelStatus::WaitTitle;
+
+        $this->sendMessage('Введите название посылки');
+
+        return $parcel;
+    }
+
+    private function step2(Parcel $parcel, string $message): Parcel
+    {
         $parcel->status = ParcelStatus::WaitDescription;
+        $parcel->title = $message;
 
         $this->sendMessage('Введите описание посылки');
 
         return $parcel;
     }
 
-    private function step2(Parcel $parcel, ?string $message): Parcel
+    private function step3(Parcel $parcel, string $message): Parcel
     {
         $parcel->status = ParcelStatus::Described;
         $parcel->description = $message;

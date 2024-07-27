@@ -6,6 +6,7 @@ namespace CarVolunteer\Module\Carrier\SaveParcel\Application\UseCases;
 
 use CarVolunteer\Module\Carrier\Domain\Entity\Parcel as ParcelEntity;
 use CarVolunteer\Module\Carrier\Domain\Dto\Parcel as ParcelDto;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class SaveParcelUseCase
@@ -21,7 +22,9 @@ final readonly class SaveParcelUseCase
             id: $parcel->id,
             authorId: $userId,
             status: $parcel->status->value,
+            title: $parcel->title,
             description: $parcel->description,
+            createAt: new DateTimeImmutable,
         );
 
         $this->entityManager->persist($entity);
