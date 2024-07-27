@@ -67,6 +67,10 @@ final readonly class RunActionHandler
             return;
         }
 
+        if ($conversation?->actionRoute !== $action::getRoute()) {
+            $conversation = new Conversation($action::getRoute());
+        }
+
         $result = $action->handle(
             new TelegramMessage($user->id, $messageText, $conversation),
             $messageContext

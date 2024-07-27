@@ -34,14 +34,9 @@ final readonly class CreateParcelAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $selfRoute = self::getRoute();
-
         $conversation = $message->conversation;
-        if ($conversation?->actionRoute !== $selfRoute) {
-            $conversation = new Conversation($selfRoute);
-        }
-
         $playLoad = $conversation->playLoad;
+
         if (empty($playLoad)) {
             $playLoad = new Parcel(
                 id: Uuid::v7(),
@@ -53,6 +48,6 @@ final readonly class CreateParcelAction implements ActionInterface
 
         $parcel = $this->parcelUseCase->handle($message->userId, $playLoad, $message->message, $messageContext);
 
-        return new Conversation($selfRoute, $this->normalizer->normalize($parcel));
+        return new Conversation(self::getRoute(), $this->normalizer->normalize($parcel));
     }
 }
