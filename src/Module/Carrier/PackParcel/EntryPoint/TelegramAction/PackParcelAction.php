@@ -23,6 +23,6 @@ final class PackParcelAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        return new Conversation(self::getRoute());
+        return $message->conversation;
     }
 }

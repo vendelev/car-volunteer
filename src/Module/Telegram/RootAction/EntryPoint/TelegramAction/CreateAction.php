@@ -34,6 +34,6 @@ final readonly class CreateAction implements RootActionInterface
             ])
         ));
 
-        return new Conversation(self::getRoute());
+        return $message->conversation;
     }
 }

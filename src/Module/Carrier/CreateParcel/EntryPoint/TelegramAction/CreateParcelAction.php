@@ -48,6 +48,6 @@ final readonly class CreateParcelAction implements ActionInterface
 
         $parcel = $this->parcelUseCase->handle($message->userId, $playLoad, $message->message, $messageContext);
 
-        return new Conversation(self::getRoute(), $this->normalizer->normalize($parcel));
+        return new Conversation($conversation->actionRoute, $this->normalizer->normalize($parcel));
     }
 }

@@ -20,8 +20,8 @@ class Conversation
         public Uuid $id,
         #[ORM\Column(type: Types::STRING, length: 20)]
         public string $userId,
-        #[ORM\Column(type: Types::STRING, length: 255)]
-        public string $actionRoute,
+        #[ORM\Column(type: Types::JSON)]
+        public array $actionRoute,
         #[ORM\Column(type: Types::JSON, nullable: true)]
         public ?array $playLoad,
     ) {

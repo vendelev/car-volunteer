@@ -8,11 +8,13 @@ use CarVolunteer\Component\Conversation\Domain\Entity\Conversation;
 use CarVolunteer\Domain\Conversation\Conversation as ConversationDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class SaveConversation
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private NormalizerInterface $normalizer,
     ) {
     }
 
@@ -21,7 +23,7 @@ final readonly class SaveConversation
         $entity = new Conversation(
             Uuid::v7(),
             $userId,
-            $conversation->actionRoute,
+            $this->normalizer->normalize($conversation->actionRoute),
             $conversation->playLoad
         );
 

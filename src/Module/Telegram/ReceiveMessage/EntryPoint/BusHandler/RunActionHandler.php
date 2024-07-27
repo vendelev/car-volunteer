@@ -56,14 +56,25 @@ final readonly class RunActionHandler
             return;
         }
 
-        if ($conversation?->actionRoute !== $action::getRoute()) {
-            $conversation = new Conversation($action::getRoute());
+        if ($conversation === null
+            || $conversation->actionRoute->route !== $requestAction->actionRoute->route) {
+            $playLoad = null;
+        } else {
+            $playLoad = $conversation->playLoad;
         }
 
-        $result = $action->handle(
-            new TelegramMessage($user->id, $messageText, $conversation),
-            $messageContext
+        $telegramMessage = new TelegramMessage(
+            $user->id,
+            $requestAction->messageText,
+            new Conversation(
+                new ActionRoute(
+                    $requestAction->actionRoute->route,
+                    $requestAction->actionRoute->query
+                ),
+                $playLoad
+            )
         );
+        $result = $requestAction->actionHandler->handle($telegramMessage, $messageContext);
 
         $messageContext->dispatch(new SaveConversationCommand($user->id, $result));
     }

@@ -29,6 +29,6 @@ final readonly class ViewAction implements RootActionInterface
             'Список доступных действий:'
         ));
 
-        return new Conversation(self::getRoute());
+        return $message->conversation;
     }
 }

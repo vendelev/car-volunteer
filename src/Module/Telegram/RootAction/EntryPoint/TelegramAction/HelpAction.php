@@ -35,6 +35,6 @@ final readonly class HelpAction implements RootActionInterface
             ])
         ));
 
-        return new Conversation(self::getRoute());
+        return $message->conversation;
     }
 }
