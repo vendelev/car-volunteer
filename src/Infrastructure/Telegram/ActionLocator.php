@@ -40,14 +40,6 @@ final class ActionLocator implements ContainerInterface
         return $this->has($id) ? $this->locator->get($this->routes[$id]) : null;
     }
 
-    /**
-     * @return array<string, class-string<ActionInterface>>
-     */
-    public function getAll(): array
-    {
-        return $this->routes;
-    }
-
     public function has(string $id): bool
     {
         return isset($this->routes[$id]);
