@@ -5,9 +5,13 @@ declare(strict_types=1);
 use CarVolunteer\Module\Carrier\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Domain\SaveParcelCommand;
 use CarVolunteer\Module\Carrier\Infrastructure\Repository\ParcelRepository;
+use CarVolunteer\Module\Carrier\Packing\Application\PackPlayLoadFactory;
+use CarVolunteer\Module\Carrier\Packing\Application\UseCases\CreatePackUseCase;
+use CarVolunteer\Module\Carrier\Packing\Application\UseCases\SavePackUseCase;
+use CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler\SavePackHandler;
+use CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction\CreatePackAction;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\CreateParcelAction;
-use CarVolunteer\Module\Carrier\Parcel\PackParcel\EntryPoint\TelegramAction\PackParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelsUseCase;
@@ -41,6 +45,11 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(ParcelRepository::class)
         ->alias(ParcelRepositoryInterface::class, ParcelRepository::class)
 
-        ->set(PackParcelAction::class)
+        ->set(CreatePackAction::class)
+        ->set(PackPlayLoadFactory::class)
+        ->set(CreatePackUseCase::class)
+
+        ->set(SavePackHandler::class)
+        ->set(SavePackUseCase::class)
     ;
 };
