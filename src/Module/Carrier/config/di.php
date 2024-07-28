@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-use CarVolunteer\Module\Carrier\Domain\ParcelRepositoryInterface;
-use CarVolunteer\Module\Carrier\Domain\SaveParcelCommand;
-use CarVolunteer\Module\Carrier\Infrastructure\Repository\ParcelRepository;
 use CarVolunteer\Module\Carrier\Packing\Application\PackPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\CreatePackUseCase;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\SavePackUseCase;
 use CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler\SavePackHandler;
 use CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction\CreatePackAction;
+use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\CreateParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
+use CarVolunteer\Module\Carrier\Parcel\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignPackingUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveParcelHandler;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPackingHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelsUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelAction;
@@ -30,6 +33,7 @@ return static function (ContainerConfigurator $configurator): void {
 
     $services
         ->set(CreateParcelAction::class)
+        ->set(ParcelPlayLoadFactory::class)
         ->set(CreateParcelUseCase::class)
 
         ->set(SaveParcelCommand::class)
@@ -41,6 +45,9 @@ return static function (ContainerConfigurator $configurator): void {
 
         ->set(ViewParcelAction::class)
         ->set(ViewParcelUseCase::class)
+
+        ->set(AssignPackingHandler::class)
+        ->set(AssignPackingUseCase::class)
 
         ->set(ParcelRepository::class)
         ->alias(ParcelRepositoryInterface::class, ParcelRepository::class)

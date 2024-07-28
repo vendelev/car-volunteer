@@ -13,7 +13,7 @@ use Telephantast\MessageBus\MessageContext;
 final readonly class ViewParcelAction implements ActionInterface
 {
     public function __construct(
-        private ViewParcelUseCase $listUseCase
+        private ViewParcelUseCase $viewUseCase
     ) {
     }
 
@@ -24,7 +24,7 @@ final readonly class ViewParcelAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $this->listUseCase->handle(
+        $this->viewUseCase->handle(
             $message->userId,
             $message->conversation->actionRoute->query['id'] ?? 0,
             $messageContext

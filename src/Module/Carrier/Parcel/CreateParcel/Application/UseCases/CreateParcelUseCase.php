@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
-use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
-use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
-use CarVolunteer\Module\Carrier\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Parcel\Domain\SaveParcelCommand;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
@@ -16,7 +16,7 @@ final class CreateParcelUseCase
     private string $userId;
     private MessageContext $messageContext;
 
-    public function handle(string $userId, Parcel $parcel, ?string $message, MessageContext $messageContext): Parcel
+    public function handle(string $userId, ParcelPlayLoad $parcel, ?string $message, MessageContext $messageContext): ParcelPlayLoad
     {
         $this->userId = $userId;
         $this->messageContext = $messageContext;
@@ -35,7 +35,7 @@ final class CreateParcelUseCase
         return $result;
     }
 
-    private function step1(Parcel $parcel): Parcel
+    private function step1(ParcelPlayLoad $parcel): ParcelPlayLoad
     {
         $parcel->status = ParcelStatus::WaitTitle;
 
@@ -44,7 +44,7 @@ final class CreateParcelUseCase
         return $parcel;
     }
 
-    private function step2(Parcel $parcel, string $message): Parcel
+    private function step2(ParcelPlayLoad $parcel, string $message): ParcelPlayLoad
     {
         $parcel->status = ParcelStatus::WaitDescription;
         $parcel->title = $message;
@@ -54,7 +54,7 @@ final class CreateParcelUseCase
         return $parcel;
     }
 
-    private function step3(Parcel $parcel, string $message): Parcel
+    private function step3(ParcelPlayLoad $parcel, string $message): ParcelPlayLoad
     {
         $parcel->status = ParcelStatus::Described;
         $parcel->description = $message;
@@ -62,8 +62,8 @@ final class CreateParcelUseCase
         $this->sendMessage(
             'Заказ-наряд на посылку создан',
             new InlineKeyboardMarkup([
-                [['text' => 'Собрать посылку', 'callback_data' => '/packParcel/?parcelId=' . $parcel->id]],
-                [['text' => 'Создать доставку', 'callback_data' => '/createDelivery/?parcelId=' . $parcel->id]],
+                [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcel->id]],
+                [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcel->id]],
             ])
         );
 

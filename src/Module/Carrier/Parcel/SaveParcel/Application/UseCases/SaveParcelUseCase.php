@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases;
 
-use CarVolunteer\Module\Carrier\Domain\Dto\Parcel as ParcelDto;
-use CarVolunteer\Module\Carrier\Domain\Entity\Parcel as ParcelEntity;
+use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel as ParcelEntity;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad as ParcelDto;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -30,5 +30,4 @@ final readonly class SaveParcelUseCase
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
-
 }

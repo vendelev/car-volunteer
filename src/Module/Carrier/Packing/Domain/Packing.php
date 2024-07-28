@@ -20,7 +20,7 @@ readonly class Packing
         public Uuid $id,
         #[ORM\Column(type: Types::STRING, length: 20)]
         public string $pickerId,
-        #[ORM\Id, ORM\Column(type: UuidType::class)]
+        #[ORM\Column(type: UuidType::class)]
         public Uuid $parcelId,
         #[ORM\Column(type: Types::STRING, length: 255)]
         public string $status,

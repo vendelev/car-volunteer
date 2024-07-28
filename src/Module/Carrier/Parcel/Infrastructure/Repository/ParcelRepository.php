@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Infrastructure\Repository;
+namespace CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository;
 
-use CarVolunteer\Module\Carrier\Domain\Entity\Parcel;
-use CarVolunteer\Module\Carrier\Domain\ParcelRepositoryInterface;
+use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

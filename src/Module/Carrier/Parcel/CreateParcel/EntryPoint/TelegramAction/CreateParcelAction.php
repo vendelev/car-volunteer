@@ -7,11 +7,8 @@ namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAct
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
-use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
-use CarVolunteer\Module\Carrier\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
-use HardcorePhp\Infrastructure\Uuid\Uuid;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Telephantast\MessageBus\MessageContext;
 
@@ -22,7 +19,7 @@ final readonly class CreateParcelAction implements ActionInterface
 {
     public function __construct(
         private NormalizerInterface $normalizer,
-        private DenormalizerInterface $denormalizer,
+        private ParcelPlayLoadFactory $playLoadFactory,
         private CreateParcelUseCase $parcelUseCase,
     ) {
     }
@@ -35,17 +32,7 @@ final readonly class CreateParcelAction implements ActionInterface
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $conversation = $message->conversation;
-        $playLoad = $conversation->playLoad;
-
-        if (empty($playLoad)) {
-            $playLoad = new Parcel(
-                id: Uuid::v7(),
-                status: ParcelStatus::New
-            );
-        } else {
-            $playLoad = $this->denormalizer->denormalize($playLoad, Parcel::class);
-        }
-
+        $playLoad = $this->playLoadFactory->createFromConversation($conversation->playLoad);
         $parcel = $this->parcelUseCase->handle($message->userId, $playLoad, $message->message, $messageContext);
 
         return new Conversation($conversation->actionRoute, $this->normalizer->normalize($parcel));
