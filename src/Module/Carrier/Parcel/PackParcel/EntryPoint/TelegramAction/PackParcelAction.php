@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\PackParcel\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Carrier\Parcel\PackParcel\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;

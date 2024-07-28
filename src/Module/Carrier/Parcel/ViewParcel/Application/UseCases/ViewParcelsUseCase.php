@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\ViewParcel\Application\UseCases;
+namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Domain\Entity\Parcel;
@@ -20,7 +20,7 @@ final readonly class ViewParcelsUseCase
 
     public function handle(string $userId, MessageContext $messageContext): void
     {
-        /** @var list<Parcel> $list */
+        /** @var Parcel $list */
         $list = $this->parcelRepository->findBy(['status' => [ParcelStatus::Described->value]]);
         $buttons = [];
 

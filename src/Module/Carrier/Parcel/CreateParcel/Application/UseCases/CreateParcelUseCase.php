@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\CreateParcel\Application\UseCases;
+namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Domain\Dto\Parcel;
@@ -62,8 +62,8 @@ final class CreateParcelUseCase
         $this->sendMessage(
             'Заказ-наряд на посылку создан',
             new InlineKeyboardMarkup([
-                [['text' => 'Собрать посылку', 'callback_data' => '/pack/' . $parcel->id]],
-                [['text' => 'Назначить волонтера', 'callback_data' => '/car/' . $parcel->id]],
+                [['text' => 'Собрать посылку', 'callback_data' => '/packParcel/?parcelId=' . $parcel->id]],
+                [['text' => 'Создать доставку', 'callback_data' => '/createDelivery/?parcelId=' . $parcel->id]],
             ])
         );
 
