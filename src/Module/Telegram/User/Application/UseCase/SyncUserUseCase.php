@@ -9,7 +9,7 @@ use CarVolunteer\Module\Telegram\User\Entity\User;
 use CarVolunteer\Module\Telegram\User\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-final readonly class RegisterUserUseCase
+final readonly class SyncUserUseCase
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -19,14 +19,20 @@ final readonly class RegisterUserUseCase
 
     public function handle(UserDto $userDto): void
     {
-        if ($this->repository->findOneBy(['id' => $userDto->id])) {
-            return;
-        }
+        $entity = $this->repository->findOneBy(['id' => $userDto->id]);
 
-        $entity = new User(
-            id: $userDto->id,
-            username: $userDto->username,
-        );
+        if ($entity === null) {
+            $entity = new User(
+                id: $userDto->id,
+                username: $userDto->username,
+                firstName: $userDto->firstName,
+                lastName: $userDto->lastName,
+            );
+        } else {
+            $entity->username = $userDto->username;
+            $entity->firstName = $userDto->firstName;
+            $entity->lastName = $userDto->lastName;
+        }
 
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
