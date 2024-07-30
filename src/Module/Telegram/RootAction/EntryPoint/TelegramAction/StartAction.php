@@ -38,7 +38,9 @@ final readonly class StartAction implements RootActionInterface
         );
 
         $user = $messageContext->getAttribute(UserAttribute::class);
-        $messageContext->dispatch(new RegisterUserCommand($user?->user));
+        if ($user?->user !== null) {
+            $messageContext->dispatch(new RegisterUserCommand($user?->user));
+        }
 
         return $message->conversation;
     }
