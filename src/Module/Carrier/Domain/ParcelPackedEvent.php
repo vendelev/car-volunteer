@@ -10,6 +10,7 @@ use Telephantast\Message\Event;
 final readonly class ParcelPackedEvent implements Event
 {
     public function __construct(
+        public string $userId,
         public Uuid $parcelId,
         public Uuid $packingId,
     ) {

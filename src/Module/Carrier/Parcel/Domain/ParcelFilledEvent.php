@@ -6,7 +6,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\Domain;
 
 use Telephantast\Message\Message;
 
-final readonly class SaveParcelCommand implements Message
+final readonly class ParcelFilledEvent implements Message
 {
     public function __construct(
         public string         $userId,

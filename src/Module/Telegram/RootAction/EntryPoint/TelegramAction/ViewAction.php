@@ -8,6 +8,7 @@ use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\RootActionInterface;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
+use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewAction implements RootActionInterface
@@ -26,7 +27,10 @@ final readonly class ViewAction implements RootActionInterface
     {
         $messageContext->dispatch(new SendMessageCommand(
             $message->userId,
-            'Список доступных действий:'
+            'Список доступных действий:',
+                new InlineKeyboardMarkup([
+                    [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
+                ])
         ));
 
         return $message->conversation;

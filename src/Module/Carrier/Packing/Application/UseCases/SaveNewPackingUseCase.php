@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Packing\Application\UseCases;
 
 use CarVolunteer\Module\Carrier\Packing\Domain\Packing;
-use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
+use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use HardcorePhp\Infrastructure\Uuid\Uuid;
 
-final readonly class SavePackUseCase
+final readonly class SaveNewPackingUseCase
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function handle(string $userId, PackPlayLoad $playLoad): void
+    public function handle(string $userId, Uuid $parcelId, Uuid $packingId): void
     {
         $entity = new Packing(
-            id: $playLoad->id,
+            id: $packingId,
             pickerId: $userId,
-            parcelId: $playLoad->parcelId,
-            status: $playLoad->status->value,
+            parcelId: $parcelId,
+            status: PackStatus::Packed->value,
             createAt: new DateTimeImmutable,
         );
 

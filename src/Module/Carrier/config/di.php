@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use CarVolunteer\Module\Carrier\Packing\Application\PackPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\CreatePackUseCase;
-use CarVolunteer\Module\Carrier\Packing\Application\UseCases\SavePackUseCase;
-use CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler\SavePackHandler;
+use CarVolunteer\Module\Carrier\Packing\Application\UseCases\SaveNewPackingUseCase;
+use CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler\SaveNewPackHandler;
 use CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction\CreatePackAction;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\CreateParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
-use CarVolunteer\Module\Carrier\Parcel\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelFilledEvent;
 use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignPackingUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveParcelUseCase;
@@ -36,7 +36,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(ParcelPlayLoadFactory::class)
         ->set(CreateParcelUseCase::class)
 
-        ->set(SaveParcelCommand::class)
+        ->set(ParcelFilledEvent::class)
         ->set(SaveParcelHandler::class)
         ->set(SaveParcelUseCase::class)
 
@@ -56,7 +56,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(PackPlayLoadFactory::class)
         ->set(CreatePackUseCase::class)
 
-        ->set(SavePackHandler::class)
-        ->set(SavePackUseCase::class)
+        ->set(SaveNewPackHandler::class)
+        ->set(SaveNewPackingUseCase::class)
     ;
 };

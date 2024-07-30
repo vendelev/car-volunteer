@@ -6,7 +6,6 @@ namespace CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler;
 
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignPackingUseCase;
-use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveParcelUseCase;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 
 final readonly class AssignPackingHandler

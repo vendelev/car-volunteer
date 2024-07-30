@@ -8,7 +8,6 @@ use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
-use CarVolunteer\Module\Carrier\Packing\Domain\SavePackCommand;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
@@ -26,8 +25,7 @@ final readonly class CreatePackUseCase
             $result = $this->step1($pack);
         } elseif ($pack->status === PackStatus::WaitPack) {
             $result = $this->step2($pack, $confirm);
-            $messageContext->dispatch(new SavePackCommand($userId, $result));
-            $messageContext->dispatch(new ParcelPackedEvent($result->parcelId, $result->id));
+            $messageContext->dispatch(new ParcelPackedEvent($userId, $result->parcelId, $result->id));
         } else {
             $result = $pack;
         }

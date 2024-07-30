@@ -7,7 +7,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
-use CarVolunteer\Module\Carrier\Parcel\Domain\SaveParcelCommand;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelFilledEvent;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
@@ -27,7 +27,7 @@ final class CreateParcelUseCase
             $result = $this->step2($parcel, $message);
         } elseif ($parcel->status === ParcelStatus::WaitDescription && $message !== null) {
             $result = $this->step3($parcel, $message);
-            $messageContext->dispatch(new SaveParcelCommand(userId: $userId, parcel: $result));
+            $messageContext->dispatch(new ParcelFilledEvent(userId: $userId, parcel: $result));
         } else {
             $result = $parcel;
         }
