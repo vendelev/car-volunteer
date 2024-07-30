@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
@@ -26,12 +28,15 @@ final readonly class ViewParcelUseCase
             return;
         }
 
+        $auth = $messageContext->getAttribute(AuthorizeAttribute::class);
+        $roles = $auth->roles ?? [];
+
         $buttons = [];
-        if ($item->packingId === null) {
+        if ($item->packingId === null && in_array(UserRole::Picker, $roles, true)) {
             $buttons[] = [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcelId]];
         }
 
-        if ($item->deliveryId === null) {
+        if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {
             $buttons[] = [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcelId]];
         }
 
