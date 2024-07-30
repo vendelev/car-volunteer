@@ -8,6 +8,7 @@ use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
+use CarVolunteer\Module\Carrier\Packing\Infrastructure\Repository\PackingRepository;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
@@ -16,10 +17,27 @@ final readonly class CreatePackUseCase
     private string $userId;
     private MessageContext $messageContext;
 
+    public function __construct(
+        private PackingRepository $repository,
+    ) {
+    }
+
     public function handle(string $userId, PackPlayLoad $pack, bool $confirm, MessageContext $messageContext): PackPlayLoad
     {
         $this->userId = $userId;
         $this->messageContext = $messageContext;
+
+        $packing = $this->repository->findOneBy(['parcelId' => $pack->parcelId]);
+
+        if ($packing !== null) {
+            $this->sendMessage(
+                'Посылка уже собрана',
+                new InlineKeyboardMarkup([
+                    [['text' => 'Список посылок', 'callback_data' => '/viewParcels']]
+                ])
+            );
+            return $pack;
+        }
 
         if ($pack->status === PackStatus::New) {
             $result = $this->step1($pack);

@@ -27,11 +27,10 @@ final readonly class HelpAction implements RootActionInterface
     {
         $messageContext->dispatch(new SendMessageCommand(
             $message->userId,
-            'Список доступных действий:',
+            'Список основных действий:',
             new InlineKeyboardMarkup([
                 [['text' => CreateAction::getTitle(), 'callback_data' => CreateAction::getRoute()]],
                 [['text' => ViewAction::getTitle(), 'callback_data' => ViewAction::getRoute()]],
-                [['text' => self::getTitle(), 'callback_data' => self::getRoute()]],
             ])
         ));
 

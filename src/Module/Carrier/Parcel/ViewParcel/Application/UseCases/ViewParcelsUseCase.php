@@ -31,6 +31,8 @@ final readonly class ViewParcelsUseCase
             ]];
         }
 
+        $buttons[] = [['text' => 'Помощь', 'callback_data' => '/help']];
+
         $messageContext->dispatch(new SendMessageCommand(
             $userId,
             'Список активных посылок',

@@ -7,6 +7,7 @@ use CarVolunteer\Module\Carrier\Packing\Application\UseCases\CreatePackUseCase;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\SaveNewPackingUseCase;
 use CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler\SaveNewPackHandler;
 use CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction\CreatePackAction;
+use CarVolunteer\Module\Carrier\Packing\Infrastructure\Repository\PackingRepository;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\CreateParcelAction;
@@ -55,6 +56,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(CreatePackAction::class)
         ->set(PackPlayLoadFactory::class)
         ->set(CreatePackUseCase::class)
+        ->set(PackingRepository::class)
 
         ->set(SaveNewPackHandler::class)
         ->set(SaveNewPackingUseCase::class)

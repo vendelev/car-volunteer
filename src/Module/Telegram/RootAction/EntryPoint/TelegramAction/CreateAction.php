@@ -27,10 +27,11 @@ final readonly class CreateAction implements RootActionInterface
     {
         $messageContext->dispatch(new SendMessageCommand(
             $message->userId,
-            'Список доступных действий:',
+            'Вы можете создать:',
             new InlineKeyboardMarkup([
                 //todo переделать на interface CreateActionInterface
-                [['text' => 'Создать заказ-наряд на посылку', 'callback_data' => '/createParcel']],
+                [['text' => 'Заказ-наряд на посылку', 'callback_data' => '/createParcel']],
+                [['text' => 'Отмена', 'callback_data' => '/help']],
             ])
         ));
 

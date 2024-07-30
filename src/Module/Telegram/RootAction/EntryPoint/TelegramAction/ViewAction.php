@@ -27,9 +27,10 @@ final readonly class ViewAction implements RootActionInterface
     {
         $messageContext->dispatch(new SendMessageCommand(
             $message->userId,
-            'Список доступных действий:',
+            'Вы можете посмотреть:',
                 new InlineKeyboardMarkup([
                     [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
+                    [['text' => 'Отмена', 'callback_data' => '/help']],
                 ])
         ));
 
