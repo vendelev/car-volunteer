@@ -7,7 +7,7 @@ namespace CarVolunteer\Module\Telegram\ReceiveMessage\Application\UseCase;
 use CarVolunteer\Domain\ActionRoute;
 use CarVolunteer\Infrastructure\Telegram\ActionLocator;
 use CarVolunteer\Infrastructure\Telegram\ActionRoteResolver;
-use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\CallbackData;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\CallbackQuery;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\Message;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\RequestActionData;
 use Psr\Log\LoggerInterface;
@@ -22,17 +22,17 @@ final readonly class GetRequestActionDataUseCase
     }
 
     public function handle(
-        ?Message $message,
-        ?CallbackData $callback,
-        ?ActionRoute $conversationActionRoute
+        ?Message       $message,
+        ?CallbackQuery $callbackQuery,
+        ?ActionRoute   $conversationActionRoute
     ): RequestActionData {
         $this->logger->debug($message->text ?? '-');
-        $this->logger->debug($callback->data ?? '-');
+        $this->logger->debug($callbackQuery->data ?? '-');
 
         $request = $this->getRequest($message->text ?? '-');
 
         if ($request === null) {
-            $request = $this->getRequest($callback->data ?? '-');
+            $request = $this->getRequest($callbackQuery->data ?? '-');
         }
 
         if ($request !== null) {
@@ -47,7 +47,7 @@ final readonly class GetRequestActionDataUseCase
             $actionRoute = $conversationActionRoute;
             $actionHandler = $this->actionLocator->get($actionRoute->route);
 
-            if ($actionHandler !== null && $callback === null) {
+            if ($actionHandler !== null && $callbackQuery === null) {
                 $messageText = $message->text ?? null;
             }
         }

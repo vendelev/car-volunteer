@@ -40,7 +40,7 @@ final readonly class RunActionHandler
         $conversation = $messageContext->dispatch(new GetLastConversationQuery($user->id));
         $requestAction = $this->getRequestActionData->handle(
             $event->message,
-            $event->callbackData,
+            $event->callbackQuery,
             $conversation->actionRoute ?? null
         );
 

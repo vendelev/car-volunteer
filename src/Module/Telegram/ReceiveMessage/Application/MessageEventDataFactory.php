@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Telegram\ReceiveMessage\Application;
 
 use CarVolunteer\Module\Telegram\Domain\User;
-use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\CallbackData;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\CallbackQuery;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\Message;
 use TelegramBot\Api\Types\Update;
 
@@ -48,11 +48,11 @@ final class MessageEventDataFactory
         return null;
     }
 
-    public function getCallback(Update $telegramMessage): ?CallbackData
+    public function getCallback(Update $telegramMessage): ?CallbackQuery
     {
         $callBackQuery = $telegramMessage->getCallbackQuery();
         if ($callBackQuery) {
-            return new CallbackData((string)$callBackQuery->getData());
+            return new CallbackQuery($callBackQuery->getId(), (string)$callBackQuery->getData());
         }
 
         return null;

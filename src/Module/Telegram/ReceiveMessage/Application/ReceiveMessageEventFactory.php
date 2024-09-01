@@ -24,7 +24,7 @@ final readonly class ReceiveMessageEventFactory
         $context = $this->messageBus->startContext(new ReceiveMessageEvent(
             user: $user,
             message: $this->dataFactory->getMessage($incomeMessage),
-            callbackData: $this->dataFactory->getCallback($incomeMessage),
+            callbackQuery: $this->dataFactory->getCallback($incomeMessage),
         ));
         $context->setAttribute(new UserAttribute($user));
 
