@@ -8,6 +8,7 @@ use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
+use HardcorePhp\Infrastructure\Uuid\Uuid;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewParcelAction implements ActionInterface
@@ -26,7 +27,7 @@ final readonly class ViewParcelAction implements ActionInterface
     {
         $this->viewUseCase->handle(
             $message->userId,
-            $message->conversation->actionRoute->query['id'] ?? 0,
+            $message->conversation->actionRoute->query['id'] ?? Uuid::nil(),
             $messageContext
         );
 

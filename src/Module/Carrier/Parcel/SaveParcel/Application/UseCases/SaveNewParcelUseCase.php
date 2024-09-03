@@ -9,7 +9,7 @@ use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad as ParcelDto;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
-final readonly class SaveParcelUseCase
+final readonly class SaveNewParcelUseCase
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

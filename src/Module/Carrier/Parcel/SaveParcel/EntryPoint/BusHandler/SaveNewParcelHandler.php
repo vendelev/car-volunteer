@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler;
 
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelFilledEvent;
-use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveNewParcelUseCase;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 
-final readonly class SaveParcelHandler
+final readonly class SaveNewParcelHandler
 {
     public function __construct(
-        private SaveParcelUseCase $useCase,
+        private SaveNewParcelUseCase $useCase,
     ) {
     }
 

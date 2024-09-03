@@ -17,11 +17,11 @@ final readonly class SaveNewPackingUseCase
     ) {
     }
 
-    public function handle(string $userId, Uuid $parcelId, Uuid $packingId): void
+    public function handle(string $pickerId, Uuid $parcelId, Uuid $packingId): void
     {
         $entity = new Packing(
             id: $packingId,
-            pickerId: $userId,
+            pickerId: $pickerId,
             parcelId: $parcelId,
             status: PackStatus::Packed->value,
             createAt: new DateTimeImmutable,
