@@ -6,7 +6,7 @@ namespace CarVolunteer\Module\Telegram\User\Auth\Middleware;
 
 use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
-use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\ReceiveMessageEvent;
+use CarVolunteer\Module\Telegram\Domain\User;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\MessageBusMiddleware;
 use Telephantast\MessageBus\Handler\Pipeline;
 use Telephantast\MessageBus\MessageContext;
@@ -29,11 +29,10 @@ final readonly class AuthorizeMiddleware implements Middleware
             return $pipeline->continue();
         }
 
-        /** @var ReceiveMessageEvent $event */
         $event = $messageContext->getMessage();
-        $user = $event->user;
+        $user = $event->user ?? null;
 
-        if ($user) {
+        if ($user instanceof User) {
             $roles = [];
             foreach ($this->roles as $role => $userIds) {
                 if (in_array($user->id, $userIds, true)) {
