@@ -18,7 +18,7 @@ readonly class Delivery
     public function __construct(
         #[ORM\Id, ORM\Column(type: UuidType::class)]
         public Uuid $id,
-        #[ORM\Column(type: UuidType::class)]
+        #[ORM\Column(type: Types::STRING, length: 20)]
         public string $carrierId,
         #[ORM\Column(type: UuidType::class)]
         public Uuid $parcelId,
