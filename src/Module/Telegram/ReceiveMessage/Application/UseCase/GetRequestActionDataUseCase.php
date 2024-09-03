@@ -26,9 +26,6 @@ final readonly class GetRequestActionDataUseCase
         ?CallbackQuery $callbackQuery,
         ?ActionRoute   $conversationActionRoute
     ): RequestActionData {
-        $this->logger->debug($message->text ?? '-');
-        $this->logger->debug($callbackQuery->data ?? '-');
-
         $request = $this->getRequest($message->text ?? '-');
 
         if ($request === null) {
@@ -47,8 +44,8 @@ final readonly class GetRequestActionDataUseCase
             $actionRoute = $conversationActionRoute;
             $actionHandler = $this->actionLocator->get($actionRoute->route);
 
-            if ($actionHandler !== null && $callbackQuery === null) {
-                $messageText = $message->text ?? null;
+            if ($actionHandler !== null) {
+                $messageText = $callbackQuery->data ?? ($message->text ?? null);
             }
         }
 
