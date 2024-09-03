@@ -64,6 +64,7 @@ final class CreateParcelUseCase
             new InlineKeyboardMarkup([
                 [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcel->id]],
                 [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcel->id]],
+                [['text' => 'Помощь', 'callback_data' => '/help']],
             ])
         );
 

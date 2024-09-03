@@ -20,13 +20,23 @@ final readonly class ViewParcelsUseCase
 
     public function handle(string $userId, MessageContext $messageContext): void
     {
-        /** @var Parcel $list */
-        $list = $this->parcelRepository->findBy(['status' => [ParcelStatus::Described->value]]);
+        /** @var list<Parcel> $list */
+        $list = $this->parcelRepository->findBy(['status' => [
+            ParcelStatus::Described->value,
+            ParcelStatus::Packed->value,
+            ParcelStatus::Shipped->value,
+        ]]);
         $buttons = [];
 
         foreach ($list as $item) {
             $buttons[] = [[
-                'text' => sprintf('%s (от %s)', $item->title, $item->createAt->format('d.m.Y')),
+                'text' => sprintf(
+                    '%s%s %s (от %s)',
+                    ($item->packingId ? 'ⓟ' : ''),
+                    ($item->deliveryId ? 'ⓓ' : ''),
+                    $item->title,
+                    $item->createAt->format('d.m.Y')
+                ),
                 'callback_data' => '/viewParcel?id=' . $item->id
             ]];
         }

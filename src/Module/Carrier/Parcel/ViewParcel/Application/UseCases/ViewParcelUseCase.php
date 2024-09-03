@@ -44,7 +44,13 @@ final readonly class ViewParcelUseCase
 
         $messageContext->dispatch(new SendMessageCommand(
             $userId,
-            sprintf("<b>%s</b> (от %s)\n<pre>%s</pre>", $item->title, $item->createAt->format('d.m.Y'), $item->description),
+            sprintf(
+                '<b>%s</b> (от %s)<pre>%s</pre>%s',
+                $item->title,
+                $item->createAt->format('d.m.Y'),
+                $item->description,
+                ($item->packingId ? 'ⓟ Упаковано' : '')
+            ),
             new InlineKeyboardMarkup($buttons)
         ));
     }
