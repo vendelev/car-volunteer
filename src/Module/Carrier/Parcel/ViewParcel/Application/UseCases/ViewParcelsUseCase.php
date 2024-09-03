@@ -24,6 +24,7 @@ final readonly class ViewParcelsUseCase
         $list = $this->parcelRepository->findBy(['status' => [
             ParcelStatus::Described->value,
             ParcelStatus::Packed->value,
+            ParcelStatus::Delivery->value,
             ParcelStatus::Shipped->value,
         ]]);
         $buttons = [];

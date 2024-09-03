@@ -77,7 +77,6 @@ final readonly class CreatePackUseCase
         $this->sendMessage(
             'Посылка готова к отгрузке',
             new InlineKeyboardMarkup([
-                [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $pack->parcelId]],
                 [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
                 [['text' => 'Помощь', 'callback_data' => '/help']],
             ])

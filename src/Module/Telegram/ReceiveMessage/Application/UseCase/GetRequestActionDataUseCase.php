@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 final readonly class GetRequestActionDataUseCase
 {
     public function __construct(
-        private LoggerInterface $logger,
         private ActionLocator $actionLocator,
         private ActionRoteResolver $roteResolver,
     ) {
