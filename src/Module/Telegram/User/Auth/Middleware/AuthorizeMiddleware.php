@@ -29,8 +29,7 @@ final readonly class AuthorizeMiddleware implements Middleware
             return $pipeline->continue();
         }
 
-        $event = $messageContext->getMessage();
-        $user = $event->user ?? null;
+        $user = $messageContext->getMessage()->user ?? null;
 
         if ($user instanceof User) {
             $roles = [];

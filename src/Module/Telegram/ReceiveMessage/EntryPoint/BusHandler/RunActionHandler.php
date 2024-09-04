@@ -16,6 +16,7 @@ use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 use Psr\Log\LoggerInterface;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
+use Throwable;
 
 final readonly class RunActionHandler
 {
@@ -74,8 +75,11 @@ final readonly class RunActionHandler
                 $playLoad
             )
         );
-        $result = $requestAction->actionHandler->handle($telegramMessage, $messageContext);
-
-        $messageContext->dispatch(new SaveConversationCommand($user->id, $result));
+        try {
+            $result = $requestAction->actionHandler->handle($telegramMessage, $messageContext);
+            $messageContext->dispatch(new SaveConversationCommand($user->id, $result));
+        } catch (Throwable $exception) {
+            $this->logger->critical($exception->getMessage(), ['trace' => $exception->getTrace()]);
+        }
     }
 }
