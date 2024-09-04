@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
-use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Domain\DeliveryPlayLoad;
+use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Domain\CreateDeliveryPlayLoad;
 use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
 use CarVolunteer\Module\Carrier\Domain\DeliveryCreatedEvent;
@@ -27,7 +27,7 @@ final readonly class CreateDeliveryUseCase
     ) {
     }
 
-    public function handle(string $userId, DeliveryPlayLoad $delivery, bool $confirm, ?string $message): DeliveryPlayLoad
+    public function handle(string $userId, CreateDeliveryPlayLoad $delivery, bool $confirm, ?string $message): CreateDeliveryPlayLoad
     {
         $this->userId = $userId;
 
@@ -69,7 +69,7 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function stepWaitDate(DeliveryPlayLoad $delivery): DeliveryPlayLoad
+    private function stepWaitDate(CreateDeliveryPlayLoad $delivery): CreateDeliveryPlayLoad
     {
         $delivery->status = DeliveryStatus::WaitDate;
         $date = new DateTimeImmutable();
@@ -99,14 +99,14 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function stepSetDate(DeliveryPlayLoad $delivery, string $message): DeliveryPlayLoad
+    private function stepSetDate(CreateDeliveryPlayLoad $delivery, string $message): CreateDeliveryPlayLoad
     {
         $delivery->deliveryDate = new DateTimeImmutable($message);
 
         return $delivery;
     }
 
-    private function stepWaitCarrier(DeliveryPlayLoad $delivery): DeliveryPlayLoad
+    private function stepWaitCarrier(CreateDeliveryPlayLoad $delivery): CreateDeliveryPlayLoad
     {
         $delivery->status = DeliveryStatus::WaitCarrier;
         $buttons = [];
@@ -122,7 +122,7 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function setCarrier(DeliveryPlayLoad $delivery, string $message): DeliveryPlayLoad
+    private function setCarrier(CreateDeliveryPlayLoad $delivery, string $message): CreateDeliveryPlayLoad
     {
         $delivery->status = DeliveryStatus::WaitDelivery;
         $delivery->carrierId = $message;
@@ -130,7 +130,7 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function stepWaitConfirm(DeliveryPlayLoad $delivery): DeliveryPlayLoad
+    private function stepWaitConfirm(CreateDeliveryPlayLoad $delivery): CreateDeliveryPlayLoad
     {
         $delivery->status = DeliveryStatus::WaitConfirm;
 
@@ -149,7 +149,7 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function stepSaveDelivery(DeliveryPlayLoad $delivery, bool $confirm): DeliveryPlayLoad
+    private function stepSaveDelivery(CreateDeliveryPlayLoad $delivery, bool $confirm): CreateDeliveryPlayLoad
     {
         if (!$confirm) {
             return $this->stepWaitConfirm($delivery);

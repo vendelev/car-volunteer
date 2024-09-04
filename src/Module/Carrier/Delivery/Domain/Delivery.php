@@ -13,7 +13,7 @@ use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 #[ORM\Table(name: 'delivery', schema: 'carrier')]
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
-readonly class Delivery
+class Delivery
 {
     public function __construct(
         #[ORM\Id, ORM\Column(type: UuidType::class)]

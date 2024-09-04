@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Carrier\Delivery\FinishDelivery\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
-use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\CreateDeliveryPlayLoadFactory;
-use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases\CreateDeliveryUseCase;
+use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\FinishDeliveryPlayLoadFactory;
+use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCases\FinishDeliveryUseCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Telephantast\MessageBus\MessageContext;
 
-final readonly class CreateDeliveryAction implements ActionInterface
+final readonly class FinishDeliveryAction implements ActionInterface
 {
     public function __construct(
-        private NormalizerInterface           $normalizer,
-        private CreateDeliveryPlayLoadFactory $playLoadFactory,
-        private CreateDeliveryUseCase         $deliveryUseCase,
+        private NormalizerInterface $normalizer,
+        private FinishDeliveryPlayLoadFactory $playLoadFactory,
+        private FinishDeliveryUseCase $deliveryUseCase,
     ) {
     }
 
     public static function getRoute(): string
     {
-        return '/createDelivery';
+        return '/finishDelivery';
     }
 
     public static function getTitle(): ?string
     {
-        return 'Создать доставку';
+        return 'Завершить доставку';
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
@@ -43,7 +43,6 @@ final readonly class CreateDeliveryAction implements ActionInterface
             $message->userId,
             $playLoad,
             filter_var($conversation->actionRoute->query['confirm'] ?? '', FILTER_VALIDATE_BOOL),
-            $message->message,
         );
 
         return new Conversation($conversation->actionRoute, $this->normalizer->normalize($result));

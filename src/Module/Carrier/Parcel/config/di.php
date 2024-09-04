@@ -11,7 +11,9 @@ use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepositor
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignDeliveryUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignPackingUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveNewParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SetDeliveredStatusUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignDeliveryHandler;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SetDeliveredStatusHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPackingHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelsUseCase;
@@ -51,6 +53,9 @@ return static function (ContainerConfigurator $configurator): void {
 
         ->set(AssignDeliveryHandler::class)
         ->set(AssignDeliveryUseCase::class)
+
+        ->set(SetDeliveredStatusHandler::class)
+        ->set(SetDeliveredStatusUseCase::class)
 
 //        ->set(AssignShippedHandler::class)
 //        ->set(AssignShippedUseCase::class)

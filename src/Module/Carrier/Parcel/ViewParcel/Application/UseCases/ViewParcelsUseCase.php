@@ -32,7 +32,8 @@ final readonly class ViewParcelsUseCase
         foreach ($list as $item) {
             $buttons[] = [[
                 'text' => sprintf(
-                    '%s%s %s (от %s)',
+                    '%s%s%s %s (от %s)',
+                    ($item->status === ParcelStatus::Delivered->value ? '☑' : ''),
                     ($item->packingId ? 'ⓟ' : ''),
                     ($item->deliveryId ? 'ⓓ' : ''),
                     $item->title,

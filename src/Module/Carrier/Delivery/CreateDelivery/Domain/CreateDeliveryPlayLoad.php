@@ -8,7 +8,7 @@ use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
 use DateTimeImmutable;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
-final class DeliveryPlayLoad
+final class CreateDeliveryPlayLoad
 {
     public function __construct(
         public readonly Uuid $id,

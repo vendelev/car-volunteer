@@ -9,6 +9,7 @@ use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
@@ -40,16 +41,22 @@ final readonly class ViewParcelUseCase
             $buttons[] = [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcelId]];
         }
 
+        if ($item->status !== ParcelStatus::Delivered->value ) {
+            $buttons[] = [['text' => 'Завершить доставку', 'callback_data' => '/finishDelivery?parcelId=' . $parcelId]];
+        }
+
         $buttons[] = [['text' => 'Отмена', 'callback_data' => '/viewParcels']];
 
         $messageContext->dispatch(new SendMessageCommand(
             $userId,
             sprintf(
-                '<b>%s</b> (от %s)<pre>%s</pre>%s',
+                "<b>%s</b> (от %s)<pre>%s</pre>%s\n%s\n%s",
                 $item->title,
                 $item->createAt->format('d.m.Y'),
                 $item->description,
-                ($item->packingId ? 'ⓟ Упаковано' : '')
+                ($item->packingId ? 'ⓟ Упаковано' : ''),
+                ($item->deliveryId ? 'ⓓ Доставка запланирована' : ''),
+                ($item->status === ParcelStatus::Delivered->value ? '☑ Доставлено' : '')
             ),
             new InlineKeyboardMarkup($buttons)
         ));
