@@ -7,6 +7,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramActio
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use Telephantast\MessageBus\MessageContext;
@@ -25,11 +26,15 @@ final readonly class ViewParcelAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $this->viewUseCase->handle(
+        $command = $this->viewUseCase->handle(
             $message->userId,
-            $message->conversation->actionRoute->query['id'] ?? Uuid::nil(),
-            $messageContext
+            (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil()),
+            $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [],
         );
+
+        if ($command !== null) {
+            $messageContext->dispatch($command);
+        }
 
         return $message->conversation;
     }

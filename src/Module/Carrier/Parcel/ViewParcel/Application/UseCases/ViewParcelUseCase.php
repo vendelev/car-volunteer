@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
-use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
-use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewParcelUseCase
 {
@@ -20,17 +18,17 @@ final readonly class ViewParcelUseCase
     ) {
     }
 
-    public function handle(string $userId, string $parcelId, MessageContext $messageContext): void
+    /**
+     * @param list<UserRole> $roles
+     */
+    public function handle(string $userId, string $parcelId, array $roles): ?SendMessageCommand
     {
         /** @var Parcel|null $item */
         $item = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($item === null) {
-            return;
+            return null;
         }
-
-        $auth = $messageContext->getAttribute(AuthorizeAttribute::class);
-        $roles = $auth->roles ?? [];
 
         $buttons = [];
         if ($item->packingId === null && in_array(UserRole::Picker, $roles, true)) {
@@ -47,7 +45,7 @@ final readonly class ViewParcelUseCase
 
         $buttons[] = [['text' => 'Отмена', 'callback_data' => '/viewParcels']];
 
-        $messageContext->dispatch(new SendMessageCommand(
+        return new SendMessageCommand(
             $userId,
             sprintf(
                 "<b>%s</b> (от %s)<pre>%s</pre>%s\n%s\n%s",
@@ -59,6 +57,6 @@ final readonly class ViewParcelUseCase
                 ($item->status === ParcelStatus::Delivered->value ? '☑ Доставлено' : '')
             ),
             new InlineKeyboardMarkup($buttons)
-        ));
+        );
     }
 }
