@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffee42c8bb07ad25de063e04d8288a0d",
+    "content-hash": "925b5c6ba6cd13bad98acfb8889102b3",
     "packages": [
         {
             "name": "brick/math",
@@ -4701,15 +4701,16 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:vendelev/HardcorePhp.git",
-                "reference": "f0ab4c05dacead01da7e5033f47a3df05af1363a"
+                "reference": "c19c5966a703a0e71c34e65d27fd663b870f0abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vendelev/HardcorePhp/zipball/f0ab4c05dacead01da7e5033f47a3df05af1363a",
-                "reference": "f0ab4c05dacead01da7e5033f47a3df05af1363a",
+                "url": "https://api.github.com/repos/vendelev/HardcorePhp/zipball/c19c5966a703a0e71c34e65d27fd663b870f0abc",
+                "reference": "c19c5966a703a0e71c34e65d27fd663b870f0abc",
                 "shasum": ""
             },
             "require": {
+                "doctrine/orm": "^3.1.3",
                 "ext-ctype": "*",
                 "ext-iconv": "*",
                 "php": "^8.3",
@@ -4736,6 +4737,7 @@
             "autoload": {
                 "psr-4": {
                     "CarVolunteer\\": "src/",
+                    "HardcorePhp\\Infrastructure\\Doctrine\\": "src/Doctrine",
                     "HardcorePhp\\Infrastructure\\MessageBusBundle\\": "src/MessageBusBundle",
                     "HardcorePhp\\Infrastructure\\Uuid\\": "src/Uuid"
                 },
@@ -4750,7 +4752,7 @@
                 "source": "https://github.com/vendelev/HardcorePhp/tree/start",
                 "issues": "https://github.com/vendelev/HardcorePhp/issues"
             },
-            "time": "2024-07-22T18:44:07+00:00"
+            "time": "2024-09-10T12:50:15+00:00"
         }
     ],
     "packages-dev": [
