@@ -31,6 +31,5 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $b
         ->set(MessageEventDataFactory::class)
 
         ->set(RunActionHandler::class)
-        ->set(GetRequestActionDataUseCase::class)
-    ;
+        ->set(GetRequestActionDataUseCase::class);
 };

@@ -11,5 +11,4 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface ConversationRepositoryInterface extends ObjectRepository
 {
-
 }

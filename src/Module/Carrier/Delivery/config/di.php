@@ -43,6 +43,5 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(FinishDeliveryUseCase::class)
 
         ->set(SetDeliveredStatusHandler::class)
-        ->set(SetDeliveredStatusUseCase::class)
-    ;
+        ->set(SetDeliveredStatusUseCase::class);
 };

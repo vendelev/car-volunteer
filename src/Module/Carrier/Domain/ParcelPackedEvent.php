@@ -11,8 +11,8 @@ final readonly class ParcelPackedEvent implements Event
 {
     public function __construct(
         public string $pickerId,
-        public Uuid   $parcelId,
-        public Uuid   $packingId,
+        public Uuid $parcelId,
+        public Uuid $packingId,
     ) {
     }
 }

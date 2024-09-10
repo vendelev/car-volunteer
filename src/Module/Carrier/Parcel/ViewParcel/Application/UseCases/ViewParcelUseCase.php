@@ -41,7 +41,7 @@ final readonly class ViewParcelUseCase
             $buttons[] = [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcelId]];
         }
 
-        if ($item->status !== ParcelStatus::Delivered->value ) {
+        if ($item->status !== ParcelStatus::Delivered->value) {
             $buttons[] = [['text' => 'Завершить доставку', 'callback_data' => '/finishDelivery?parcelId=' . $parcelId]];
         }
 

@@ -17,7 +17,7 @@ final readonly class CreatePackAction implements ActionInterface
     public function __construct(
         private NormalizerInterface $normalizer,
         private PackPlayLoadFactory $packFactory,
-        private CreatePackUseCase   $packUseCase,
+        private CreatePackUseCase $packUseCase,
     ) {
     }
 

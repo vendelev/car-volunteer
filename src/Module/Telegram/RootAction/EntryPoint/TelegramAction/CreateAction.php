@@ -30,11 +30,13 @@ final readonly class CreateAction implements RootActionInterface
         $auth = $messageContext->getAttribute(AuthorizeAttribute::class);
         $roles = $auth->roles ?? [];
 
-        //todo переделать на interface CreateActionInterface
+        //подумать и переделать на interface CreateActionInterface
         $buttons = [];
 
-        if (in_array(UserRole::Manager, $roles, true)
-            || in_array(UserRole::Recipient, $roles, true)) {
+        if (
+            in_array(UserRole::Manager, $roles, true)
+            || in_array(UserRole::Recipient, $roles, true)
+        ) {
             $buttons[] = [['text' => 'Заказ-наряд на посылку', 'callback_data' => '/createParcel']];
         }
 

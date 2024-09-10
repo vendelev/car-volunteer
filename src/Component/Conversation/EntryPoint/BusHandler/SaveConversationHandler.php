@@ -14,7 +14,7 @@ final readonly class SaveConversationHandler
         private SaveConversation $useCase,
     ) {
     }
-    
+
     #[Handler]
     public function handle(SaveConversationCommand $command): void
     {

@@ -24,7 +24,7 @@ final readonly class SaveNewParcelUseCase
             status: $parcel->status->value,
             title: $parcel->title,
             description: $parcel->description,
-            createAt: new DateTimeImmutable,
+            createAt: new DateTimeImmutable(),
         );
 
         $this->entityManager->persist($entity);

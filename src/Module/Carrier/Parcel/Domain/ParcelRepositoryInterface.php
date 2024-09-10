@@ -8,5 +8,4 @@ use Doctrine\Persistence\ObjectRepository;
 
 interface ParcelRepositoryInterface extends ObjectRepository
 {
-
 }

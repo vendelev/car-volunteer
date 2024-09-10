@@ -9,5 +9,6 @@ use Telephantast\MessageBus\ContextAttribute;
 final readonly class UserAttribute implements ContextAttribute
 {
     public function __construct(public ?User $user)
-    {}
+    {
+    }
 }

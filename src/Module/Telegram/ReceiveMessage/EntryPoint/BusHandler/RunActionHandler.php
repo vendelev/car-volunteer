@@ -21,7 +21,7 @@ use Throwable;
 final readonly class RunActionHandler
 {
     public function __construct(
-        private LoggerInterface             $logger,
+        private LoggerInterface $logger,
         private GetRequestActionDataUseCase $getRequestActionData,
     ) {
     }
@@ -36,7 +36,7 @@ final readonly class RunActionHandler
             return;
         }
 
-        //todo переделать на middleware: получение и сохранение?
+        //подумать и переделать на middleware: получение и сохранение?
         /** @var Conversation|null $conversation */
         $conversation = $messageContext->dispatch(new GetLastConversationQuery($user->id));
         $requestAction = $this->getRequestActionData->handle(
@@ -57,8 +57,10 @@ final readonly class RunActionHandler
             return;
         }
 
-        if ($conversation === null
-            || $conversation->actionRoute->route !== $requestAction->actionRoute->route) {
+        if (
+            $conversation === null
+            || $conversation->actionRoute->route !== $requestAction->actionRoute->route
+        ) {
             $playLoad = null;
         } else {
             $playLoad = $conversation->playLoad;

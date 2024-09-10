@@ -20,6 +20,5 @@ return static function (ContainerConfigurator $configurator): void {
             ->arg('$token', '%env(TELEGRAM_BOT_TOKEN)%')
 
         ->set(SendMessageHandler::class)
-        ->set(AnswerCallbackQueryHandler::class)
-    ;
+        ->set(AnswerCallbackQueryHandler::class);
 };

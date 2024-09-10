@@ -21,9 +21,9 @@ final readonly class GetRequestActionDataUseCase
     }
 
     public function handle(
-        ?Message       $message,
+        ?Message $message,
         ?CallbackQuery $callbackQuery,
-        ?ActionRoute   $conversationActionRoute
+        ?ActionRoute $conversationActionRoute
     ): RequestActionData {
         $request = $this->getRequest($message->text ?? '-');
 

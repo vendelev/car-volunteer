@@ -9,7 +9,7 @@ use Telephantast\Message\Message;
 final readonly class ParcelFilledEvent implements Message
 {
     public function __construct(
-        public string         $userId,
+        public string $userId,
         public ParcelPlayLoad $parcel,
     ) {
     }

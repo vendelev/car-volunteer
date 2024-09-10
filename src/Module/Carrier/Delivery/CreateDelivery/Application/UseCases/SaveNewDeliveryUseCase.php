@@ -24,7 +24,7 @@ final readonly class SaveNewDeliveryUseCase
             carrierId: $carrierId,
             parcelId: $parcelId,
             status: DeliveryStatus::WaitDelivery->value,
-            createAt: new DateTimeImmutable,
+            createAt: new DateTimeImmutable(),
         );
 
         $this->entityManager->persist($entity);

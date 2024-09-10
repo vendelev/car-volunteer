@@ -30,6 +30,5 @@ return static function (ContainerConfigurator $configurator): void {
         ->alias(ConversationRepositoryInterface::class, ConversationRepository::class)
         ->set(ConversationRepository::class)
             ->public()
-            ->autowire()
-    ;
+            ->autowire();
 };

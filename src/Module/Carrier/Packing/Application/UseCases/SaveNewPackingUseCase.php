@@ -24,7 +24,7 @@ final readonly class SaveNewPackingUseCase
             pickerId: $pickerId,
             parcelId: $parcelId,
             status: PackStatus::Packed->value,
-            createAt: new DateTimeImmutable,
+            createAt: new DateTimeImmutable(),
         );
 
         $this->entityManager->persist($entity);

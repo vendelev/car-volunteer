@@ -22,6 +22,5 @@ return static function (ContainerConfigurator $configurator): void {
             ->arg('$roles', '%env(json:file:resolve:ROLES)%')
 
         ->set(SyncUserHandler::class)
-        ->set(SyncUserUseCase::class)
-    ;
+        ->set(SyncUserUseCase::class);
 };

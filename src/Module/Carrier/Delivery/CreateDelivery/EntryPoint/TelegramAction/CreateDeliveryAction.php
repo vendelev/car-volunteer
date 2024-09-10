@@ -15,9 +15,9 @@ use Telephantast\MessageBus\MessageContext;
 final readonly class CreateDeliveryAction implements ActionInterface
 {
     public function __construct(
-        private NormalizerInterface           $normalizer,
+        private NormalizerInterface $normalizer,
         private CreateDeliveryPlayLoadFactory $playLoadFactory,
-        private CreateDeliveryUseCase         $deliveryUseCase,
+        private CreateDeliveryUseCase $deliveryUseCase,
     ) {
     }
 

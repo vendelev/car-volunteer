@@ -14,8 +14,8 @@ use Telephantast\MessageBus\MessageBus;
 final readonly class WebhookController
 {
     public function __construct(
-        private MessageBus                   $messageBus,
-        private IncomeMessageParser          $getMessage,
+        private MessageBus $messageBus,
+        private IncomeMessageParser $getMessage,
         private ReceiveMessageEventFactory $getContext
     ) {
     }

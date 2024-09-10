@@ -22,8 +22,8 @@ final readonly class CreateDeliveryUseCase
      */
     public function __construct(
         private DeliveryRepository $repository,
-        private MessageBus         $messageBus,
-        private array              $volunteers,
+        private MessageBus $messageBus,
+        private array $volunteers,
     ) {
     }
 

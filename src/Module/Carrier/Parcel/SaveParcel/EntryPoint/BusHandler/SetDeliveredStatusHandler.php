@@ -18,6 +18,6 @@ final readonly class SetDeliveredStatusHandler
     #[Handler]
     public function handle(ParcelDeliveredEvent $event): void
     {
-        $this->useCase->handle($event->parcelId, $event->deliveryId);
+        $this->useCase->handle($event->parcelId);
     }
 }

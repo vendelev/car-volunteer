@@ -25,6 +25,5 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(PackingRepository::class)
 
         ->set(SaveNewPackHandler::class)
-        ->set(SaveNewPackingUseCase::class)
-    ;
+        ->set(SaveNewPackingUseCase::class);
 };

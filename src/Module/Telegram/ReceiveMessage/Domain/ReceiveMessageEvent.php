@@ -10,8 +10,8 @@ use Telephantast\Message\Event;
 final readonly class ReceiveMessageEvent implements Event
 {
     public function __construct(
-        public ?User          $user,
-        public ?Message       $message,
+        public ?User $user,
+        public ?Message $message,
         public ?CallbackQuery $callbackQuery,
     ) {
     }

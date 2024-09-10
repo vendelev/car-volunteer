@@ -23,5 +23,4 @@ final readonly class FinishDeliveryPlayLoadFactory
 
         return new FinishDeliveryPlayLoad(Uuid::fromString($parcelId));
     }
-
 }

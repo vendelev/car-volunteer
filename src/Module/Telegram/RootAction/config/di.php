@@ -20,6 +20,5 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(StartAction::class)
         ->set(HelpAction::class)
         ->set(CreateAction::class)
-        ->set(ViewAction::class)
-    ;
+        ->set(ViewAction::class);
 };
