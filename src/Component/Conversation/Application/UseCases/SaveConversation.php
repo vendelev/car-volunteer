@@ -23,7 +23,7 @@ final readonly class SaveConversation
         $entity = new Conversation(
             Uuid::v7(),
             $userId,
-            $this->normalizer->normalize($conversation->actionRoute),
+            (array)$this->normalizer->normalize($conversation->actionRoute),
             $conversation->playLoad
         );
 
