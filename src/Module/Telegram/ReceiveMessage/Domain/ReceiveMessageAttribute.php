@@ -10,5 +10,6 @@ use Telephantast\MessageBus\ContextAttribute;
 final readonly class ReceiveMessageAttribute implements ContextAttribute
 {
     public function __construct(public Update $telegramMessage)
-    {}
+    {
+    }
 }

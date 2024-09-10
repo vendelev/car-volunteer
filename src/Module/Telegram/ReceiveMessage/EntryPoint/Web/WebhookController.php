@@ -14,8 +14,8 @@ use Telephantast\MessageBus\MessageBus;
 final readonly class WebhookController
 {
     public function __construct(
-        private MessageBus                   $messageBus,
-        private IncomeMessageParser          $getMessage,
+        private MessageBus $messageBus,
+        private IncomeMessageParser $getMessage,
         private ReceiveMessageEventFactory $getContext
     ) {
     }
@@ -26,7 +26,10 @@ final readonly class WebhookController
         $incomeMessage = $this->getMessage->parse($request);
 
         if ($incomeMessage) {
-            /** @uses RunActionHandler::receiveMessage() */
+            /**
+             * @uses RunActionHandler::receiveMessage()
+             * @uses AnswerCallbackQueryHandler::sendAnswer()
+             */
             $this->messageBus->handleContext(
                 $this->getContext->createContext($incomeMessage)
             );

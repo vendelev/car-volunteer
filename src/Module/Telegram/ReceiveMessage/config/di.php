@@ -5,6 +5,7 @@ declare(strict_types=1);
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\MessageEventDataFactory;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\IncomeMessageParser;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\ReceiveMessageEventFactory;
+use CarVolunteer\Module\Telegram\ReceiveMessage\Application\UseCase\GetRequestActionDataUseCase;
 use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\BusHandler\RunActionHandler;
 use CarVolunteer\Module\Telegram\ReceiveMessage\EntryPoint\Web\WebhookController;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,5 +31,5 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $b
         ->set(MessageEventDataFactory::class)
 
         ->set(RunActionHandler::class)
-    ;
+        ->set(GetRequestActionDataUseCase::class);
 };
