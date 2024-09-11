@@ -10,6 +10,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain;
 enum ViewParcelActions
 {
     case PackParcel;
+    case EditParcel;
     case CreateDelivery;
     case FinishDelivery;
 }

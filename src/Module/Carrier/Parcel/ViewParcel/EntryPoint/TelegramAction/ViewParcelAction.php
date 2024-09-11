@@ -29,6 +29,7 @@ final readonly class ViewParcelAction implements ActionInterface
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $model = $this->viewUseCase->getViewParcel(
+            $message->userId,
             (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil()),
             $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [],
         );

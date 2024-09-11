@@ -23,6 +23,12 @@ final readonly class ViewParcelTelegramPresenter
 
         foreach ($model->actions as $action) {
             switch ($action) {
+                case ViewParcelActions::EditParcel:
+                    $buttons[] = [
+                        'text' => 'Редактировать описание',
+                        'callback_data' => '/editParcel?parcelId=' . $parcelId
+                    ];
+                    break;
                 case ViewParcelActions::PackParcel:
                     $buttons[] = ['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcelId];
                     break;

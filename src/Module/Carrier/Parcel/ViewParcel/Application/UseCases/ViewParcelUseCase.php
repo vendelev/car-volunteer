@@ -21,7 +21,7 @@ final readonly class ViewParcelUseCase
     /**
      * @param list<UserRole> $roles
      */
-    public function getViewParcel(string $parcelId, array $roles): ?ViewParcelModel
+    public function getViewParcel(string $userId, string $parcelId, array $roles): ?ViewParcelModel
     {
         /** @var Parcel|null $item */
         $item = $this->parcelRepository->findOneBy(['id' => $parcelId]);
@@ -31,15 +31,25 @@ final readonly class ViewParcelUseCase
         }
 
         $actions = [];
-        if ($item->packingId === null && in_array(UserRole::Picker, $roles, true)) {
-            $actions[] = ViewParcelActions::PackParcel;
+        if ($item->packingId === null) {
+            if (
+                $item->authorId === $userId
+                || in_array(UserRole::Manager, $roles, true)
+                || in_array(UserRole::Admin, $roles, true)
+            ) {
+                $actions[] = ViewParcelActions::EditParcel;
+            }
+
+            if (in_array(UserRole::Picker, $roles, true)) {
+                $actions[] = ViewParcelActions::PackParcel;
+            }
         }
 
         if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {
             $actions[] = ViewParcelActions::CreateDelivery;
         }
 
-        if ($item->status !== ParcelStatus::Delivered->value) {
+        if ($item->deliveryId !== null && $item->status !== ParcelStatus::Delivered->value) {
             $actions[] = ViewParcelActions::FinishDelivery;
         }
 
