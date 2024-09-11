@@ -22,8 +22,8 @@ final readonly class SaveNewParcelUseCase
             id: $parcel->id,
             authorId: $userId,
             status: $parcel->status->value,
-            title: $parcel->title,
-            description: $parcel->description,
+            title: $parcel->title ?? '-',
+            description: $parcel->description ?? '',
             createAt: new DateTimeImmutable(),
         );
 

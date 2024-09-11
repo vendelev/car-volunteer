@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
-use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
-use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
 
 final readonly class ViewParcelUseCase
 {
@@ -21,7 +21,7 @@ final readonly class ViewParcelUseCase
     /**
      * @param list<UserRole> $roles
      */
-    public function handle(string $userId, string $parcelId, array $roles): ?SendMessageCommand
+    public function getViewParcel(string $parcelId, array $roles): ?ViewParcelModel
     {
         /** @var Parcel|null $item */
         $item = $this->parcelRepository->findOneBy(['id' => $parcelId]);
@@ -30,33 +30,35 @@ final readonly class ViewParcelUseCase
             return null;
         }
 
-        $buttons = [];
+        $actions = [];
         if ($item->packingId === null && in_array(UserRole::Picker, $roles, true)) {
-            $buttons[] = [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcelId]];
+            $actions[] = ViewParcelActions::PackParcel;
         }
 
         if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {
-            $buttons[] = [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcelId]];
+            $actions[] = ViewParcelActions::CreateDelivery;
         }
 
         if ($item->status !== ParcelStatus::Delivered->value) {
-            $buttons[] = [['text' => 'Завершить доставку', 'callback_data' => '/finishDelivery?parcelId=' . $parcelId]];
+            $actions[] = ViewParcelActions::FinishDelivery;
         }
 
-        $buttons[] = [['text' => 'Отмена', 'callback_data' => '/viewParcels']];
+        return new ViewParcelModel(parcel: $item, actions: $actions);
+    }
 
-        return new SendMessageCommand(
-            $userId,
-            sprintf(
-                "<b>%s</b> (от %s)<pre>%s</pre>%s\n%s\n%s",
-                $item->title,
-                $item->createAt->format('d.m.Y'),
-                $item->description,
-                ($item->packingId ? 'ⓟ Упаковано' : ''),
-                ($item->deliveryId ? 'ⓓ Доставка запланирована' : ''),
-                ($item->status === ParcelStatus::Delivered->value ? '☑ Доставлено' : '')
-            ),
-            new InlineKeyboardMarkup($buttons)
-        );
+    /**
+     * @return list<Parcel>
+     */
+    public function getListActiveParcels(): array
+    {
+        /** @var list<Parcel> $list */
+        $list = $this->parcelRepository->findBy(['status' => [
+            ParcelStatus::Described->value,
+            ParcelStatus::Packed->value,
+            ParcelStatus::Delivery->value,
+            ParcelStatus::Shipped->value,
+        ]]);
+
+        return $list;
     }
 }

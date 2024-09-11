@@ -11,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 final class ParcelRepository extends ServiceEntityRepository implements ParcelRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, string $entityClass = Parcel::class)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, $entityClass);
+        parent::__construct($registry, Parcel::class);
     }
 }

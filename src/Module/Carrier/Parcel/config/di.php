@@ -16,10 +16,10 @@ use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignDe
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SetDeliveredStatusHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPackingHandler;
-use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelsUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelsAction;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Presenter\ViewParcelTelegramPresenter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $configurator): void {
@@ -40,10 +40,9 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(SaveNewParcelUseCase::class)
 
         ->set(ViewParcelsAction::class)
-        ->set(ViewParcelsUseCase::class)
-
         ->set(ViewParcelAction::class)
         ->set(ViewParcelUseCase::class)
+        ->set(ViewParcelTelegramPresenter::class)
 
         ->set(ParcelRepository::class)
         ->alias(ParcelRepositoryInterface::class, ParcelRepository::class)
@@ -56,7 +55,4 @@ return static function (ContainerConfigurator $configurator): void {
 
         ->set(SetDeliveredStatusHandler::class)
         ->set(SetDeliveredStatusUseCase::class);
-
-//        ->set(AssignShippedHandler::class)
-//        ->set(AssignShippedUseCase::class)
 };

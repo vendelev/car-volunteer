@@ -7,13 +7,15 @@ namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramActio
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
-use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelsUseCase;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Presenter\ViewParcelTelegramPresenter;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewParcelsAction implements ActionInterface
 {
     public function __construct(
-        private ViewParcelsUseCase $listUseCase
+        private ViewParcelUseCase $listUseCase,
+        private ViewParcelTelegramPresenter $presenter,
     ) {
     }
 
@@ -24,7 +26,9 @@ final readonly class ViewParcelsAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $this->listUseCase->handle($message->userId, $messageContext);
+        $models = $this->listUseCase->getListActiveParcels();
+        $command = $this->presenter->viewParcels($message->userId, $models);
+        $messageContext->dispatch($command);
 
         return $message->conversation;
     }

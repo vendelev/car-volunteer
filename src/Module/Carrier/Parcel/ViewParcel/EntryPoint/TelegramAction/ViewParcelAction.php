@@ -9,13 +9,15 @@ use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Presenter\ViewParcelTelegramPresenter;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewParcelAction implements ActionInterface
 {
     public function __construct(
-        private ViewParcelUseCase $viewUseCase
+        private ViewParcelUseCase $viewUseCase,
+        private ViewParcelTelegramPresenter $presenter,
     ) {
     }
 
@@ -26,13 +28,13 @@ final readonly class ViewParcelAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $command = $this->viewUseCase->handle(
-            $message->userId,
+        $model = $this->viewUseCase->getViewParcel(
             (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil()),
             $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [],
         );
 
-        if ($command !== null) {
+        if ($model !== null) {
+            $command = $this->presenter->viewParcel($message->userId, $model);
             $messageContext->dispatch($command);
         }
 
