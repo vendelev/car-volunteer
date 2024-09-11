@@ -1,0 +1,9 @@
+services:
+  php:
+    ports:
+      - 80:80
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432:5432"
+###< doctrine/doctrine-bundle ###

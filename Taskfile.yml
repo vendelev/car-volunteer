@@ -1,0 +1,14 @@
+# https://taskfile.dev/installation/
+version: '3'
+
+tasks:
+  upd:
+    cmds:
+      - docker compose up -d
+  down:
+    cmds:
+      - docker compose down
+  restart:
+    cmds:
+      - docker compose down
+      - docker compose up -d
