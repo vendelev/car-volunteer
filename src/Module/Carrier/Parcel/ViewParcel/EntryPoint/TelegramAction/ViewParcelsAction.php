@@ -8,14 +8,14 @@ use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
-use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Presenter\ViewParcelTelegramPresenter;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Responder\ViewParcelTelegramResponder;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewParcelsAction implements ActionInterface
 {
     public function __construct(
         private ViewParcelUseCase $listUseCase,
-        private ViewParcelTelegramPresenter $presenter,
+        private ViewParcelTelegramResponder $presenter,
     ) {
     }
 

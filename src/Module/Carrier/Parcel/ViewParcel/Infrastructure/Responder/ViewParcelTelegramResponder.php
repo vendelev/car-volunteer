@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Presenter;
+namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Responder;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
@@ -11,7 +11,7 @@ use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
-final readonly class ViewParcelTelegramPresenter
+final readonly class ViewParcelTelegramResponder
 {
     /**
      * Создание сообщения показа одного заказ-наряда
@@ -26,7 +26,7 @@ final readonly class ViewParcelTelegramPresenter
                 case ViewParcelActions::EditParcel:
                     $buttons[] = [
                         'text' => 'Редактировать описание',
-                        'callback_data' => '/editParcel?parcelId=' . $parcelId
+                        'callback_data' => '/editParcel?id=' . $parcelId
                     ];
                     break;
                 case ViewParcelActions::PackParcel:

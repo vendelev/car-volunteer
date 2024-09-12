@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
+use CarVolunteer\Component\AccessRights\Application\RightsChecker;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
@@ -14,7 +15,8 @@ use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
 final readonly class ViewParcelUseCase
 {
     public function __construct(
-        private ParcelRepositoryInterface $parcelRepository
+        private ParcelRepositoryInterface $parcelRepository,
+        private RightsChecker $rightsChecker,
     ) {
     }
 
@@ -32,15 +34,14 @@ final readonly class ViewParcelUseCase
 
         $actions = [];
         if ($item->packingId === null) {
-            if (
-                $item->authorId === $userId
-                || in_array(UserRole::Manager, $roles, true)
-                || in_array(UserRole::Admin, $roles, true)
-            ) {
+            if ($this->rightsChecker->canEdit($item->authorId, $userId, $roles)) {
                 $actions[] = ViewParcelActions::EditParcel;
             }
 
-            if (in_array(UserRole::Picker, $roles, true)) {
+            if (
+                $item->status === ParcelStatus::Approved->value
+                && in_array(UserRole::Picker, $roles, true)
+            ) {
                 $actions[] = ViewParcelActions::PackParcel;
             }
         }
@@ -64,6 +65,7 @@ final readonly class ViewParcelUseCase
         /** @var list<Parcel> $list */
         $list = $this->parcelRepository->findBy(['status' => [
             ParcelStatus::Described->value,
+            ParcelStatus::Approved->value,
             ParcelStatus::Packed->value,
             ParcelStatus::Delivery->value,
             ParcelStatus::Shipped->value,
