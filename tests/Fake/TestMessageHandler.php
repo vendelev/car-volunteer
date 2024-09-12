@@ -6,6 +6,8 @@ namespace CarVolunteer\Tests\Fake;
 
 use Telephantast\Message\Message;
 use Telephantast\MessageBus\Handler;
+use Telephantast\MessageBus\HandlerRegistry\ArrayHandlerRegistry;
+use Telephantast\MessageBus\MessageBus;
 use Telephantast\MessageBus\MessageContext;
 
 /**
@@ -15,8 +17,8 @@ use Telephantast\MessageBus\MessageContext;
  */
 final class TestMessageHandler implements Handler
 {
-    /** @var list<Message> */
-    public array $messages = []; // @phpstan-ignore-line
+    /** @var list<TMessage> */
+    public array $messages = [];
 
     public function id(): string
     {
@@ -28,5 +30,16 @@ final class TestMessageHandler implements Handler
         $this->messages[] = $messageContext->getMessage();
 
         return null;
+    }
+
+    /**
+     * @param array<class-string<TMessage>, Handler<null, TMessage>> $handlers
+     * @return MessageContext<TestMessage, TestMessage>
+     */
+    public function createMessageContext(array $handlers): MessageContext
+    {
+        return (new MessageBus(
+            new ArrayHandlerRegistry($handlers)
+        ))->startContext(new TestMessage());
     }
 }

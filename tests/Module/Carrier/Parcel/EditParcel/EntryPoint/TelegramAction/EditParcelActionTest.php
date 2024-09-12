@@ -11,13 +11,10 @@ use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
-use CarVolunteer\Tests\Fake\TestMessage;
 use CarVolunteer\Tests\Fake\TestMessageHandler;
 use CarVolunteer\Tests\KernelTestCaseDecorator;
 use Doctrine\Persistence\ManagerRegistry;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
-use Telephantast\MessageBus\HandlerRegistry\ArrayHandlerRegistry;
-use Telephantast\MessageBus\MessageBus;
 
 class EditParcelActionTest extends KernelTestCaseDecorator
 {
@@ -42,9 +39,7 @@ class EditParcelActionTest extends KernelTestCaseDecorator
         );
 
         $handler = new TestMessageHandler();
-        $messageContext = (new MessageBus(
-            new ArrayHandlerRegistry([SendMessageCommand::class => $handler])
-        ))->startContext(new TestMessage());
+        $messageContext = $handler->createMessageContext([SendMessageCommand::class => $handler]);
 
         self::getService(EditParcelAction::class)->handle($telegramMessage, $messageContext);
         self::assertCount(2, $handler->messages);

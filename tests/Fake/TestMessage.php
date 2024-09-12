@@ -8,7 +8,7 @@ use Telephantast\Message\Message;
 
 /**
  * @psalm-immutable
- * @implements Message<void>
+ * @implements Message<self>
  */
 final readonly class TestMessage implements Message
 {
