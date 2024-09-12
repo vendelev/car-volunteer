@@ -23,7 +23,7 @@ final readonly class EditParcelUseCase
     /**
      * @param list<UserRole> $roles
      */
-    public function handle(string $userId, string $parcelId, array $roles): ?Parcel
+    public function handle(string $userId, string $parcelId, array $roles, ?string $message): ?Parcel
     {
         /** @var Parcel|null $entity */
         $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
@@ -45,6 +45,7 @@ final readonly class EditParcelUseCase
             $result = $entity;
         } else {
             $entity->status = ParcelStatus::Described->value;
+            $entity->description = $message ?? '';
             $result = null;
         }
 

@@ -32,6 +32,7 @@ final readonly class EditParcelAction implements ActionInterface
             $message->userId,
             (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil()),
             $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [],
+            $message->message
         );
 
         $commands = $this->responder->getMessages($message->userId, $parcel);
