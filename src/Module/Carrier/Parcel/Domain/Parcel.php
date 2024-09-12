@@ -27,7 +27,7 @@ class Parcel
         #[ORM\Column(type: Types::TEXT)]
         public string $description,
         #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-        public DateTimeImmutable $createAt,
+        public DateTimeImmutable $createAt = new DateTimeImmutable(),
         #[ORM\Column(type: UuidType::class, nullable: true)]
         public ?Uuid $packingId = null,
         #[ORM\Column(type: UuidType::class, nullable: true)]
