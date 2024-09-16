@@ -90,6 +90,11 @@ final readonly class CreateDeliveryUseCase
                 ['text' => $this->format($date, '+7 day'), 'callback_data' => $this->format($date, '+7 day', false)],
                 ['text' => $this->format($date, '+8 day'), 'callback_data' => $this->format($date, '+8 day', false)],
             ],
+            [
+                ['text' => $this->format($date, '+9 day'), 'callback_data' => $this->format($date, '+6 day', false)],
+                ['text' => $this->format($date, '+10 day'), 'callback_data' => $this->format($date, '+7 day', false)],
+                ['text' => $this->format($date, '+11 day'), 'callback_data' => $this->format($date, '+8 day', false)],
+            ],
             [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]]
         ];
 
