@@ -29,7 +29,8 @@ final readonly class ViewAction implements RootActionInterface
             $message->userId,
             'Вы можете посмотреть:',
             new InlineKeyboardMarkup([
-                    [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
+                    [['text' => 'Новые посылки', 'callback_data' => '/viewParcels']],
+                    [['text' => 'Доставленные посылки', 'callback_data' => '/archiveParcels']],
                     [['text' => 'Отмена', 'callback_data' => '/help']],
                 ])
         ));

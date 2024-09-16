@@ -20,6 +20,7 @@ use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignDe
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPackingHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewArchiveParcelsAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelsAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Responder\ViewParcelTelegramResponder;
@@ -62,5 +63,7 @@ return static function (ContainerConfigurator $configurator): void {
 
         ->set(NotifyTelegramResponder::class)
         ->set(NotifyNewParcelHandler::class)
-            ->arg('$roles', '%env(json:file:resolve:ROLES)%');
+            ->arg('$roles', '%env(json:file:resolve:ROLES)%')
+
+        ->set(ViewArchiveParcelsAction::class);
 };

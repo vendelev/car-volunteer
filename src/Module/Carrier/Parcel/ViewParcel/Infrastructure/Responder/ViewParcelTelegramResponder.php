@@ -66,12 +66,47 @@ final readonly class ViewParcelTelegramResponder
     }
 
     /**
-     * Создание сообщения для вывода списка заказ-нарядов
+     * Создание сообщения для вывода списка активных заказ-нарядов
      *
      * @param list<Parcel> $list
      */
-    public function viewParcels(string $userId, array $list): SendMessageCommand
+    public function viewActiveParcels(string $userId, array $list): SendMessageCommand
     {
+        $buttons = $this->getParcelButtons($list);
+        $buttons[] = [['text' => 'Помощь', 'callback_data' => '/help']];
+
+        return new SendMessageCommand(
+            $userId,
+            'Список активных посылок',
+            new InlineKeyboardMarkup($buttons)
+        );
+    }
+
+    /**
+     * Создание сообщения для вывода списка доставленных заказ-нарядов
+     *
+     * @param list<Parcel> $list
+     */
+    public function viewArchiveParcels(string $userId, array $list): SendMessageCommand
+    {
+        $buttons = $this->getParcelButtons($list);
+        $buttons[] = [['text' => 'Помощь', 'callback_data' => '/help']];
+
+        return new SendMessageCommand(
+            $userId,
+            'Список доставленных посылок',
+            new InlineKeyboardMarkup($buttons)
+        );
+    }
+
+    /**
+     * @param list<Parcel> $list
+     * @return array<mixed>
+     */
+    private function getParcelButtons(array $list): array
+    {
+        $buttons = [];
+
         foreach ($list as $item) {
             $buttons[] = [[
                 'text' => sprintf(
@@ -86,12 +121,6 @@ final readonly class ViewParcelTelegramResponder
             ]];
         }
 
-        $buttons[] = [['text' => 'Помощь', 'callback_data' => '/help']];
-
-        return new SendMessageCommand(
-            $userId,
-            'Список активных посылок',
-            new InlineKeyboardMarkup($buttons)
-        );
+        return $buttons;
     }
 }
