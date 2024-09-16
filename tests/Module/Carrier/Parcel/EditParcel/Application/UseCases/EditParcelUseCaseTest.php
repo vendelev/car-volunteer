@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Tests\Module\Carrier\Parcel\EditParcel\Application\UseCases;
 
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases\EditParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
@@ -17,21 +18,21 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class EditParcelUseCaseTest extends KernelTestCaseDecorator
 {
     #[DataProvider('dataProvider')]
-    public function testReturnNull(Uuid $parcelId, string $userId): void
+    public function testReturnNull(ParcelPlayLoad $playLoad, string $userId): void
     {
         self::assertNull(
-            self::getService(EditParcelUseCase::class)->handle($userId, $parcelId->toString(), [], null)
+            self::getService(EditParcelUseCase::class)->handle($userId, $playLoad, [], null)
         );
 
         /** @var Parcel|null $parcel */
-        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $parcelId->toString()]);
+        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $playLoad->id->toString()]);
         if ($parcel) {
             self::assertEquals('test', $parcel->description);
         }
     }
 
     /**
-     * @return iterable<array{parcelId: Uuid, userId: string}>
+     * @return iterable<array{playLoad: ParcelPlayLoad, userId: string}>
      */
     public static function dataProvider(): iterable
     {
@@ -47,8 +48,18 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $manager->persist($entity);
         $manager->flush();
 
-        yield 'Нет записи' => ['parcelId' => Uuid::v7((new DateTimeImmutable())->modify('-1 day')), 'userId' => '1'];
-        yield 'Нет прав' => ['parcelId' => $entity->id, 'userId' => '2'];
+        $playLoad = new ParcelPlayLoad(
+            Uuid::v7((new DateTimeImmutable())->modify('-1 day')),
+            ParcelStatus::from($entity->status)
+        );
+
+        yield 'Нет записи' => ['playLoad' => $playLoad, 'userId' => '1'];
+
+        $playLoad = new ParcelPlayLoad(
+            $entity->id,
+            ParcelStatus::from($entity->status)
+        );
+        yield 'Нет прав' => ['playLoad' => $playLoad, 'userId' => '2'];
 
         $entity = new Parcel(
             id: Uuid::v7(),
@@ -59,7 +70,12 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         );
         $manager->persist($entity);
         $manager->flush();
-        yield 'Не тот статус' => ['parcelId' => $entity->id, 'userId' => '2'];
+        $playLoad = new ParcelPlayLoad(
+            $entity->id,
+            ParcelStatus::from($entity->status)
+        );
+
+        yield 'Не тот статус' => ['playLoad' => $playLoad, 'userId' => '2'];
     }
 
     public function testChangeStatus(): void
@@ -76,10 +92,19 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $manager->persist($entity);
         $manager->flush();
 
-        $result = self::getService(EditParcelUseCase::class)->handle('1', $entity->id->toString(), [], 'test');
+        $playLoad = new ParcelPlayLoad(
+            $entity->id,
+            ParcelStatus::New
+        );
+
+        $result = self::getService(EditParcelUseCase::class)->handle('1', $playLoad, [], 'test');
 
         self::assertNotNull($result);
-        self::assertEquals(ParcelStatus::WaitDescription->value, $result->status);
+        self::assertEquals(ParcelStatus::WaitDescription, $result->status);
+
+        /** @var Parcel $parcel */
+        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $entity->id->toString()]);
+        self::assertEquals(ParcelStatus::Described->value, $parcel->status);
     }
 
     public function testUpdateDescription(): void
@@ -87,7 +112,7 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $entity = new Parcel(
             id: Uuid::v7(),
             authorId: '2',
-            status: ParcelStatus::WaitDescription->value,
+            status: ParcelStatus::Described->value,
             title: '',
             description: 'test',
         );
@@ -96,14 +121,19 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $manager->persist($entity);
         $manager->flush();
 
-        $result = self::getService(EditParcelUseCase::class)->handle('2', $entity->id->toString(), [], 'test2');
+        $playLoad = new ParcelPlayLoad(
+            $entity->id,
+            ParcelStatus::WaitDescription
+        );
 
-        self::assertNull($result);
+        $result = self::getService(EditParcelUseCase::class)->handle('2', $playLoad, [], 'test2');
+
+        self::assertNotNull($result);
+        self::assertEquals(ParcelStatus::Described, $result->status);
 
         /** @var Parcel $parcel */
         $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $entity->id->toString()]);
 
-        self::assertEquals(ParcelStatus::Described->value, $parcel->status);
         self::assertEquals('test2', $parcel->description);
     }
 }

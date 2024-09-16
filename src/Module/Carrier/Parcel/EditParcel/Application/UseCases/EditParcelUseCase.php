@@ -7,6 +7,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases;
 use CarVolunteer\Component\AccessRights\Application\RightsChecker;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,16 +24,22 @@ final readonly class EditParcelUseCase
     /**
      * @param list<UserRole> $roles
      */
-    public function handle(string $userId, string $parcelId, array $roles, ?string $message): ?Parcel
+    public function handle(string $userId, ParcelPlayLoad $playLoad, array $roles, ?string $message): ?ParcelPlayLoad
     {
         /** @var Parcel|null $entity */
-        $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
+        $entity = $this->parcelRepository->findOneBy(['id' => $playLoad->id]);
 
         if ($entity === null) {
             return null;
         }
 
-        if (!in_array($entity->status, [ParcelStatus::Described->value, ParcelStatus::WaitDescription->value], true)) {
+        if ($playLoad->status === ParcelStatus::New) {
+            $playLoad->status = ParcelStatus::from($entity->status);
+            $playLoad->title = $entity->title;
+            $playLoad->description = $entity->description;
+        }
+
+        if (!in_array($playLoad->status, [ParcelStatus::Described, ParcelStatus::WaitDescription], true)) {
             return null;
         }
 
@@ -40,18 +47,18 @@ final readonly class EditParcelUseCase
             return null;
         }
 
-        if ($entity->status === ParcelStatus::Described->value) {
-            $entity->status = ParcelStatus::WaitDescription->value;
-            $result = $entity;
-        } else {
-            $entity->status = ParcelStatus::Described->value;
-            $entity->description = $message ?? '';
-            $result = null;
+        if ($playLoad->status === ParcelStatus::Described) {
+            $playLoad->status = ParcelStatus::WaitDescription;
+
+            return $playLoad;
         }
+
+        $playLoad->status = ParcelStatus::Described;
+        $entity->description = $message ?? '';
 
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
-        return $result;
+        return $playLoad;
     }
 }

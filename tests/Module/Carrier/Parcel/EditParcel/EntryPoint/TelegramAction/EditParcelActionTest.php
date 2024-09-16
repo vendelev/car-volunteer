@@ -42,6 +42,11 @@ class EditParcelActionTest extends KernelTestCaseDecorator
         $messageContext = $handler->createMessageContext([SendMessageCommand::class => $handler]);
 
         self::getService(EditParcelAction::class)->handle($telegramMessage, $messageContext);
-        self::assertCount(2, $handler->messages);
+
+        /** @var list<SendMessageCommand> $messages */
+        $messages = $handler->messages;
+
+        self::assertCount(2, $messages);
+        self::assertStringContainsString($entity->description, $messages[1]->text);
     }
 }
