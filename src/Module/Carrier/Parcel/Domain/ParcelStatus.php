@@ -10,6 +10,7 @@ enum ParcelStatus: string
     case WaitTitle = 'wait-title';
     case WaitDescription = 'wait-description';
     case Described = 'described';
+    case Approved = 'approved';
     case Packed = 'packed';
     case Delivery = 'delivery';
     case Shipped = 'shipped';

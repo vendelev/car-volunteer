@@ -16,8 +16,12 @@ final class CreateParcelUseCase
     private string $userId;
     private MessageContext $messageContext;
 
-    public function handle(string $userId, ParcelPlayLoad $parcel, ?string $message, MessageContext $messageContext): ParcelPlayLoad
-    {
+    public function handle(
+        string $userId,
+        ParcelPlayLoad $parcel,
+        ?string $message,
+        MessageContext $messageContext
+    ): ParcelPlayLoad {
         $this->userId = $userId;
         $this->messageContext = $messageContext;
 

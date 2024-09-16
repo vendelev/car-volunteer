@@ -10,6 +10,9 @@ use TelegramBot\Api\Types\ReplyKeyboardMarkup;
 use TelegramBot\Api\Types\ReplyKeyboardRemove;
 use Telephantast\Message\Message;
 
+/**
+ * @implements Message<self>
+ */
 final class SendMessageCommand implements Message
 {
     public function __construct(

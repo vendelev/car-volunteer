@@ -88,7 +88,9 @@
     <!--Проверяет, что дублированные аргументы не используются в функциональных объявлениях.-->
     <rule ref="Squiz.Functions.FunctionDuplicateArgument"/>
     <!--Убедитесь, что однострочные и многострочные объявления функций определяются правильно.-->
-    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>
+    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration">
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.OneParamPerLine"/>
+    </rule>
 
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
 
@@ -110,7 +112,10 @@
 
     <rule ref="PEAR.ControlStructures.ControlSignature"/>
     <!--Убедитесь, что многострочные условия определены правильно.-->
-    <rule ref="PEAR.ControlStructures.MultiLineCondition"/>
+    <rule ref="PEAR.ControlStructures.MultiLineCondition">
+        <exclude name="PEAR.ControlStructures.MultiLineCondition.SpacingAfterOpenBrace"/>
+        <exclude name="PEAR.ControlStructures.MultiLineCondition.StartWithBoolean"/>
+    </rule>
     <!--Убедитесь, что в include_once используется в условных ситуациях, а require_once используется в другом месте.-->
     <rule ref="PEAR.Files.IncludingFile"/>
     <!--Обеспечивает функциональные параметры со значениями по умолчанию находятся в конце декларации.-->

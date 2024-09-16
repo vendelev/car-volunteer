@@ -74,27 +74,26 @@ final readonly class CreateDeliveryUseCase
         $delivery->status = DeliveryStatus::WaitDate;
         $date = new DateTimeImmutable();
 
-        $this->sendMessage(
-            'Выберете дату доставки: ',
-            new InlineKeyboardMarkup([
-                [
-                    ['text' => $this->format($date), 'callback_data' => $this->format($date, 'now', false)],
-                    ['text' => $this->format($date, '+1 day'), 'callback_data' => $this->format($date, '+1 day', false)],
-                    ['text' => $this->format($date, '+2 day'), 'callback_data' => $this->format($date, '+2 day', false)],
-                ],
-                [
-                    ['text' => $this->format($date, '+3 day'), 'callback_data' => $this->format($date, '+3 day', false)],
-                    ['text' => $this->format($date, '+4 day'), 'callback_data' => $this->format($date, '+4 day', false)],
-                    ['text' => $this->format($date, '+5 day'), 'callback_data' => $this->format($date, '+5 day', false)],
-                ],
-                [
-                    ['text' => $this->format($date, '+6 day'), 'callback_data' => $this->format($date, '+6 day', false)],
-                    ['text' => $this->format($date, '+7 day'), 'callback_data' => $this->format($date, '+7 day', false)],
-                    ['text' => $this->format($date, '+8 day'), 'callback_data' => $this->format($date, '+8 day', false)],
-                ],
-                [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]]
-            ])
-        );
+        $buttons = [
+            [
+                ['text' => $this->format($date), 'callback_data' => $this->format($date, 'now', false)],
+                ['text' => $this->format($date, '+1 day'), 'callback_data' => $this->format($date, '+1 day', false)],
+                ['text' => $this->format($date, '+2 day'), 'callback_data' => $this->format($date, '+2 day', false)],
+            ],
+            [
+                ['text' => $this->format($date, '+3 day'), 'callback_data' => $this->format($date, '+3 day', false)],
+                ['text' => $this->format($date, '+4 day'), 'callback_data' => $this->format($date, '+4 day', false)],
+                ['text' => $this->format($date, '+5 day'), 'callback_data' => $this->format($date, '+5 day', false)],
+            ],
+            [
+                ['text' => $this->format($date, '+6 day'), 'callback_data' => $this->format($date, '+6 day', false)],
+                ['text' => $this->format($date, '+7 day'), 'callback_data' => $this->format($date, '+7 day', false)],
+                ['text' => $this->format($date, '+8 day'), 'callback_data' => $this->format($date, '+8 day', false)],
+            ],
+            [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]]
+        ];
+
+        $this->sendMessage('Выберете дату доставки: ', new InlineKeyboardMarkup($buttons));
 
         return $delivery;
     }
@@ -122,7 +121,7 @@ final readonly class CreateDeliveryUseCase
         return $delivery;
     }
 
-    private function setCarrier(CreateDeliveryPlayLoad $delivery, string $message): CreateDeliveryPlayLoad
+    private function setCarrier(CreateDeliveryPlayLoad $delivery, ?string $message): CreateDeliveryPlayLoad
     {
         $delivery->status = DeliveryStatus::WaitDelivery;
         $delivery->carrierId = $message;
