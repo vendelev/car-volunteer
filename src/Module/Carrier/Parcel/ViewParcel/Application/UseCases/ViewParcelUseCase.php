@@ -11,6 +11,9 @@ use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 
 final readonly class ViewParcelUseCase
 {
@@ -25,7 +28,6 @@ final readonly class ViewParcelUseCase
      */
     public function getViewParcel(string $userId, string $parcelId, array $roles): ?ViewParcelModel
     {
-        /** @var Parcel|null $item */
         $item = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($item === null) {
@@ -62,15 +64,32 @@ final readonly class ViewParcelUseCase
      */
     public function getListActiveParcels(): array
     {
-        /** @var list<Parcel> $list */
-        $list = $this->parcelRepository->findBy(['status' => [
+        return $this->parcelRepository->findBy(['status' => [
             ParcelStatus::Described->value,
             ParcelStatus::Approved->value,
             ParcelStatus::Packed->value,
             ParcelStatus::Delivery->value,
             ParcelStatus::Shipped->value,
         ]]);
+    }
 
-        return $list;
+    /**
+     * @return list<Parcel>
+     */
+    public function getListArchiveParcels(): array
+    {
+        $qb = $this->parcelRepository->createQueryBuilder('p');
+
+        $and = $qb->expr()->andX();
+        $and->add($qb->expr()->eq('p.status', ':status'));
+        $and->add($qb->expr()->gte('p.createAt', ':minDate'));
+
+        return $qb->where($and)
+            ->setParameters(new ArrayCollection([
+                new Parameter('status', ParcelStatus::Delivered->value),
+                new Parameter('minDate', (new DateTimeImmutable())->modify('-14 days')->format('Y-m-d')),
+            ]))
+            ->orderBy('p.createAt', 'ASC')
+            ->getQuery()->getResult();
     }
 }

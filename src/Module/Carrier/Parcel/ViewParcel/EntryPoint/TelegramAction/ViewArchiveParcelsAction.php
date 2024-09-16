@@ -11,7 +11,7 @@ use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParce
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Responder\ViewParcelTelegramResponder;
 use Telephantast\MessageBus\MessageContext;
 
-final readonly class ViewParcelsAction implements ActionInterface
+final readonly class ViewArchiveParcelsAction implements ActionInterface
 {
     public function __construct(
         private ViewParcelUseCase $listUseCase,
@@ -21,13 +21,13 @@ final readonly class ViewParcelsAction implements ActionInterface
 
     public static function getRoute(): string
     {
-        return '/viewParcels';
+        return '/archiveParcels';
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        $models = $this->listUseCase->getListActiveParcels();
-        $command = $this->presenter->viewActiveParcels($message->userId, $models);
+        $models = $this->listUseCase->getListArchiveParcels();
+        $command = $this->presenter->viewArchiveParcels($message->userId, $models);
         $messageContext->dispatch($command);
 
         return $message->conversation;
