@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler;
 
-use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelFilledEvent;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelCreatedEvent;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveNewParcelUseCase;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 
@@ -16,7 +16,7 @@ final readonly class SaveNewParcelHandler
     }
 
     #[Handler]
-    public function handle(ParcelFilledEvent $command): void
+    public function handle(ParcelCreatedEvent $command): void
     {
         $this->useCase->handle($command->userId, $command->parcel);
     }
