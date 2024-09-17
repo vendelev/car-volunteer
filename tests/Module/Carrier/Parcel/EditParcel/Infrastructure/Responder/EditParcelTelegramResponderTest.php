@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Tests\Module\Carrier\Parcel\EditParcel\Infrastructure\Responder;
 
-use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Infrastructure\Responder\EditParcelTelegramResponder;
+use CarVolunteer\Tests\KernelTestCaseDecorator;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-class EditParcelTelegramResponderTest extends TestCase
+class EditParcelTelegramResponderTest extends KernelTestCaseDecorator
 {
     #[DataProvider('dataProvider')]
     public function testGetMessages(?ParcelPlayLoad $entity, int $expected): void
     {
-        $commands = (new EditParcelTelegramResponder())->getEditMessages('', $entity);
+        $commands = self::getService(EditParcelTelegramResponder::class)->getEditMessages('', $entity, [UserRole::User]);
         self::assertCount($expected, $commands);
     }
 
