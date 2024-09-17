@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CarVolunteer\Tests\Module\Carrier\Parcel\CreateParcel\EntryPoint\BusHandler;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\BusHandler\NotifyNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelCreatedEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
@@ -19,6 +21,7 @@ class NotifyNewParcelHandlerTest extends KernelTestCaseDecorator
     {
         $handler = new TestMessageHandler();
         $messageContext = $handler->createMessageContext([SendMessageCommand::class => $handler]);
+        $messageContext->setAttribute(new AuthorizeAttribute('11', [UserRole::User]));
         $message = new ParcelCreatedEvent(
             '11',
             new ParcelPlayLoad(
@@ -37,8 +40,10 @@ class NotifyNewParcelHandlerTest extends KernelTestCaseDecorator
 
         self::assertEquals('10', $messages[0]->chatId);
         self::assertStringContainsString('Test1', $messages[0]->text);
+        self::assertNotNull($messages[0]->replyMarkup);
 
         self::assertEquals('12', $messages[1]->chatId);
         self::assertStringContainsString('Test1', $messages[1]->text);
+        self::assertNotNull($messages[1]->replyMarkup);
     }
 }

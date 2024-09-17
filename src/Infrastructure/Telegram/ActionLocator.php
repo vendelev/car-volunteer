@@ -20,6 +20,7 @@ final class ActionLocator implements ContainerInterface
 
     /**
      * @param ServiceLocator<ActionInterface> $locator
+     * @throws RuntimeException
      */
     public function __construct(
         #[AutowireLocator(ActionInterface::class)]
@@ -27,11 +28,11 @@ final class ActionLocator implements ContainerInterface
     ) {
         /** @var class-string<ActionInterface> $service */
         foreach ($locator->getProvidedServices() as $service) {
-            $route = $service::getRoute();
-            if (isset($this->routes[$route])) {
-                throw new RuntimeException('Найдено 2-е одинаковых команды: ' . $route);
+            $info = $service::getInfo();
+            if (isset($this->routes[$info->route->value])) {
+                throw new RuntimeException('Найдено 2-е одинаковых команды: ' . $info->route->value);
             }
-            $this->routes[$route] = $service;
+            $this->routes[$info->route->value] = $info->className;
         }
     }
 

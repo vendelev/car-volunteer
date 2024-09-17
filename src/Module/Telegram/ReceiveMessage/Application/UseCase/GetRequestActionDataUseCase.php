@@ -53,7 +53,7 @@ final readonly class GetRequestActionDataUseCase
 
     private function getRequest(string $text): ?RequestActionData
     {
-        $actionRoute = $this->roteResolver->parseMessage($text ?? '-');
+        $actionRoute = $this->roteResolver->parseMessage($text);
         if ($actionRoute) {
             $actionHandler = $this->actionLocator->get($actionRoute->route);
 

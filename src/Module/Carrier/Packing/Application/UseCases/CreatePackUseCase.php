@@ -78,7 +78,7 @@ final readonly class CreatePackUseCase
             'Посылка готова к отгрузке',
             new InlineKeyboardMarkup([
                 [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'Помощь', 'callback_data' => '/help']],
+                [['text' => 'В начало', 'callback_data' => '/help']],
             ])
         );
 

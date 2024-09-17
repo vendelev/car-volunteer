@@ -8,6 +8,8 @@ use CarVolunteer\Domain\ActionRoute;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
@@ -35,11 +37,15 @@ class EditParcelActionTest extends KernelTestCaseDecorator
         $telegramMessage = new TelegramMessage(
             '1',
             '',
-            new Conversation(new ActionRoute(EditParcelAction::getRoute(), ['id' => $entity->id->toString()]))
+            new Conversation(new ActionRoute(
+                EditParcelAction::getInfo()->route->value,
+                ['id' => $entity->id->toString()]
+            ))
         );
 
         $handler = new TestMessageHandler();
         $messageContext = $handler->createMessageContext([SendMessageCommand::class => $handler]);
+        $messageContext->setAttribute(new AuthorizeAttribute('11', [UserRole::User]));
 
         self::getService(EditParcelAction::class)->handle($telegramMessage, $messageContext);
 

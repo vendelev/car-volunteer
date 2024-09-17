@@ -50,7 +50,7 @@ final readonly class RunActionHandler
                 $user->id,
                 'Потерял нить сообщений, нажмите кнопку "Помощь"',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Помощь', 'callback_data' => '/help']],
+                    [['text' => 'В начало', 'callback_data' => '/help']],
                 ])
             ));
 

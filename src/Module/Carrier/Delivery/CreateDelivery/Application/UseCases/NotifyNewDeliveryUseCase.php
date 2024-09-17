@@ -24,7 +24,7 @@ final readonly class NotifyNewDeliveryUseCase
             new InlineKeyboardMarkup([
                 [['text' => 'Посмотреть посылку', 'callback_data' => '/viewParcel?id=' . $parcelId]],
                 [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'Помощь', 'callback_data' => '/help']],
+                [['text' => 'В начало', 'callback_data' => '/help']],
             ])
         ));
     }
