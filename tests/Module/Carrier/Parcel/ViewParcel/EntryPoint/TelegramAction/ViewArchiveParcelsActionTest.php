@@ -60,7 +60,7 @@ class ViewArchiveParcelsActionTest extends KernelTestCaseDecorator
         $telegramMessage = new TelegramMessage(
             '1',
             '',
-            new Conversation(new ActionRoute(ViewArchiveParcelsAction::getRoute()))
+            new Conversation(new ActionRoute(ViewArchiveParcelsAction::getInfo()->route->value))
         );
 
         $handler = new TestMessageHandler();

@@ -7,6 +7,9 @@ namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAct
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Domain\User\UserRole;
+use CarVolunteer\Infrastructure\Telegram\ActionInfo;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateParcelUseCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,9 +27,14 @@ final readonly class CreateParcelAction implements ActionInterface
     ) {
     }
 
-    public static function getRoute(): string
+    public static function getInfo(): ActionInfo
     {
-        return '/createParcel';
+        return new ActionInfo(
+            self::class,
+            'Создать посылку',
+            ActionRouteMap::ParcelCreate,
+            [UserRole::Manager, UserRole::Receiver]
+        );
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation

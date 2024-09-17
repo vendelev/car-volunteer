@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Telegram\RootAction\EntryPoint\TelegramAction;
 
+use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
-use CarVolunteer\Domain\RootActionInterface;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Infrastructure\Telegram\ActionInfo;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
+use CarVolunteer\Infrastructure\Telegram\ButtonResponder;
 use CarVolunteer\Module\Telegram\Domain\UserJoinedEvent;
 use CarVolunteer\Module\Telegram\Domain\UserAttribute;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageContext;
 
-final readonly class StartAction implements RootActionInterface
+final readonly class StartAction implements ActionInterface
 {
-    public static function getRoute(): string
-    {
-        return '/start';
+    public function __construct(
+        private ButtonResponder $buttonResponder,
+    ) {
     }
 
-    public static function getTitle(): string
+    public static function getInfo(): ActionInfo
     {
-        return 'Начало';
+        return new ActionInfo(self::class, '', ActionRouteMap::RootStart);
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
@@ -30,9 +33,9 @@ final readonly class StartAction implements RootActionInterface
         $messageContext->dispatch(
             new SendMessageCommand(
                 $message->userId,
-                sprintf('Здравствуйте, для продолжения нажмите кнопку "%s"', HelpAction::getTitle()),
+                'Здравствуйте, для продолжения нажмите кнопку "Помощь"',
                 new InlineKeyboardMarkup([
-                    [['text' => HelpAction::getTitle(), 'callback_data' => HelpAction::getRoute()]],
+                    [$this->buttonResponder->generate(actionInfo: HelpAction::getInfo(), title: 'Помощь')],
                 ])
             )
         );

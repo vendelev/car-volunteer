@@ -8,6 +8,9 @@ use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Domain\User\UserRole;
+use CarVolunteer\Infrastructure\Telegram\ActionInfo;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\ParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases\EditParcelUseCase;
@@ -24,9 +27,14 @@ final readonly class EditParcelAction implements ActionInterface
     ) {
     }
 
-    public static function getRoute(): string
+    public static function getInfo(): ActionInfo
     {
-        return '/editParcel';
+        return new ActionInfo(
+            self::class,
+            'Изменить описание посылки',
+            ActionRouteMap::ParcelEditDescription,
+            [UserRole::Manager, UserRole::Receiver]
+        );
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation

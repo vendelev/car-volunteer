@@ -35,7 +35,10 @@ class EditParcelActionTest extends KernelTestCaseDecorator
         $telegramMessage = new TelegramMessage(
             '1',
             '',
-            new Conversation(new ActionRoute(EditParcelAction::getRoute(), ['id' => $entity->id->toString()]))
+            new Conversation(new ActionRoute(
+                EditParcelAction::getInfo()->route->value,
+                ['id' => $entity->id->toString()]
+            ))
         );
 
         $handler = new TestMessageHandler();

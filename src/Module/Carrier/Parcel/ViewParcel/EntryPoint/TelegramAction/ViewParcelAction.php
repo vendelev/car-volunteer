@@ -8,6 +8,8 @@ use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Infrastructure\Telegram\ActionInfo;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Infrastructure\Responder\ViewParcelTelegramResponder;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
@@ -21,9 +23,9 @@ final readonly class ViewParcelAction implements ActionInterface
     ) {
     }
 
-    public static function getRoute(): string
+    public static function getInfo(): ActionInfo
     {
-        return '/viewParcel';
+        return new ActionInfo(self::class, 'Посмотреть описание посылки', ActionRouteMap::ParcelView);
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation

@@ -7,6 +7,9 @@ namespace CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\Telegra
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Domain\User\UserRole;
+use CarVolunteer\Infrastructure\Telegram\ActionInfo;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\CreateDeliveryPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases\CreateDeliveryUseCase;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,14 +24,14 @@ final readonly class CreateDeliveryAction implements ActionInterface
     ) {
     }
 
-    public static function getRoute(): string
+    public static function getInfo(): ActionInfo
     {
-        return '/createDelivery';
-    }
-
-    public static function getTitle(): ?string
-    {
-        return 'Создать доставку';
+        return new ActionInfo(
+            self::class,
+            'Создать доставку',
+            ActionRouteMap::DeliveryCreate,
+            [UserRole::Manager]
+        );
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
