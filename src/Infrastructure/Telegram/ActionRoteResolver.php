@@ -16,12 +16,13 @@ final readonly class ActionRoteResolver
 
         $urlInfo = parse_url($message);
 
-        if (!isset($urlInfo['query'])) {
-            return new ActionRoute($urlInfo['path']);
+        if (isset($urlInfo['query'])) {
+            parse_str($urlInfo['query'], $query);
+
+            /** @var array<string, int|string>|null $query */
+            return new ActionRoute($urlInfo['path'] ?? '', $query);
         }
 
-        parse_str($urlInfo['query'], $query);
-
-        return new ActionRoute($urlInfo['path'], $query);
+        return new ActionRoute($urlInfo['path'] ?? '');
     }
 }
