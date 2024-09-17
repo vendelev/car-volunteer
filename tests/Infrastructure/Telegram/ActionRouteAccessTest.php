@@ -39,6 +39,12 @@ class ActionRouteAccessTest extends KernelTestCaseDecorator
      */
     public static function dataProviderForTestCan(): iterable
     {
+        yield 'Доступ для всех' => [
+            'accessRoles' => [],
+            'userRoles' => [],
+            'expected' => true,
+        ];
+
         yield 'Доступ для админа' => [
             'accessRoles' => [UserRole::Receiver],
             'userRoles' => [UserRole::Admin],

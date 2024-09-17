@@ -16,7 +16,7 @@ final readonly class ActionRouteAccess
     /**
      * @param list<UserRole> $userRoles
      */
-    public function get(ActionRouteMap $route, array $userRoles = []): ?ActionInfo
+    public function get(ActionRouteMap $route, array $userRoles): ?ActionInfo
     {
         $action = $this->actionLocator->get($route->value);
 
@@ -39,6 +39,10 @@ final readonly class ActionRouteAccess
      */
     public function can(array $accessRoles, array $userRoles): bool
     {
+        if (count($accessRoles) === 0) {
+            return true;
+        }
+
         $accessRoles[] = UserRole::Admin;
 
         foreach ($accessRoles as $role) {

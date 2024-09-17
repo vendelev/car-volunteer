@@ -6,12 +6,12 @@ namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
-use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
@@ -41,23 +41,23 @@ final readonly class ViewParcelUseCase
                 $item->authorId === $userId
                 || $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles)
             ) {
-                $actions[] = ViewParcelActions::EditParcel;
+                $actions[] = ActionRouteMap::ParcelEditDescription;
             }
 
             if (
                 $item->status === ParcelStatus::Approved->value
                 && in_array(UserRole::Picker, $roles, true)
             ) {
-                $actions[] = ViewParcelActions::PackParcel;
+                $actions[] = ActionRouteMap::PackParcel;
             }
         }
 
         if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {
-            $actions[] = ViewParcelActions::CreateDelivery;
+            $actions[] = ActionRouteMap::DeliveryCreate;
         }
 
         if ($item->deliveryId !== null && $item->status !== ParcelStatus::Delivered->value) {
-            $actions[] = ViewParcelActions::FinishDelivery;
+            $actions[] = ActionRouteMap::DeliveryFinish;
         }
 
         return new ViewParcelModel(parcel: $item, actions: $actions);
