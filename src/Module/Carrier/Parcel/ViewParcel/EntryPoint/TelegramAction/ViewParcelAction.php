@@ -8,6 +8,7 @@ use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
@@ -25,7 +26,12 @@ final readonly class ViewParcelAction implements ActionInterface
 
     public static function getInfo(): ActionInfo
     {
-        return new ActionInfo(self::class, 'Посмотреть описание посылки', ActionRouteMap::ParcelView);
+        return new ActionInfo(
+            self::class,
+            'Посмотреть описание посылки',
+            ActionRouteMap::ParcelView,
+            [UserRole::User]
+        );
     }
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation

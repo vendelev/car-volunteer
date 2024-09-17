@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases;
 
-use CarVolunteer\Component\AccessRights\Application\RightsChecker;
 use CarVolunteer\Domain\User\UserRole;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelActions;
 use DateTimeImmutable;
@@ -19,7 +20,7 @@ final readonly class ViewParcelUseCase
 {
     public function __construct(
         private ParcelRepositoryInterface $parcelRepository,
-        private RightsChecker $rightsChecker,
+        private ActionRouteAccess $routeAccess,
     ) {
     }
 
@@ -36,7 +37,10 @@ final readonly class ViewParcelUseCase
 
         $actions = [];
         if ($item->packingId === null) {
-            if ($this->rightsChecker->canEdit($item->authorId, $userId, $roles)) {
+            if (
+                $item->authorId === $userId
+                || $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles)
+            ) {
                 $actions[] = ViewParcelActions::EditParcel;
             }
 

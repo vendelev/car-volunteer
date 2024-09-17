@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases;
 
-use CarVolunteer\Component\AccessRights\Application\RightsChecker;
 use CarVolunteer\Domain\User\UserRole;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class EditParcelUseCase
 {
     public function __construct(
         private ParcelRepositoryInterface $parcelRepository,
-        private RightsChecker $rightsChecker,
+        private ActionRouteAccess $routeAccess,
         private EntityManagerInterface $entityManager,
     ) {
     }
@@ -43,7 +44,10 @@ final readonly class EditParcelUseCase
             return null;
         }
 
-        if (!$this->rightsChecker->canEdit($entity->authorId, $userId, $roles)) {
+        if (
+            $entity->authorId !== $userId
+            && $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles) === false
+        ) {
             return null;
         }
 

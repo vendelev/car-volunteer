@@ -49,14 +49,10 @@ final readonly class EditParcelAction implements ActionInterface
         }
 
         $playLoad = $this->playLoadFactory->createFromConversation($playLoadData);
-        $parcel = $this->useCase->handle(
-            $message->userId,
-            $playLoad,
-            $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [],
-            $message->message
-        );
+        $roles = $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [];
+        $parcel = $this->useCase->handle($message->userId, $playLoad, $roles, $message->message);
 
-        $commands = $this->responder->getEditMessages($message->userId, $parcel);
+        $commands = $this->responder->getEditMessages($message->userId, $parcel, $roles);
         foreach ($commands as $command) {
             $messageContext->dispatch($command);
         }
