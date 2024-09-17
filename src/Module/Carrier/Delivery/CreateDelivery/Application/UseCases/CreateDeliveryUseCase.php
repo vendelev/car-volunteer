@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Domain\CreateDeliveryPlayLoad;
 use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
@@ -37,7 +38,7 @@ final readonly class CreateDeliveryUseCase
             $this->sendMessage(
                 'Доставка уже собрана',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Просмотр посылки', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]]
+                    [['text' => 'Просмотр посылки', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]]
                 ])
             );
 
@@ -95,7 +96,7 @@ final readonly class CreateDeliveryUseCase
                 ['text' => $this->format($date, '+10 day'), 'callback_data' => $this->format($date, '+7 day', false)],
                 ['text' => $this->format($date, '+11 day'), 'callback_data' => $this->format($date, '+8 day', false)],
             ],
-            [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]]
+            [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]]
         ];
 
         $this->sendMessage('Выберете дату доставки: ', new InlineKeyboardMarkup($buttons));
@@ -119,7 +120,7 @@ final readonly class CreateDeliveryUseCase
             $buttons[] = [['text' => $name, 'callback_data' => $id]];
         }
 
-        $buttons[] = [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $delivery->parcelId]];
+        $buttons[] = [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]];
 
         $this->sendMessage('Выберете волонтёра: ', new InlineKeyboardMarkup($buttons));
 
@@ -145,8 +146,8 @@ final readonly class CreateDeliveryUseCase
                 $this->volunteers[$delivery->carrierId]
             ),
             new InlineKeyboardMarkup([
-                [['text' => 'Всё верно', 'callback_data' => '/createDelivery?confirm=1']],
-                [['text' => 'Отмена', 'callback_data' => '/viewParcels']],
+                [['text' => 'Всё верно', 'callback_data' => ActionRouteMap::DeliveryCreate->value . '?confirm=1']],
+                [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelList->value]],
             ])
         );
 
@@ -164,8 +165,8 @@ final readonly class CreateDeliveryUseCase
         $this->sendMessage(
             '✅ Информация о доставке сохранена',
             new InlineKeyboardMarkup([
-                [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'В начало', 'callback_data' => '/help']],
+                [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
+                [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
             ])
         );
 

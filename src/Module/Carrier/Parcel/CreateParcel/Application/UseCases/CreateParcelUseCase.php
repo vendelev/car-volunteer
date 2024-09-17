@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelCreatedEvent;
@@ -66,10 +67,10 @@ final class CreateParcelUseCase
         $this->sendMessage(
             'Заказ-наряд на посылку создан',
             new InlineKeyboardMarkup([
-                [['text' => 'Посмотреть', 'callback_data' => '/viewParcel?id=' . $parcel->id]],
-                [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcel->id]],
-                [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcel->id]],
-                [['text' => 'В начало', 'callback_data' => '/help']],
+                [['text' => 'Посмотреть', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $parcel->id]],
+                [['text' => 'Собрать посылку', 'callback_data' => ActionRouteMap::PackParcel->value . '?parcelId=' . $parcel->id]],
+                [['text' => 'Создать доставку', 'callback_data' => ActionRouteMap::DeliveryCreate->value . '?parcelId=' . $parcel->id]],
+                [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
             ])
         );
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Delivery\Domain\Delivery;
 use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Domain\FinishDeliveryPlayLoad;
@@ -35,8 +36,8 @@ final readonly class FinishDeliveryUseCase
                 $userId,
                 'Подтвердите, что посылка доставлена',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Доставлено', 'callback_data' => '/finishDelivery?confirm=1']],
-                    [['text' => 'Отмена', 'callback_data' => '/viewParcel?id=' . $playLoad->parcelId]],
+                    [['text' => 'Доставлено', 'callback_data' => ActionRouteMap::DeliveryFinish->value . '?confirm=1']],
+                    [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $playLoad->parcelId]],
                 ])
             ));
         } else {
@@ -45,8 +46,8 @@ final readonly class FinishDeliveryUseCase
                 $userId,
                 '💥Спасибо за доставку💥',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                    [['text' => 'В начало', 'callback_data' => '/help']],
+                    [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
+                    [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
                 ])
             ));
         }

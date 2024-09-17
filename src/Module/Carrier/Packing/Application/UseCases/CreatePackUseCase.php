@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Packing\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
@@ -33,7 +34,7 @@ final readonly class CreatePackUseCase
             $this->sendMessage(
                 'Посылка уже собрана',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Список посылок', 'callback_data' => '/viewParcels']]
+                    [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
                 ])
             );
             return $pack;
@@ -58,8 +59,8 @@ final readonly class CreatePackUseCase
         $this->sendMessage(
             'Подтвердите, что посылка собрана и готова к отгрузке',
             new InlineKeyboardMarkup([
-                [['text' => 'Посылка готова', 'callback_data' => '/packParcel?confirm=1']],
-                [['text' => 'Отмена', 'callback_data' => '/viewParcels']],
+                [['text' => 'Посылка готова', 'callback_data' => ActionRouteMap::PackParcel->value . '?confirm=1']],
+                [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelList->value]],
             ])
         );
 
@@ -77,8 +78,8 @@ final readonly class CreatePackUseCase
         $this->sendMessage(
             'Посылка готова к отгрузке',
             new InlineKeyboardMarkup([
-                [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'В начало', 'callback_data' => '/help']],
+                [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
+                [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
             ])
         );
 

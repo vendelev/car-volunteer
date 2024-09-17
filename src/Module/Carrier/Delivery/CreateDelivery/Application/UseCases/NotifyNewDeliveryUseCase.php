@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases;
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 use Telephantast\MessageBus\MessageBus;
@@ -22,9 +23,9 @@ final readonly class NotifyNewDeliveryUseCase
             $carrierId,
             'Вам назначена посылка для доставки',
             new InlineKeyboardMarkup([
-                [['text' => 'Посмотреть посылку', 'callback_data' => '/viewParcel?id=' . $parcelId]],
-                [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'В начало', 'callback_data' => '/help']],
+                [['text' => 'Посмотреть посылку', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $parcelId]],
+                [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
+                [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
             ])
         ));
     }

@@ -10,6 +10,7 @@ use CarVolunteer\Domain\Conversation\GetLastConversationQuery;
 use CarVolunteer\Domain\Conversation\SaveConversationCommand;
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Application\UseCase\GetRequestActionDataUseCase;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\ReceiveMessageEvent;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
@@ -50,7 +51,7 @@ final readonly class RunActionHandler
                 $user->id,
                 'Потерял нить сообщений, нажмите кнопку "Помощь"',
                 new InlineKeyboardMarkup([
-                    [['text' => 'В начало', 'callback_data' => '/help']],
+                    [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
                 ])
             ));
 
