@@ -66,9 +66,10 @@ final class CreateParcelUseCase
         $this->sendMessage(
             'Заказ-наряд на посылку создан',
             new InlineKeyboardMarkup([
+                [['text' => 'Посмотреть', 'callback_data' => '/viewParcel?id=' . $parcel->id]],
                 [['text' => 'Собрать посылку', 'callback_data' => '/packParcel?parcelId=' . $parcel->id]],
                 [['text' => 'Создать доставку', 'callback_data' => '/createDelivery?parcelId=' . $parcel->id]],
-                [['text' => 'Помощь', 'callback_data' => '/help']],
+                [['text' => 'В начало', 'callback_data' => '/help']],
             ])
         );
 

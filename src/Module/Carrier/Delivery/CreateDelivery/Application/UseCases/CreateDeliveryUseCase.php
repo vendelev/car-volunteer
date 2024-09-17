@@ -165,7 +165,7 @@ final readonly class CreateDeliveryUseCase
             '✅ Информация о доставке сохранена',
             new InlineKeyboardMarkup([
                 [['text' => 'Список посылок', 'callback_data' => '/viewParcels']],
-                [['text' => 'Помощь', 'callback_data' => '/help']],
+                [['text' => 'В начало', 'callback_data' => '/help']],
             ])
         );
 
