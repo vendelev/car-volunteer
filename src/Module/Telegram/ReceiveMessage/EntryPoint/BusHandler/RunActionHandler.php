@@ -70,6 +70,7 @@ final readonly class RunActionHandler
         $telegramMessage = new TelegramMessage(
             $user->id,
             $requestAction->messageText,
+            $event->message->photoId,
             new Conversation(
                 new ActionRoute(
                     $requestAction->actionRoute->route,

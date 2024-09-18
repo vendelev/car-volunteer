@@ -9,6 +9,7 @@ final class Message
     public function __construct(
         public string $messageId,
         public string $text,
+        public ?string $photoId
     ) {
     }
 }
