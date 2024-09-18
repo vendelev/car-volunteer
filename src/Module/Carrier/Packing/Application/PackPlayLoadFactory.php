@@ -16,6 +16,9 @@ final readonly class PackPlayLoadFactory
     ) {
     }
 
+    /**
+     * @param array<mixed>|null $playLoad
+     */
     public function createFromConversation(string $parcelId, ?array $playLoad): PackPlayLoad
     {
         if (!empty($playLoad)) {

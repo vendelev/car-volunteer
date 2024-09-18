@@ -11,7 +11,8 @@ final class PackPlayLoad
     public function __construct(
         public readonly Uuid $id,
         public readonly Uuid $parcelId,
-        public PackStatus $status
+        public PackStatus $status,
+        public ?string $photoId = null,
     ) {
     }
 }
