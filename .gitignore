@@ -20,12 +20,10 @@ phpstan.neon
 
 /compose.override.yaml
 /config/secrets/auth_roles.json
+/config/secrets/volunteers.json
+/config/secrets/points.json
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
+/auth.json
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
