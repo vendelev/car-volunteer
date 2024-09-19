@@ -4,90 +4,51 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Packing\Application\UseCases;
 
-use CarVolunteer\Domain\Telegram\SendMessageCommand;
-use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
+use CarVolunteer\Module\Carrier\Packing\Application\PackStateMachine;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
+use CarVolunteer\Module\Carrier\Packing\Domain\UserClickEvent;
 use CarVolunteer\Module\Carrier\Packing\Infrastructure\Repository\PackingRepository;
-use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
-use Telephantast\MessageBus\MessageContext;
+use Telephantast\MessageBus\MessageBus;
 
 final readonly class CreatePackUseCase
 {
-    private string $userId;
-    private MessageContext $messageContext;
-
     public function __construct(
         private PackingRepository $repository,
+        private PackStateMachine $stateMachine,
+        private MessageBus $messageBus,
     ) {
     }
 
-    public function handle(string $userId, PackPlayLoad $pack, bool $confirm, MessageContext $messageContext): PackPlayLoad
-    {
-        $this->userId = $userId;
-        $this->messageContext = $messageContext;
-
+    public function handle(
+        string $userId,
+        PackPlayLoad $pack,
+        ?UserClickEvent $clickEvent,
+        ?string $photoId,
+    ): PackPlayLoad {
         $packing = $this->repository->findOneBy(['parcelId' => $pack->parcelId]);
 
         if ($packing !== null) {
-            $this->sendMessage(
-                'Посылка уже собрана',
-                new InlineKeyboardMarkup([
-                    [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
-                ])
-            );
+            $pack->status = PackStatus::Packed;
+
             return $pack;
         }
 
-        if ($pack->status === PackStatus::New) {
-            $result = $this->step1($pack);
-        } elseif ($pack->status === PackStatus::WaitPack) {
-            $result = $this->step2($pack, $confirm);
-            $messageContext->dispatch(new ParcelPackedEvent($userId, $result->parcelId, $result->id));
-        } else {
-            $result = $pack;
+        $pack->status = $this->stateMachine->handle($pack->status, $clickEvent, (bool)$photoId);
+
+        if ($pack->status === PackStatus::PhotoLoaded) {
+            $pack->photoId = $photoId;
+
+            return $pack;
         }
 
-        return $result;
-    }
+        if ($pack->status === PackStatus::Packed) {
+            $this->messageBus->dispatch(new ParcelPackedEvent($userId, $pack->parcelId, $pack->id, $pack->photoId));
 
-    private function step1(PackPlayLoad $pack): PackPlayLoad
-    {
-        $pack->status = PackStatus::WaitPack;
-
-        $this->sendMessage(
-            'Подтвердите, что посылка собрана и готова к отгрузке',
-            new InlineKeyboardMarkup([
-                [['text' => 'Посылка готова', 'callback_data' => ActionRouteMap::PackParcel->value . '?confirm=1']],
-                [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelList->value]],
-            ])
-        );
-
-        return $pack;
-    }
-
-    private function step2(PackPlayLoad $pack, bool $confirm): PackPlayLoad
-    {
-        if (!$confirm) {
-            return $this->step1($pack);
+            return $pack;
         }
 
-        $pack->status = PackStatus::Packed;
-
-        $this->sendMessage(
-            'Посылка готова к отгрузке',
-            new InlineKeyboardMarkup([
-                [['text' => 'Список посылок', 'callback_data' => ActionRouteMap::ParcelList->value]],
-                [['text' => 'В начало', 'callback_data' => ActionRouteMap::RootHelp->value]],
-            ])
-        );
-
         return $pack;
-    }
-
-    private function sendMessage(string $text, ?InlineKeyboardMarkup $buttons = null): void
-    {
-        $this->messageContext->dispatch(new SendMessageCommand($this->userId, $text, $buttons));
     }
 }
