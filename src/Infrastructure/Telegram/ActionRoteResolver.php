@@ -10,6 +10,10 @@ final readonly class ActionRoteResolver
 {
     public function parseMessage(string $message): ?ActionRoute
     {
+        if (!$message) {
+            return null;
+        }
+
         if ($message[0] !== '/') {
             return null;
         }
