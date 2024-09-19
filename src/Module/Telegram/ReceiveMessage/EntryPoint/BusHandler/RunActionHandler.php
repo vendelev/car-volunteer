@@ -76,7 +76,8 @@ final readonly class RunActionHandler
                     $requestAction->actionRoute->query
                 ),
                 $playLoad
-            )
+            ),
+            $event->message?->photoId
         );
         try {
             $result = $requestAction->actionHandler->handle($telegramMessage, $messageContext);

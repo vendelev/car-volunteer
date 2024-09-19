@@ -7,6 +7,7 @@ namespace CarVolunteer\Module\Telegram\ReceiveMessage\Application;
 use CarVolunteer\Module\Telegram\Domain\User;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\CallbackQuery;
 use CarVolunteer\Module\Telegram\ReceiveMessage\Domain\Message;
+use TelegramBot\Api\Types\PhotoSize;
 use TelegramBot\Api\Types\Update;
 
 final class MessageEventDataFactory
@@ -39,9 +40,14 @@ final class MessageEventDataFactory
         }
 
         if ($message !== null) {
+            /** @var list<PhotoSize>|null $photoData */
+            $photoData = $message->getPhoto();
+            $photo = is_array($photoData) ? array_pop($photoData) : null;
+
             return new Message(
                 messageId: (string)$message->getMessageId(),
-                text: (string)$message->getText(),
+                text: (string)($message->getText() ?? $message->getCaption()),
+                photoId: $photo?->getFileId()
             );
         }
 

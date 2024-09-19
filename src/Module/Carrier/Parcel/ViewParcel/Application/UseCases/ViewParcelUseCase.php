@@ -44,12 +44,12 @@ final readonly class ViewParcelUseCase
                 $actions[] = ActionRouteMap::ParcelEditDescription;
             }
 
-            if (
-                $item->status === ParcelStatus::Approved->value
-                && in_array(UserRole::Picker, $roles, true)
-            ) {
+            //$item->status === ParcelStatus::Approved->value
+            if (in_array(UserRole::Picker, $roles, true)) {
                 $actions[] = ActionRouteMap::PackParcel;
             }
+        } else {
+            $actions[] = ActionRouteMap::PackingPhoto;
         }
 
         if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {

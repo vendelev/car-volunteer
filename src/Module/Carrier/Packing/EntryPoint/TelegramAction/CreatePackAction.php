@@ -7,11 +7,14 @@ namespace CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction;
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
 use CarVolunteer\Domain\TelegramMessage;
+use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Packing\Application\PackPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\CreatePackUseCase;
+use CarVolunteer\Module\Carrier\Packing\Domain\UserClickEvent;
+use CarVolunteer\Module\Carrier\Packing\Infrastructure\Responder\CreatePackTelegramResponder;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Telephantast\MessageBus\MessageContext;
 
@@ -21,6 +24,7 @@ final readonly class CreatePackAction implements ActionInterface
         private NormalizerInterface $normalizer,
         private PackPlayLoadFactory $packFactory,
         private CreatePackUseCase $packUseCase,
+        private CreatePackTelegramResponder $responder,
     ) {
     }
 
@@ -38,17 +42,25 @@ final readonly class CreatePackAction implements ActionInterface
     {
         $conversation = $message->conversation;
         $playLoad = $this->packFactory->createFromConversation(
-            $conversation->actionRoute->query['parcelId'] ?? '',
+            (string)($conversation->actionRoute->query['parcelId'] ?? ''),
             $conversation->playLoad
         );
 
+        $want = (string)($conversation->actionRoute->query['want'] ?? '');
+        $clickEvent = $want !== '' ? UserClickEvent::from($want) : null;
         $packing = $this->packUseCase->handle(
             $message->userId,
             $playLoad,
-            filter_var($conversation->actionRoute->query['confirm'] ?? '', FILTER_VALIDATE_BOOL),
-            $messageContext
+            $clickEvent,
+            $message->photoId,
         );
 
-        return new Conversation($conversation->actionRoute, $this->normalizer->normalize($packing));
+        $roles = $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [];
+        $commands = $this->responder->createPack($message->userId, $packing->status, $packing->parcelId, $roles);
+        foreach ($commands as $command) {
+            $messageContext->dispatch($command);
+        }
+
+        return new Conversation($conversation->actionRoute, (array)$this->normalizer->normalize($packing));
     }
 }

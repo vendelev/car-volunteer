@@ -19,4 +19,5 @@ enum ActionRouteMap: string
 
     case DeliveryCreate = '/createDelivery';
     case DeliveryFinish = '/finishDelivery';
+    case PackingPhoto = '/viewPackingPhoto';
 }

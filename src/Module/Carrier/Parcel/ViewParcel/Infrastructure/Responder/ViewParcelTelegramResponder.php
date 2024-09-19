@@ -45,6 +45,15 @@ final readonly class ViewParcelTelegramResponder
                     $info = $this->routeAccess->get($action, $roles);
                     $param = new RouteParam('parcelId', $parcelId);
                     break;
+                case ActionRouteMap::PackingPhoto:
+                    if ($model->parcel->packingId) {
+                        $info = $this->routeAccess->get($action, $roles);
+                        $param = new RouteParam('id', $model->parcel->packingId->toString());
+                    } else {
+                        $info = null;
+                        $param = null;
+                    }
+                    break;
                 default:
                     $info = null;
                     $param = null;

@@ -17,14 +17,14 @@ final readonly class SaveNewPackingUseCase
     ) {
     }
 
-    public function handle(string $pickerId, Uuid $parcelId, Uuid $packingId): void
+    public function handle(string $pickerId, Uuid $parcelId, Uuid $packingId, ?string $photoId): void
     {
         $entity = new Packing(
             id: $packingId,
             pickerId: $pickerId,
             parcelId: $parcelId,
             status: PackStatus::Packed->value,
-            createAt: new DateTimeImmutable(),
+            photoId: $photoId
         );
 
         $this->entityManager->persist($entity);
