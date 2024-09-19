@@ -18,7 +18,7 @@ final class SendPhotoCommand implements Message
     public function __construct(
         public int|string $chatId,
         public string $photoId,
-        public string $text,
+        public ?string $text = null,
         public InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $replyMarkup = null,
         public string|null $parseMode = 'html',
         public int|null $replyToMessageId = null,
