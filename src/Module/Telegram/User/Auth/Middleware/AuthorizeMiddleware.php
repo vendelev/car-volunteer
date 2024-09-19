@@ -39,6 +39,10 @@ final readonly class AuthorizeMiddleware implements Middleware
                 }
             }
 
+            if ($roles) {
+                $roles[] = UserRole::User;
+            }
+
             $messageContext->setAttribute(new AuthorizeAttribute($user->id, $roles));
         }
 
