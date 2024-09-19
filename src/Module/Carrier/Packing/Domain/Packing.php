@@ -24,6 +24,8 @@ readonly class Packing
         public Uuid $parcelId,
         #[ORM\Column(type: Types::STRING, length: 255)]
         public string $status,
+        #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+        public ?string $photoId = null,
         #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
         public DateTimeImmutable $createAt = new DateTimeImmutable(),
     ) {

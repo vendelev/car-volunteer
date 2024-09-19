@@ -18,6 +18,6 @@ final readonly class SaveNewPackHandler
     #[Handler]
     public function handle(ParcelPackedEvent $event): void
     {
-        $this->useCase->handle($event->pickerId, $event->packingId, $event->parcelId);
+        $this->useCase->handle($event->pickerId, $event->packingId, $event->parcelId, $event->photoId);
     }
 }
