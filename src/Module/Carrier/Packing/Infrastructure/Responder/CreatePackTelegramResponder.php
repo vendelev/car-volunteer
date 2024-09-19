@@ -11,7 +11,7 @@ use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Infrastructure\Telegram\ButtonResponder;
 use CarVolunteer\Infrastructure\Telegram\RouteParam;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackStatus;
-use CarVolunteer\Module\Carrier\Packing\Domain\WantPackStatus;
+use CarVolunteer\Module\Carrier\Packing\Domain\UserClickEvent;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
@@ -51,12 +51,12 @@ final readonly class CreatePackTelegramResponder
                     $buttons,
                     $this->buttonResponder->generate(
                         actionInfo: $packInfo,
-                        param: new RouteParam('want', WantPackStatus::LoadPhoto->value),
+                        param: new RouteParam('want', UserClickEvent::LoadPhoto->value),
                         title: 'Добавить фото'
                     ),
                     $this->buttonResponder->generate(
                         actionInfo: $packInfo,
-                        param: new RouteParam('want', WantPackStatus::Packing->value),
+                        param: new RouteParam('want', UserClickEvent::Packing->value),
                         title: 'Посылка собрана и готова к отгрузке'
                     )
                 );
@@ -73,7 +73,7 @@ final readonly class CreatePackTelegramResponder
                     $buttons,
                     $this->buttonResponder->generate(
                         actionInfo: $packInfo,
-                        param: new RouteParam('want', WantPackStatus::Packing->value),
+                        param: new RouteParam('want', UserClickEvent::Packing->value),
                         title: 'Посылка собрана и готова к отгрузке'
                     )
                 );
@@ -85,7 +85,7 @@ final readonly class CreatePackTelegramResponder
                     $buttons,
                     $this->buttonResponder->generate(
                         actionInfo: $packInfo,
-                        param: new RouteParam('want', WantPackStatus::Packed->value),
+                        param: new RouteParam('want', UserClickEvent::Packed->value),
                         title: 'Подтверждаю'
                     )
                 );

@@ -7,7 +7,7 @@ namespace CarVolunteer\Module\Carrier\Packing\Domain;
 /**
  * Набор действий пользователя для автомата состояний подтверждения, что посылка собрана
  */
-enum WantPackStatus: string
+enum UserClickEvent: string
 {
     /** Клик по кнопке "загрузить фото" */
     case LoadPhoto = 'photo';
