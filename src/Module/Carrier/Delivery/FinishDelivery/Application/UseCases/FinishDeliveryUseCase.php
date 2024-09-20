@@ -25,7 +25,7 @@ final readonly class FinishDeliveryUseCase
     public function handle(string $userId, FinishDeliveryPlayLoad $playLoad, bool $confirm): FinishDeliveryPlayLoad
     {
         /** @var Delivery|null $entity */
-        $entity = $this->repository->findOneBy(['id' => $playLoad->parcelId]);
+        $entity = $this->repository->findOneBy(['parcelId' => $playLoad->parcelId]);
 
         if ($entity === null || $entity->status !== DeliveryStatus::WaitDelivery->value) {
             return $playLoad;
