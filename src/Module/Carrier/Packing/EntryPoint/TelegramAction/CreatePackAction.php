@@ -34,7 +34,7 @@ final readonly class CreatePackAction implements ActionInterface
             self::class,
             'Собрать посылку',
             ActionRouteMap::PackParcel,
-            [UserRole::Manager, UserRole::Picker]
+            [UserRole::Manager, UserRole::Picker, UserRole::Receiver]
         );
     }
 

@@ -30,7 +30,7 @@ final readonly class CreateDeliveryAction implements ActionInterface
             self::class,
             'Создать доставку',
             ActionRouteMap::DeliveryCreate,
-            [UserRole::Manager, UserRole::Picker]
+            [UserRole::Manager, UserRole::Volunteer]
         );
     }
 
