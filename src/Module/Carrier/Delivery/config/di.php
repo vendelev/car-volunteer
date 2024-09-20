@@ -15,6 +15,7 @@ use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCases\Set
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\EntryPoint\BusHandler\SetDeliveredStatusHandler;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\EntryPoint\TelegramAction\FinishDeliveryAction;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
+use CarVolunteer\Module\Carrier\Delivery\ViewDelivery\ViewDeliveryAction;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $configurator): void {
@@ -41,6 +42,9 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(FinishDeliveryAction::class)
         ->set(FinishDeliveryPlayLoadFactory::class)
         ->set(FinishDeliveryUseCase::class)
+
+        ->set(ViewDeliveryAction::class)
+            ->arg('$volunteers', '%env(json:file:resolve:VOLUNTEERS)%')
 
         ->set(SetDeliveredStatusHandler::class)
         ->set(SetDeliveredStatusUseCase::class);

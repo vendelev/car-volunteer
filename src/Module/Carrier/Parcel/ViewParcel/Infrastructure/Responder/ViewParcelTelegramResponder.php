@@ -36,7 +36,7 @@ final readonly class ViewParcelTelegramResponder
         foreach ($model->actions as $action) {
             switch ($action) {
                 case ActionRouteMap::ParcelEditDescription:
-                    $info = $this->routeAccess->get($action, $roles);
+                    $info = $this->routeAccess->get($action, $roles, true);
                     $param = new RouteParam('id', $parcelId);
                     break;
                 case ActionRouteMap::PackParcel:
@@ -45,14 +45,13 @@ final readonly class ViewParcelTelegramResponder
                     $info = $this->routeAccess->get($action, $roles);
                     $param = new RouteParam('parcelId', $parcelId);
                     break;
+                case ActionRouteMap::DeliveryView:
+                    $info = $this->routeAccess->get($action, $roles);
+                    $param = new RouteParam('id', (string)$model->parcel->deliveryId?->toString());
+                    break;
                 case ActionRouteMap::PackingPhoto:
-                    if ($model->parcel->packingId) {
-                        $info = $this->routeAccess->get($action, $roles);
-                        $param = new RouteParam('id', $model->parcel->packingId->toString());
-                    } else {
-                        $info = null;
-                        $param = null;
-                    }
+                    $info = $this->routeAccess->get($action, $roles);
+                    $param = new RouteParam('id', (string)$model->parcel->packingId?->toString());
                     break;
                 default:
                     $info = null;
