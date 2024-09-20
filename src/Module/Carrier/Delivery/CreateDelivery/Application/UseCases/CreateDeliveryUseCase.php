@@ -28,8 +28,12 @@ final readonly class CreateDeliveryUseCase
     ) {
     }
 
-    public function handle(string $userId, CreateDeliveryPlayLoad $delivery, bool $confirm, ?string $message): CreateDeliveryPlayLoad
-    {
+    public function handle(
+        string $userId,
+        CreateDeliveryPlayLoad $delivery,
+        bool $confirm,
+        ?string $message
+    ): CreateDeliveryPlayLoad {
         $this->userId = $userId;
 
         $entity = $this->repository->findOneBy(['parcelId' => $delivery->parcelId]);
@@ -38,7 +42,10 @@ final readonly class CreateDeliveryUseCase
             $this->sendMessage(
                 'Доставка уже собрана',
                 new InlineKeyboardMarkup([
-                    [['text' => 'Просмотр посылки', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]]
+                    [[
+                        'text' => 'Просмотр посылки',
+                        'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId
+                    ]]
                 ])
             );
 
@@ -120,7 +127,10 @@ final readonly class CreateDeliveryUseCase
             $buttons[] = [['text' => $name, 'callback_data' => $id]];
         }
 
-        $buttons[] = [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]];
+        $buttons[] = [[
+            'text' => 'Отмена',
+            'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId
+        ]];
 
         $this->sendMessage('Выберете волонтёра: ', new InlineKeyboardMarkup($buttons));
 
@@ -137,6 +147,10 @@ final readonly class CreateDeliveryUseCase
 
     private function stepWaitConfirm(CreateDeliveryPlayLoad $delivery): CreateDeliveryPlayLoad
     {
+        if (!$delivery->carrierId || !$delivery->deliveryDate) {
+            return $delivery;
+        }
+
         $delivery->status = DeliveryStatus::WaitConfirm;
 
         $this->sendMessage(
@@ -170,7 +184,14 @@ final readonly class CreateDeliveryUseCase
             ])
         );
 
-        $this->messageBus->dispatch(new DeliveryCreatedEvent($delivery->carrierId, $delivery->parcelId, $delivery->id));
+        if ($delivery->carrierId && $delivery->deliveryDate) {
+            $this->messageBus->dispatch(new DeliveryCreatedEvent(
+                carrierId: $delivery->carrierId,
+                parcelId: $delivery->parcelId,
+                deliveryId: $delivery->id,
+                deliveryDate: $delivery->deliveryDate
+            ));
+        }
 
         return $delivery;
     }

@@ -18,6 +18,11 @@ final readonly class SaveNewDeliveryHandler
     #[Handler]
     public function handle(DeliveryCreatedEvent $event): void
     {
-        $this->useCase->handle($event->carrierId, $event->deliveryId, $event->parcelId);
+        $this->useCase->handle(
+            carrierId: $event->carrierId,
+            parcelId: $event->parcelId,
+            deliveryId: $event->deliveryId,
+            deliveryDate: $event->deliveryDate
+        );
     }
 }

@@ -16,7 +16,7 @@ final readonly class ActionRouteAccess
     /**
      * @param list<UserRole> $userRoles
      */
-    public function get(ActionRouteMap $route, array $userRoles): ?ActionInfo
+    public function get(ActionRouteMap $route, array $userRoles, bool $dontCheck = false): ?ActionInfo
     {
         $action = $this->actionLocator->get($route->value);
 
@@ -26,7 +26,7 @@ final readonly class ActionRouteAccess
 
         $info = $action::getInfo();
 
-        if ($this->can($info->accessRoles, $userRoles)) {
+        if ($this->can($info->accessRoles, $userRoles) || $dontCheck) {
             return $info;
         }
 

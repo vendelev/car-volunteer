@@ -36,28 +36,29 @@ final readonly class ViewParcelUseCase
         }
 
         $actions = [];
-        if ($item->packingId === null) {
-            if (
-                $item->authorId === $userId
-                || $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles)
-            ) {
-                $actions[] = ActionRouteMap::ParcelEditDescription;
-            }
+        if (
+            $item->status !== ParcelStatus::Delivered->value
+            && ($item->authorId === $userId
+            || $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles))
+        ) {
+            $actions[] = ActionRouteMap::ParcelEditDescription;
+        }
 
+        if ($item->packingId === null) {
             //$item->status === ParcelStatus::Approved->value
-            if (in_array(UserRole::Picker, $roles, true)) {
-                $actions[] = ActionRouteMap::PackParcel;
-            }
+            $actions[] = ActionRouteMap::PackParcel;
         } else {
             $actions[] = ActionRouteMap::PackingPhoto;
         }
 
-        if ($item->deliveryId === null && in_array(UserRole::Manager, $roles, true)) {
+        if ($item->deliveryId === null) {
             $actions[] = ActionRouteMap::DeliveryCreate;
-        }
+        } else {
+            $actions[] = ActionRouteMap::DeliveryView;
 
-        if ($item->deliveryId !== null && $item->status !== ParcelStatus::Delivered->value) {
-            $actions[] = ActionRouteMap::DeliveryFinish;
+            if ($item->status !== ParcelStatus::Delivered->value) {
+                $actions[] = ActionRouteMap::DeliveryFinish;
+            }
         }
 
         return new ViewParcelModel(parcel: $item, actions: $actions);

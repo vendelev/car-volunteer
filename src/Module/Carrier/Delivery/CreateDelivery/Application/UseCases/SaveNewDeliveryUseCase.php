@@ -17,14 +17,14 @@ final readonly class SaveNewDeliveryUseCase
     ) {
     }
 
-    public function handle(string $carrierId, Uuid $parcelId, Uuid $packingId): void
+    public function handle(string $carrierId, Uuid $parcelId, Uuid $deliveryId, DateTimeImmutable $deliveryDate): void
     {
         $entity = new Delivery(
-            id: $packingId,
+            id: $deliveryId,
             carrierId: $carrierId,
             parcelId: $parcelId,
             status: DeliveryStatus::WaitDelivery->value,
-            createAt: new DateTimeImmutable(),
+            deliveryAt: $deliveryDate,
         );
 
         $this->entityManager->persist($entity);
