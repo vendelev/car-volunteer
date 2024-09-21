@@ -13,6 +13,6 @@ enum ParcelStatus: string
     case Approved = 'approved';
     case Packed = 'packed';
     case Delivery = 'delivery';
-    case Shipped = 'shipped';
     case Delivered = 'delivered';
+    case Deleted = 'deleted';
 }
