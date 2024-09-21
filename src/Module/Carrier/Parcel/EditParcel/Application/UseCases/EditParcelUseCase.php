@@ -27,7 +27,6 @@ final readonly class EditParcelUseCase
      */
     public function handle(string $userId, ParcelPlayLoad $playLoad, array $roles, ?string $message): ?ParcelPlayLoad
     {
-        /** @var Parcel|null $entity */
         $entity = $this->parcelRepository->findOneBy(['id' => $playLoad->id]);
 
         if ($entity === null) {

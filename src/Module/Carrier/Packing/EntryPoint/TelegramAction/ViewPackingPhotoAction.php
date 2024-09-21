@@ -37,7 +37,6 @@ final readonly class ViewPackingPhotoAction implements ActionInterface
 
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
-        /** @var Packing|null $packing */
         $packing = $this->repository->findOneBy([
             'id' => (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil())
         ]);

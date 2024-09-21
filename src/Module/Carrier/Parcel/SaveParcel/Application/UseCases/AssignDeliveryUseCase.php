@@ -20,7 +20,6 @@ final readonly class AssignDeliveryUseCase
 
     public function handle(Uuid $parcelId, Uuid $deliveryId): void
     {
-        /** @var Parcel|null $entity */
         $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($entity !== null) {

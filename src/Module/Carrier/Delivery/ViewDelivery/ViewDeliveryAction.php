@@ -11,7 +11,6 @@ use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
-use CarVolunteer\Module\Carrier\Delivery\Domain\Delivery;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use Telephantast\MessageBus\MessageContext;
@@ -42,7 +41,6 @@ final readonly class ViewDeliveryAction implements ActionInterface
         $conversation = $message->conversation;
         $id = (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil());
 
-        /** @var Delivery|null $delivery */
         $delivery = $this->repository->findOneBy(['id' => $id]);
 
         if ($delivery) {

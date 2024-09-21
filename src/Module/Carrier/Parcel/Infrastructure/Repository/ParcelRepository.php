@@ -9,6 +9,9 @@ use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Parcel>
+ */
 final class ParcelRepository extends ServiceEntityRepository implements ParcelRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)

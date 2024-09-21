@@ -20,8 +20,6 @@ final readonly class GetLastConversation
 
     public function handle(string $userId): ?ConversationDTO
     {
-        //todo разобраться с дженериками
-        /** @var Conversation|null $entity */
         $entity = $this->repository->findBy(['userId' => $userId], ['id' => 'desc'], 1)[0] ?? null;
 
         if ($entity === null) {

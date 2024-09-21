@@ -20,7 +20,6 @@ final readonly class SetDeliveredStatusUseCase
 
     public function handle(Uuid $deliveryId): void
     {
-        /** @var Delivery|null $entity */
         $entity = $this->repository->find(['id' => $deliveryId]);
 
         if ($entity !== null) {

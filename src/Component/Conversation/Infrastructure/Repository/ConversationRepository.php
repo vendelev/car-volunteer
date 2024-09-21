@@ -9,10 +9,13 @@ use CarVolunteer\Component\Conversation\Domain\Entity\Conversation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Conversation>
+ */
 final class ConversationRepository extends ServiceEntityRepository implements ConversationRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, string $entityClass = Conversation::class)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, $entityClass);
+        parent::__construct($registry, Conversation::class);
     }
 }

@@ -20,7 +20,6 @@ final readonly class AssignPackingUseCase
 
     public function handle(Uuid $parcelId, Uuid $packingId): void
     {
-        /** @var Parcel|null $entity */
         $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($entity !== null) {
