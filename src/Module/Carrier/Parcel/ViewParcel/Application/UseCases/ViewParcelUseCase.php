@@ -61,6 +61,10 @@ final readonly class ViewParcelUseCase
             }
         }
 
+        if ($item->status !== ParcelStatus::Delivered->value) {
+            $actions[] = ActionRouteMap::ParcelDelete;
+        }
+
         return new ViewParcelModel(parcel: $item, actions: $actions);
     }
 
@@ -74,7 +78,6 @@ final readonly class ViewParcelUseCase
             ParcelStatus::Approved->value,
             ParcelStatus::Packed->value,
             ParcelStatus::Delivery->value,
-            ParcelStatus::Shipped->value,
         ]]);
     }
 

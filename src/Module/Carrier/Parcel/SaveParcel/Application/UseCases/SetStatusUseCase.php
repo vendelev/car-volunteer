@@ -9,7 +9,7 @@ use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
-final readonly class SetDeliveredStatusUseCase
+final readonly class SetStatusUseCase
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -17,12 +17,12 @@ final readonly class SetDeliveredStatusUseCase
     ) {
     }
 
-    public function handle(Uuid $parcelId): void
+    public function handle(Uuid $parcelId, ParcelStatus $status): void
     {
         $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($entity !== null) {
-            $entity->status = ParcelStatus::Delivered->value;
+            $entity->status = $status->value;
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();

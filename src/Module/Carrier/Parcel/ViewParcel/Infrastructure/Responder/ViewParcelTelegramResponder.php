@@ -39,6 +39,10 @@ final readonly class ViewParcelTelegramResponder
                     $info = $this->routeAccess->get($action, $roles, true);
                     $param = new RouteParam('id', $parcelId);
                     break;
+                case ActionRouteMap::ParcelDelete:
+                    $info = $this->routeAccess->get($action, $roles);
+                    $param = new RouteParam('id', $parcelId);
+                    break;
                 case ActionRouteMap::PackParcel:
                 case ActionRouteMap::DeliveryCreate:
                 case ActionRouteMap::DeliveryFinish:

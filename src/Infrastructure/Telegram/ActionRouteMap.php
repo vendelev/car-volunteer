@@ -14,6 +14,7 @@ enum ActionRouteMap: string
     case ParcelDelivered = '/archiveParcels';
     case ParcelView = '/viewParcel';
     case ParcelEditDescription = '/editParcel';
+    case ParcelDelete = '/deleteParcel';
 
     case PackParcel = '/packParcel';
 
