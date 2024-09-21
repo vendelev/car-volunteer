@@ -20,15 +20,25 @@ final readonly class DeleteParcelResponder
     ) {
     }
 
-    public function getBeforeDeleteButtons(ActionInfo $selfInfo): ?InlineKeyboardMarkup
+    /**
+     * @param list<UserRole> $roles
+     */
+    public function getBeforeDeleteButtons(ActionInfo $selfInfo, array $roles): ?InlineKeyboardMarkup
     {
-        return new InlineKeyboardMarkup([
+        $result = [
             [$this->buttonResponder->generate(
                 $selfInfo,
                 new RouteParam('confirm', '1'),
                 'Подтверждаю'
             )]
-        ]);
+        ];
+
+        $info = $this->routeAccess->get(ActionRouteMap::ParcelList, $roles);
+        if ($info) {
+            $result[] = [$this->buttonResponder->generate($info, null, 'Отмена')];
+        }
+
+        return new InlineKeyboardMarkup($result);
     }
 
     /**

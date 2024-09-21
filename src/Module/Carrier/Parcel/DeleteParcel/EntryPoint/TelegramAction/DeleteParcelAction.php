@@ -56,7 +56,7 @@ final readonly class DeleteParcelAction implements ActionInterface
         ) {
             if (!$playLoad->confirm) {
                 $messageText = 'Нажмите кнопку "Подтверждаю" для удаления';
-                $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo());
+                $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo(), $roles);
             } else {
                 $messageText = 'Посылка удалена';
                 $messageContext->dispatch(new ParcelDeletedEvent($parcel->id));
