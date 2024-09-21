@@ -42,11 +42,10 @@ final readonly class ViewDeliveryAction implements ActionInterface
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $conversation = $message->conversation;
+        $id = (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil());
 
         /** @var Delivery|null $delivery */
-        $delivery = $this->repository->findOneBy([
-            'id' => (string)($message->conversation->actionRoute->query['id'] ?? Uuid::nil())
-        ]);
+        $delivery = $this->repository->findOneBy(['id' => $id]);
 
         if ($delivery) {
             $messageText = sprintf(
@@ -60,6 +59,6 @@ final readonly class ViewDeliveryAction implements ActionInterface
 
         $messageContext->dispatch(new SendMessageCommand($message->userId, $messageText));
 
-        return new Conversation($conversation->actionRoute, $this->normalizer->normalize($conversation));
+        return new Conversation($conversation->actionRoute, ['id' => $id]);
     }
 }
