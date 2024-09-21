@@ -42,7 +42,7 @@ final readonly class StartAction implements ActionInterface
 
         $user = $messageContext->getAttribute(UserAttribute::class);
         if ($user?->user !== null) {
-            $messageContext->dispatch(new UserJoinedEvent($user?->user));
+            $messageContext->dispatch(new UserJoinedEvent($user->user));
         }
 
         return $message->conversation;

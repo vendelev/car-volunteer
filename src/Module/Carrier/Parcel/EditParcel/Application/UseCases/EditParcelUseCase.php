@@ -6,7 +6,6 @@ namespace CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases;
 
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
-use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
