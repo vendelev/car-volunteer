@@ -14,7 +14,6 @@ use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Delivery\Domain\Delivery;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Telephantast\MessageBus\MessageContext;
 
 final readonly class ViewDeliveryAction implements ActionInterface
@@ -23,7 +22,6 @@ final readonly class ViewDeliveryAction implements ActionInterface
      * @param array<non-empty-string, non-empty-string> $volunteers
      */
     public function __construct(
-        private NormalizerInterface $normalizer,
         private DeliveryRepository $repository,
         private array $volunteers,
     ) {
