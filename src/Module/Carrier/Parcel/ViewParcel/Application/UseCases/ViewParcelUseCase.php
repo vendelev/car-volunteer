@@ -73,12 +73,18 @@ final readonly class ViewParcelUseCase
      */
     public function getListActiveParcels(): array
     {
-        return $this->parcelRepository->findBy(['status' => [
+        $qb = $this->parcelRepository->createQueryBuilder('p');
+        $and = $qb->expr()->in('p.status', [
             ParcelStatus::Described->value,
             ParcelStatus::Approved->value,
             ParcelStatus::Packed->value,
             ParcelStatus::Delivery->value,
-        ]]);
+        ]);
+
+        return $qb
+            ->where($and)
+            ->orderBy('p.createAt', 'ASC')
+            ->getQuery()->getResult();
     }
 
     /**
