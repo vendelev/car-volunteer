@@ -30,7 +30,7 @@ final readonly class FinishDeliveryAction implements ActionInterface
             self::class,
             'Завершить доставку',
             ActionRouteMap::DeliveryFinish,
-            [UserRole::Volunteer]
+            [UserRole::Manager, UserRole::Volunteer]
         );
     }
 
