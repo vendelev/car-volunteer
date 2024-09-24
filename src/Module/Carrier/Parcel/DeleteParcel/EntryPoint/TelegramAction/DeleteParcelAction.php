@@ -14,7 +14,7 @@ use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application\DeletePlayLoadFactory;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelResponder;
+use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelTelegramResponder;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelDeletedEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
@@ -26,7 +26,7 @@ final readonly class DeleteParcelAction implements ActionInterface
         private ParcelRepository $repository,
         private DeletePlayLoadFactory $playLoadFactory,
         private ActionRouteAccess $routeAccess,
-        private DeleteParcelResponder $responder,
+        private DeleteParcelTelegramResponder $responder,
     ) {
     }
 
@@ -59,7 +59,8 @@ final readonly class DeleteParcelAction implements ActionInterface
                 $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo(), $roles);
             } else {
                 $messageText = 'Посылка удалена';
-                $messageContext->dispatch(new ParcelDeletedEvent($parcel->id));
+                $parcel->status = ParcelStatus::Deleted->value;
+                $messageContext->dispatch(new ParcelDeletedEvent($parcel));
                 $buttons = $this->responder->getAfterDeleteButtons($roles);
             }
         } else {
@@ -68,6 +69,6 @@ final readonly class DeleteParcelAction implements ActionInterface
 
         $messageContext->dispatch(new SendMessageCommand($message->userId, $messageText, $buttons));
 
-        return new Conversation($conversation->actionRoute, ['id' => $playLoad->id, 'confirm' => $playLoad->confirm]);
+        return new Conversation($conversation->actionRoute, (array)$playLoad);
     }
 }

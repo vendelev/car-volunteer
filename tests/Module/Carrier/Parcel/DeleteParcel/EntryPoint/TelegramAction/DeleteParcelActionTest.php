@@ -69,7 +69,7 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
         [$message1, $message2] = $handler->messages;
 
         self::assertCount(2, $handler->messages);
-        self::assertEquals($entity->id, $message1->parcelId);
+        self::assertEquals($entity->id, $message1->parcel->id);
         self::assertEquals('Посылка удалена', $message2->text);
 
         $manager->getConnection()->rollBack();

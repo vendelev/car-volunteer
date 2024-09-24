@@ -10,7 +10,8 @@ use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
-use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelDescriptionAction;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelTitleAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,12 +37,20 @@ final readonly class ViewParcelUseCase
         }
 
         $actions = [];
-        if (
-            $item->status !== ParcelStatus::Delivered->value
-            && ($item->authorId === $userId
-            || $this->routeAccess->can(EditParcelAction::getInfo()->accessRoles, $roles))
-        ) {
-            $actions[] = ActionRouteMap::ParcelEditDescription;
+        if ($item->status !== ParcelStatus::Delivered->value) {
+            if (
+                $item->authorId === $userId
+                || $this->routeAccess->can(EditParcelTitleAction::getInfo()->accessRoles, $roles)
+            ) {
+                $actions[] = ActionRouteMap::ParcelEditTitle;
+            }
+
+            if (
+                $item->authorId === $userId
+                || $this->routeAccess->can(EditParcelDescriptionAction::getInfo()->accessRoles, $roles)
+            ) {
+                $actions[] = ActionRouteMap::ParcelEditDescription;
+            }
         }
 
         if ($item->packingId === null) {

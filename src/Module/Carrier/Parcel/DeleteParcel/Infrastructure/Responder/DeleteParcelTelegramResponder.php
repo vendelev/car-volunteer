@@ -12,7 +12,7 @@ use CarVolunteer\Infrastructure\Telegram\ButtonResponder;
 use CarVolunteer\Infrastructure\Telegram\RouteParam;
 use TelegramBot\Api\Types\Inline\InlineKeyboardMarkup;
 
-final readonly class DeleteParcelResponder
+final readonly class DeleteParcelTelegramResponder
 {
     public function __construct(
         private ButtonResponder $buttonResponder,

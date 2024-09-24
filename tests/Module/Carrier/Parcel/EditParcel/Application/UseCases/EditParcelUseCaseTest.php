@@ -4,83 +4,57 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Tests\Module\Carrier\Parcel\EditParcel\Application\UseCases;
 
+use CarVolunteer\Domain\Telegram\SendMessageCommand;
+use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
-use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelPlayLoad;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelChangeDescriptionEvent;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelChangeTitleEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases\EditParcelUseCase;
-use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\Domain\EditParcelPlayLoad;
 use CarVolunteer\Tests\KernelTestCaseDecorator;
-use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class EditParcelUseCaseTest extends KernelTestCaseDecorator
 {
-    #[DataProvider('dataProvider')]
-    public function testReturnNull(ParcelPlayLoad $playLoad, string $userId): void
+    /**
+     * @param list<UserRole> $roles
+     */
+    #[DataProvider('dataProviderNotAllowed')]
+    public function testEditTileNotAllowed(EditParcelPlayLoad $playLoad, array $roles): void
     {
-        self::assertNull(
-            self::getService(EditParcelUseCase::class)->handle($userId, $playLoad, [], null)
-        );
+        $commands = self::getService(EditParcelUseCase::class)->editTitle('1', $playLoad, $roles);
 
-        /** @var Parcel|null $parcel */
-        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $playLoad->id->toString()]);
-        if ($parcel) {
-            self::assertEquals('test', $parcel->description);
-        }
+        self::assertCount(1, $commands);
+
+        /** @var SendMessageCommand $command */
+        $command = $commands[0];
+        self::assertEquals('Редактирование не возможно', $command->text);
     }
 
     /**
-     * @return iterable<array{playLoad: ParcelPlayLoad, userId: string}>
+     * @param list<UserRole> $roles
      */
-    public static function dataProvider(): iterable
+    #[DataProvider('dataProviderNotAllowed')]
+    public function testEditDescriptionNotAllowed(EditParcelPlayLoad $playLoad, array $roles): void
     {
-        $entity = new Parcel(
-            id: Uuid::v7(),
-            authorId: '1',
-            status: ParcelStatus::Described->value,
-            title: '',
-            description: 'test',
-        );
+        $commands = self::getService(EditParcelUseCase::class)->editDescription('1', $playLoad, $roles);
 
-        $manager = self::getService(ManagerRegistry::class)->getManager();
-        $manager->persist($entity);
-        $manager->flush();
+        self::assertCount(1, $commands);
 
-        $playLoad = new ParcelPlayLoad(
-            Uuid::v7((new DateTimeImmutable())->modify('-1 day')),
-            ParcelStatus::from($entity->status)
-        );
-
-        yield 'Нет записи' => ['playLoad' => $playLoad, 'userId' => '1'];
-
-        $playLoad = new ParcelPlayLoad(
-            $entity->id,
-            ParcelStatus::from($entity->status)
-        );
-        yield 'Нет прав' => ['playLoad' => $playLoad, 'userId' => '2'];
-
-        $entity = new Parcel(
-            id: Uuid::v7(),
-            authorId: '2',
-            status: ParcelStatus::Packed->value,
-            title: '',
-            description: 'test',
-        );
-        $manager->persist($entity);
-        $manager->flush();
-        $playLoad = new ParcelPlayLoad(
-            $entity->id,
-            ParcelStatus::from($entity->status)
-        );
-
-        yield 'Не тот статус' => ['playLoad' => $playLoad, 'userId' => '2'];
+        /** @var SendMessageCommand $command */
+        $command = $commands[0];
+        self::assertEquals('Редактирование не возможно', $command->text);
     }
 
-    public function testChangeStatus(): void
+    /**
+     * @return iterable<array{playLoad: EditParcelPlayLoad, roles: list<UserRole>, expectedText: string}>
+     */
+    public static function dataProviderNotAllowed(): iterable
     {
-        $entity = new Parcel(
+        $entity1 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
             status: ParcelStatus::Described->value,
@@ -89,51 +63,137 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         );
 
         $manager = self::getService(ManagerRegistry::class)->getManager();
-        $manager->persist($entity);
+        $manager->persist($entity1);
         $manager->flush();
 
-        $playLoad = new ParcelPlayLoad(
-            $entity->id,
-            ParcelStatus::New
-        );
+        yield 'Посылка не найдена' => [
+            'playLoad' => new EditParcelPlayLoad(Uuid::v7(), null),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expectedText' => 'Редактирование не возможно',
+        ];
 
-        $result = self::getService(EditParcelUseCase::class)->handle('1', $playLoad, [], 'test');
-
-        self::assertNotNull($result);
-        self::assertEquals(ParcelStatus::WaitDescription, $result->status);
-
-        /** @var Parcel $parcel */
-        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $entity->id->toString()]);
-        self::assertEquals(ParcelStatus::Described->value, $parcel->status);
-    }
-
-    public function testUpdateDescription(): void
-    {
-        $entity = new Parcel(
+        $entity2 = new Parcel(
             id: Uuid::v7(),
-            authorId: '2',
-            status: ParcelStatus::Described->value,
+            authorId: '1',
+            status: ParcelStatus::Delivered->value,
             title: '',
-            description: 'test',
+            description: '',
         );
 
         $manager = self::getService(ManagerRegistry::class)->getManager();
-        $manager->persist($entity);
+        $manager->persist($entity2);
         $manager->flush();
 
-        $playLoad = new ParcelPlayLoad(
-            $entity->id,
-            ParcelStatus::WaitDescription
+        yield 'Посылка доставлена' => [
+            'playLoad' => new EditParcelPlayLoad($entity2->id, null),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expectedText' => 'Редактирование не возможно',
+        ];
+
+        yield 'Не хватает прав' => [
+            'playLoad' => new EditParcelPlayLoad($entity1->id, null),
+            'roles' => [UserRole::User],
+            'expectedText' => 'Редактирование не возможно',
+        ];
+    }
+
+    /**
+     * @param list<UserRole> $roles
+     * @param list<class-string> $expected
+     */
+    #[DataProvider('dataProviderForEditTitle')]
+    public function testEditTitle(EditParcelPlayLoad $playLoad, array $roles, array $expected): void
+    {
+        $commands = self::getService(EditParcelUseCase::class)->editTitle('1', $playLoad, $roles);
+
+        self::assertCount(2, $commands);
+
+        foreach ($expected as $index => $className) {
+            self::assertInstanceOf($className, $commands[$index]);
+        }
+    }
+
+    /**
+     * @return iterable<array{
+     *     playLoad: EditParcelPlayLoad,
+     *     roles: list<UserRole>,
+     *     expected: list<class-string>
+     * }>
+     */
+    public static function dataProviderForEditTitle(): iterable
+    {
+        $entity1 = new Parcel(
+            id: Uuid::v7(),
+            authorId: '1',
+            status: ParcelStatus::Described->value,
+            title: '',
+            description: '',
         );
 
-        $result = self::getService(EditParcelUseCase::class)->handle('2', $playLoad, [], 'test2');
+        $manager = self::getService(ManagerRegistry::class)->getManager();
+        $manager->persist($entity1);
+        $manager->flush();
 
-        self::assertNotNull($result);
-        self::assertEquals(ParcelStatus::Described, $result->status);
+        yield 'Шаг 1' => [
+            'playLoad' => new EditParcelPlayLoad($entity1->id, null),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expected' => [SendMessageCommand::class, SendMessageCommand::class],
+        ];
 
-        /** @var Parcel $parcel */
-        $parcel = self::getService(ParcelRepository::class)->findOneBy(['id' => $entity->id->toString()]);
+        yield 'Шаг 2' => [
+            'playLoad' => new EditParcelPlayLoad($entity1->id, 'test'),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expected' => [ParcelChangeTitleEvent::class, SendMessageCommand::class],
+        ];
+    }
 
-        self::assertEquals('test2', $parcel->description);
+    /**
+     * @param list<UserRole> $roles
+     * @param list<class-string> $expected
+     */
+    #[DataProvider('dataProviderForEditDesc')]
+    public function testEditDescription(EditParcelPlayLoad $playLoad, array $roles, array $expected): void
+    {
+        $commands = self::getService(EditParcelUseCase::class)->editDescription('1', $playLoad, $roles);
+
+        self::assertCount(2, $commands);
+
+        foreach ($expected as $index => $className) {
+            self::assertInstanceOf($className, $commands[$index]);
+        }
+    }
+
+    /**
+     * @return iterable<array{
+     *     playLoad: EditParcelPlayLoad,
+     *     roles: list<UserRole>,
+     *     expected: list<class-string>
+     * }>
+     */
+    public static function dataProviderForEditDesc(): iterable
+    {
+        $entity1 = new Parcel(
+            id: Uuid::v7(),
+            authorId: '1',
+            status: ParcelStatus::Described->value,
+            title: '',
+            description: '',
+        );
+
+        $manager = self::getService(ManagerRegistry::class)->getManager();
+        $manager->persist($entity1);
+        $manager->flush();
+
+        yield 'Шаг 1' => [
+            'playLoad' => new EditParcelPlayLoad($entity1->id, null),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expected' => [SendMessageCommand::class, SendMessageCommand::class],
+        ];
+
+        yield 'Шаг 2' => [
+            'playLoad' => new EditParcelPlayLoad($entity1->id, 'test'),
+            'roles' => [UserRole::Manager, UserRole::User],
+            'expected' => [ParcelChangeDescriptionEvent::class, SendMessageCommand::class],
+        ];
     }
 }
