@@ -9,21 +9,23 @@ use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\Cr
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Infrastructure\Responder\NotifyTelegramResponder;
 use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application\DeletePlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\EntryPoint\TelegramAction\DeleteParcelAction;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelResponder;
+use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelTelegramResponder;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelCreatedEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\EditParcelPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\UseCases\EditParcelUseCase;
-use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelDescriptionAction;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelTitleAction;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Infrastructure\Responder\EditParcelTelegramResponder;
 use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignDeliveryUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\AssignPackingUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SaveNewParcelUseCase;
-use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\SetStatusUseCase;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\Application\UseCases\UpdateParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignDeliveryHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPackingHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveNewParcelHandler;
-use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SetStatusHandler;
+use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewArchiveParcelsAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelAction;
@@ -62,12 +64,14 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(AssignDeliveryHandler::class)
         ->set(AssignDeliveryUseCase::class)
 
-        ->set(EditParcelAction::class)
+        ->set(EditParcelTitleAction::class)
+        ->set(EditParcelDescriptionAction::class)
         ->set(EditParcelUseCase::class)
+        ->set(EditParcelPlayLoadFactory::class)
         ->set(EditParcelTelegramResponder::class)
 
-        ->set(SetStatusHandler::class)
-        ->set(SetStatusUseCase::class)
+        ->set(SaveParcelHandler::class)
+        ->set(UpdateParcelUseCase::class)
 
         ->set(NotifyTelegramResponder::class)
         ->set(NotifyNewParcelHandler::class)
@@ -75,7 +79,7 @@ return static function (ContainerConfigurator $configurator): void {
 
         ->set(DeleteParcelAction::class)
         ->set(DeletePlayLoadFactory::class)
-        ->set(DeleteParcelResponder::class)
+        ->set(DeleteParcelTelegramResponder::class)
 
         ->set(ViewArchiveParcelsAction::class);
 };

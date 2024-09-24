@@ -35,6 +35,7 @@ final readonly class ViewParcelTelegramResponder
 
         foreach ($model->actions as $action) {
             switch ($action) {
+                case ActionRouteMap::ParcelEditTitle:
                 case ActionRouteMap::ParcelEditDescription:
                     $info = $this->routeAccess->get($action, $roles, true);
                     $param = new RouteParam('id', $parcelId);

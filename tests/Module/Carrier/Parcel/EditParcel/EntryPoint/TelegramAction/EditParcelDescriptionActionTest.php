@@ -11,14 +11,15 @@ use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
+use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelChangeDescriptionEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
-use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\EditParcel\EntryPoint\TelegramAction\EditParcelDescriptionAction;
 use CarVolunteer\Tests\Fake\TestMessageHandler;
 use CarVolunteer\Tests\KernelTestCaseDecorator;
 use Doctrine\Persistence\ManagerRegistry;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
-class EditParcelActionTest extends KernelTestCaseDecorator
+class EditParcelDescriptionActionTest extends KernelTestCaseDecorator
 {
     public function testHandle(): void
     {
@@ -36,23 +37,26 @@ class EditParcelActionTest extends KernelTestCaseDecorator
 
         $telegramMessage = new TelegramMessage(
             '1',
-            '',
+            'test',
             new Conversation(new ActionRoute(
-                EditParcelAction::getInfo()->route->value,
+                EditParcelDescriptionAction::getInfo()->route->value,
                 ['id' => $entity->id->toString()]
             ))
         );
 
         $handler = new TestMessageHandler();
-        $messageContext = $handler->createMessageContext([SendMessageCommand::class => $handler]);
-        $messageContext->setAttribute(new AuthorizeAttribute('11', [UserRole::User]));
+        $messageContext = $handler->createMessageContext([
+            ParcelChangeDescriptionEvent::class => $handler,
+            SendMessageCommand::class => $handler,
+        ]);
+        $messageContext->setAttribute(new AuthorizeAttribute('11', [UserRole::Receiver, UserRole::User]));
 
-        self::getService(EditParcelAction::class)->handle($telegramMessage, $messageContext);
+        self::getService(EditParcelDescriptionAction::class)->handle($telegramMessage, $messageContext);
 
-        /** @var list<SendMessageCommand> $messages */
-        $messages = $handler->messages;
+        /** @var ParcelChangeDescriptionEvent $message */
+        $message = $handler->messages[0];
 
-        self::assertCount(2, $messages);
-        self::assertStringContainsString($entity->description, $messages[1]->text);
+        self::assertCount(2, $handler->messages);
+        self::assertStringContainsString($entity->description, $message->parcel->description);
     }
 }

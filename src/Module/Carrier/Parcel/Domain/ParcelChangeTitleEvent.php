@@ -6,7 +6,7 @@ namespace CarVolunteer\Module\Carrier\Parcel\Domain;
 
 use Telephantast\Message\Event;
 
-final readonly class ParcelDeletedEvent implements Event
+final readonly class ParcelChangeTitleEvent implements Event
 {
     public function __construct(
         public Parcel $parcel,
