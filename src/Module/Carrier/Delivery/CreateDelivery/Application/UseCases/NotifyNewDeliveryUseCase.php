@@ -19,6 +19,10 @@ final readonly class NotifyNewDeliveryUseCase
 
     public function handle(string $carrierId, Uuid $parcelId): void
     {
+        if ($carrierId === 'virtual') {
+            return;
+        }
+
         $this->messageBus->dispatch(new SendMessageCommand(
             $carrierId,
             'Вам назначена посылка для доставки',
