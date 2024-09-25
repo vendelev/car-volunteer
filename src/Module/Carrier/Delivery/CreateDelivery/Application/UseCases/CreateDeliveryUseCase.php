@@ -36,7 +36,10 @@ final readonly class CreateDeliveryUseCase
     ): CreateDeliveryPlayLoad {
         $this->userId = $userId;
 
-        $entity = $this->repository->findOneBy(['parcelId' => $delivery->parcelId]);
+        $entity = $this->repository->findOneBy([
+            'parcelId' => $delivery->parcelId,
+            'status' => DeliveryStatus::WaitDelivery->value
+        ]);
 
         if ($entity !== null) {
             $this->sendMessage(
@@ -99,9 +102,9 @@ final readonly class CreateDeliveryUseCase
                 ['text' => $this->format($date, '+8 day'), 'callback_data' => $this->format($date, '+8 day', false)],
             ],
             [
-                ['text' => $this->format($date, '+9 day'), 'callback_data' => $this->format($date, '+6 day', false)],
-                ['text' => $this->format($date, '+10 day'), 'callback_data' => $this->format($date, '+7 day', false)],
-                ['text' => $this->format($date, '+11 day'), 'callback_data' => $this->format($date, '+8 day', false)],
+                ['text' => $this->format($date, '+9 day'), 'callback_data' => $this->format($date, '+9 day', false)],
+                ['text' => $this->format($date, '+10 day'), 'callback_data' => $this->format($date, '+10 day', false)],
+                ['text' => $this->format($date, '+11 day'), 'callback_data' => $this->format($date, '+11 day', false)],
             ],
             [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $delivery->parcelId]]
         ];
@@ -189,7 +192,7 @@ final readonly class CreateDeliveryUseCase
                 carrierId: $delivery->carrierId,
                 parcelId: $delivery->parcelId,
                 deliveryId: $delivery->id,
-                deliveryDate: $delivery->deliveryDate
+                deliveryDate: $delivery->deliveryDate->setTime(12, 12)
             ));
         }
 
