@@ -34,6 +34,9 @@ final readonly class CreateDeliveryAction implements ActionInterface
         );
     }
 
+    /**
+     * phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+     */
     public function handle(TelegramMessage $message, MessageContext $messageContext): Conversation
     {
         $conversation = $message->conversation;
@@ -49,6 +52,6 @@ final readonly class CreateDeliveryAction implements ActionInterface
             $message->message,
         );
 
-        return new Conversation($conversation->actionRoute, $this->normalizer->normalize($result));
+        return new Conversation($conversation->actionRoute, (array)$this->normalizer->normalize($result));
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application;
+namespace CarVolunteer\Module\Carrier\Application;
 
 use CarVolunteer\Domain\Conversation\Conversation;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Domain\DeletePlayLoad;
+use CarVolunteer\Module\Carrier\Domain\DeletePlayLoad;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 final readonly class DeletePlayLoadFactory

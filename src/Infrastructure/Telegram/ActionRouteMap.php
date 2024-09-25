@@ -20,6 +20,7 @@ enum ActionRouteMap: string
     case PackParcel = '/packParcel';
 
     case DeliveryCreate = '/createDelivery';
+    case DeliveryDelete = '/deleteDelivery';
     case DeliveryFinish = '/finishDelivery';
     case DeliveryView = '/viewDelivery';
     case PackingPhoto = '/viewPackingPhoto';

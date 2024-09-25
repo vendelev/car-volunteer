@@ -7,9 +7,8 @@ use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Application\UseCases\CreateP
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\BusHandler\NotifyNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\EntryPoint\TelegramAction\CreateParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\CreateParcel\Infrastructure\Responder\NotifyTelegramResponder;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application\DeletePlayLoadFactory;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\EntryPoint\TelegramAction\DeleteParcelAction;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelTelegramResponder;
+use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\DeleteParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\DeleteParcelTelegramResponder;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelCreatedEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelRepositoryInterface;
 use CarVolunteer\Module\Carrier\Parcel\EditParcel\Application\EditParcelPlayLoadFactory;
@@ -78,7 +77,6 @@ return static function (ContainerConfigurator $configurator): void {
             ->arg('$roles', '%env(json:file:resolve:ROLES)%')
 
         ->set(DeleteParcelAction::class)
-        ->set(DeletePlayLoadFactory::class)
         ->set(DeleteParcelTelegramResponder::class)
 
         ->set(ViewArchiveParcelsAction::class);

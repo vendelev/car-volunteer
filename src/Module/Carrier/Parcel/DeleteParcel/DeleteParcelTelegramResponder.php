@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder;
+namespace CarVolunteer\Module\Carrier\Parcel\DeleteParcel;
 
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;

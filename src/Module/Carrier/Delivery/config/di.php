@@ -6,9 +6,13 @@ use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\CreateDelive
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases\CreateDeliveryUseCase;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases\NotifyNewDeliveryUseCase;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\Application\UseCases\SaveNewDeliveryUseCase;
+use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\BusHandler\CreateDeliveryHandler;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\BusHandler\NotifyNewDeliveryHandler;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\BusHandler\SaveNewDeliveryHandler;
 use CarVolunteer\Module\Carrier\Delivery\CreateDelivery\EntryPoint\TelegramAction\CreateDeliveryAction;
+use CarVolunteer\Module\Carrier\Delivery\DeleteDelivery\EntryPoint\BusHandler\SaveDeliveryHandler;
+use CarVolunteer\Module\Carrier\Delivery\DeleteDelivery\EntryPoint\TelegramAction\DeleteDeliveryAction;
+use CarVolunteer\Module\Carrier\Delivery\DeleteDelivery\Infrastructure\Responder\DeleteDeliveryTelegramResponder;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\FinishDeliveryPlayLoadFactory;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCases\FinishDeliveryUseCase;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCases\SetDeliveredStatusUseCase;
@@ -42,6 +46,10 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(FinishDeliveryAction::class)
         ->set(FinishDeliveryPlayLoadFactory::class)
         ->set(FinishDeliveryUseCase::class)
+
+        ->set(DeleteDeliveryAction::class)
+        ->set(DeleteDeliveryTelegramResponder::class)
+        ->set(SaveDeliveryHandler::class)
 
         ->set(ViewDeliveryAction::class)
             ->arg('$volunteers', '%env(json:file:resolve:VOLUNTEERS)%')
