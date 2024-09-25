@@ -21,9 +21,11 @@ final readonly class ViewPackingPhotoTelegramResponder
     }
 
     /**
+     * @param list<string> $photoIds
      * @param list<UserRole> $roles
+     * @return list<SendPhotoCommand|SendMessageCommand>
      */
-    public function viewPhoto(string $userId, ?string $photoId, array $roles): SendPhotoCommand|SendMessageCommand
+    public function viewPhoto(string $userId, array $photoIds, array $roles): array
     {
         $buttons = [];
         $info = $this->routeAccess->get(ActionRouteMap::ParcelList, $roles);
@@ -32,10 +34,18 @@ final readonly class ViewPackingPhotoTelegramResponder
         }
         $markup = $buttons ? new InlineKeyboardMarkup($buttons) : null;
 
-        if (!$photoId) {
-            return new SendMessageCommand($userId, 'К сожалению, фото не загружено', $markup);
+        if (!$photoIds) {
+            return [new SendMessageCommand($userId, 'К сожалению, фото не загружено', $markup)];
         }
 
-        return new SendPhotoCommand($userId, $photoId, null, $markup);
+        $lastId = array_pop($photoIds);
+        $result = [];
+        foreach ($photoIds as $photoId) {
+            $result[] = new SendPhotoCommand($userId, $photoId);
+        }
+
+        $result[] = new SendPhotoCommand($userId, $lastId, null, $markup);
+
+        return $result;
     }
 }

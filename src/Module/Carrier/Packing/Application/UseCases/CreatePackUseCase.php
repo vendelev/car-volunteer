@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Packing\Application\UseCases;
 
+use CarVolunteer\Domain\Photo\SaveNewPhotoCommand;
 use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
 use CarVolunteer\Module\Carrier\Packing\Application\PackStateMachine;
 use CarVolunteer\Module\Carrier\Packing\Domain\PackPlayLoad;
@@ -37,6 +38,10 @@ final readonly class CreatePackUseCase
 
         $pack->status = $this->stateMachine->handle($pack->status, $clickEvent, (bool)$photoId);
 
+        if ($photoId !== null) {
+            $this->messageBus->dispatch(new SaveNewPhotoCommand($photoId, $pack->id));
+        }
+
         if ($pack->status === PackStatus::PhotoLoaded) {
             $pack->photoId = $photoId;
 
@@ -44,7 +49,7 @@ final readonly class CreatePackUseCase
         }
 
         if ($pack->status === PackStatus::Packed) {
-            $this->messageBus->dispatch(new ParcelPackedEvent($userId, $pack->parcelId, $pack->id, $pack->photoId));
+            $this->messageBus->dispatch(new ParcelPackedEvent($userId, $pack->parcelId, $pack->id));
 
             return $pack;
         }

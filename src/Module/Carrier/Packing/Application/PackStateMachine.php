@@ -23,16 +23,16 @@ final readonly class PackStateMachine
             return PackStatus::New;
         }
 
-        if ($currentStatus === PackStatus::WaitPhoto) {
-            return $hasPhotoId ? PackStatus::PhotoLoaded : PackStatus::New;
+        if ($currentStatus === PackStatus::WaitPhoto && $hasPhotoId) {
+            return PackStatus::PhotoLoaded;
         }
 
-        if ($currentStatus === PackStatus::PhotoLoaded) {
-            return $clickEvent === UserClickEvent::Packing ? PackStatus::WaitPack : PackStatus::New;
+        if ($currentStatus === PackStatus::PhotoLoaded && $clickEvent === UserClickEvent::Packing) {
+            return PackStatus::WaitPack;
         }
 
-        if ($currentStatus === PackStatus::WaitPack) {
-            return $clickEvent === UserClickEvent::Packed ? PackStatus::Packed : PackStatus::New;
+        if ($currentStatus === PackStatus::WaitPack && $clickEvent === UserClickEvent::Packed) {
+            return PackStatus::Packed;
         }
 
         return $currentStatus;
