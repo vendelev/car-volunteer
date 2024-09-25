@@ -13,7 +13,6 @@ final readonly class ParcelPackedEvent implements Event
         public string $pickerId,
         public Uuid $parcelId,
         public Uuid $packingId,
-        public ?string $photoId,
     ) {
     }
 }

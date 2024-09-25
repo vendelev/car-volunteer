@@ -22,7 +22,6 @@ final readonly class SaveNewPackHandler
             pickerId: $event->pickerId,
             parcelId: $event->parcelId,
             packingId: $event->packingId,
-            photoId: $event->photoId
         );
     }
 }

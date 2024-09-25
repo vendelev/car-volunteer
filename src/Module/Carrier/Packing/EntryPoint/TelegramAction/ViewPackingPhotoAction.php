@@ -6,12 +6,12 @@ namespace CarVolunteer\Module\Carrier\Packing\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
+use CarVolunteer\Domain\Photo\GetAllPhotoQuery;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
-use CarVolunteer\Module\Carrier\Packing\Domain\Packing;
 use CarVolunteer\Module\Carrier\Packing\Infrastructure\Repository\PackingRepository;
 use CarVolunteer\Module\Carrier\Packing\Infrastructure\Responder\ViewPackingPhotoTelegramResponder;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
@@ -42,8 +42,13 @@ final readonly class ViewPackingPhotoAction implements ActionInterface
         ]);
         $roles = $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [];
 
-        $command = $this->responder->viewPhoto($message->userId, $packing?->photoId, $roles);
-        $messageContext->dispatch($command);
+        /** @var list<string> $photoIds */
+        $photoIds = !empty($packing) ? $messageContext->dispatch(new GetAllPhotoQuery($packing->id)) : [];
+
+        $commands = $this->responder->viewPhoto($message->userId, $photoIds, $roles);
+        foreach ($commands as $command) {
+            $messageContext->dispatch($command);
+        }
 
         return $message->conversation;
     }

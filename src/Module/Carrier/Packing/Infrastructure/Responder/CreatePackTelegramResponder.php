@@ -65,7 +65,7 @@ final readonly class CreatePackTelegramResponder
 
             case PackStatus::WaitPhoto:
                 $buttons = [];
-                $messageText = 'Добавьте одну фотографию';
+                $messageText = 'Отправьте несколько фотографий в одном сообщении';
                 break;
 
             case PackStatus::PhotoLoaded:

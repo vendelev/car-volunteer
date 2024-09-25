@@ -7,7 +7,7 @@ namespace CarVolunteer\Domain\Conversation;
 use Telephantast\Message\Message;
 
 /**
- * @implements Message<self>
+ * @implements Message<Conversation|null>
  */
 final readonly class GetLastConversationQuery implements Message
 {

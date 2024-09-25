@@ -39,6 +39,6 @@ class CreatePackActionTest extends KernelTestCaseDecorator
         $messages = $handler->messages;
 
         self::assertCount(1, $messages);
-        self::assertStringContainsString('Добавьте одну фотографию', $messages[0]->text);
+        self::assertStringContainsString('Отправьте несколько фотографий в одном сообщении', $messages[0]->text);
     }
 }
