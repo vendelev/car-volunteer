@@ -13,33 +13,36 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class ViewPackingPhotoTelegramResponderTest extends KernelTestCaseDecorator
 {
     /**
-     * @param class-string $expectedType
+     * @param list<string> $photoIds
+     * @param list<class-string> $expectedTypes
      */
     #[DataProvider('dataProvider')]
-    public function testViewPhoto(?string $photoId, string $expectedType): void
+    public function testViewPhoto(array $photoIds, array $expectedTypes): void
     {
-        $command = self::getService(ViewPackingPhotoTelegramResponder::class)->viewPhoto(
+        $commands = self::getService(ViewPackingPhotoTelegramResponder::class)->viewPhoto(
             '1',
-            $photoId,
+            $photoIds,
             []
         );
 
-        self::assertInstanceOf($expectedType, $command);
+        foreach ($expectedTypes as $index => $type) {
+            self::assertInstanceOf($type, $commands[$index]);
+        }
     }
 
     /**
-     * @return iterable<array{photoId: string|null, expectedType: class-string}>
+     * @return iterable<array{photoIds: list<string>, expectedTypes: list<class-string>}>
      */
     public static function dataProvider(): iterable
     {
         yield 'Есть фото' => [
-            'photoId' => '1',
-            'expectedType' => SendPhotoCommand::class
+            'photoIds' => ['1'],
+            'expectedTypes' => [SendPhotoCommand::class]
         ];
 
         yield 'Нет фото' => [
-            'photoId' => null,
-            'expectedType' => SendMessageCommand::class
+            'photoIds' => [],
+            'expectedTypes' => [SendMessageCommand::class]
         ];
     }
 }

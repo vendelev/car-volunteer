@@ -65,11 +65,11 @@ class PackStateMachineTest extends TestCase
             'expected' => PackStatus::PhotoLoaded
         ];
 
-        yield 'WaitPhoto -> New (защита от дурака)' => [
+        yield 'WaitPhoto -> Статус не меняется (защита от дурака)' => [
             'currentStatus' => PackStatus::WaitPhoto,
             'clickEvent' => null,
             'photoId' => null,
-            'expected' => PackStatus::New
+            'expected' => PackStatus::WaitPhoto
         ];
 
         yield 'PhotoLoaded -> WaitPack' => [
@@ -79,11 +79,11 @@ class PackStateMachineTest extends TestCase
             'expected' => PackStatus::WaitPack
         ];
 
-        yield 'PhotoLoaded -> New (защита от дурака)' => [
+        yield 'PhotoLoaded -> Статус не меняется (защита от дурака)' => [
             'currentStatus' => PackStatus::PhotoLoaded,
             'clickEvent' => UserClickEvent::LoadPhoto,
             'photoId' => null,
-            'expected' => PackStatus::New
+            'expected' => PackStatus::PhotoLoaded
         ];
 
         yield 'WaitPack -> Packed' => [
@@ -93,11 +93,11 @@ class PackStateMachineTest extends TestCase
             'expected' => PackStatus::Packed
         ];
 
-        yield 'WaitPack -> New (защита от дурака)' => [
+        yield 'WaitPack -> Статус не меняется (защита от дурака)' => [
             'currentStatus' => PackStatus::WaitPack,
             'clickEvent' => UserClickEvent::LoadPhoto,
             'photoId' => null,
-            'expected' => PackStatus::New
+            'expected' => PackStatus::WaitPack
         ];
     }
 }
