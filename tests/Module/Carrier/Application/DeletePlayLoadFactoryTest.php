@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Tests\Module\Carrier\Parcel\DeleteParcel\Application;
+namespace CarVolunteer\Tests\Module\Carrier\Application;
 
 use CarVolunteer\Domain\ActionRoute;
 use CarVolunteer\Domain\Conversation\Conversation;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application\DeletePlayLoadFactory;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Domain\DeletePlayLoad;
+use CarVolunteer\Module\Carrier\Application\DeletePlayLoadFactory;
+use CarVolunteer\Module\Carrier\Domain\DeletePlayLoad;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

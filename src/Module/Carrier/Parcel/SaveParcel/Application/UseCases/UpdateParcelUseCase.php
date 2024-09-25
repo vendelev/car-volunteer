@@ -34,4 +34,15 @@ final readonly class UpdateParcelUseCase
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
+
+    public function deleteDelivery(Uuid $parcelId): void
+    {
+        $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
+
+        if ($entity !== null) {
+            $entity->deliveryId = null;
+
+            $this->save($entity);
+        }
+    }
 }

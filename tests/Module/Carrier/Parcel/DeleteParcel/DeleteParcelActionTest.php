@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Tests\Module\Carrier\Parcel\DeleteParcel\EntryPoint\TelegramAction;
+namespace CarVolunteer\Tests\Module\Carrier\Parcel\DeleteParcel;
 
 use CarVolunteer\Domain\ActionRoute;
 use CarVolunteer\Domain\Conversation\Conversation;
@@ -10,7 +10,7 @@ use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Domain\TelegramMessage;
 use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\EntryPoint\TelegramAction\DeleteParcelAction;
+use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\DeleteParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\Domain\Parcel;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelDeletedEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;

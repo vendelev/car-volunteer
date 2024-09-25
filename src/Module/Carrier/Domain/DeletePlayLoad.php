@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Domain;
+namespace CarVolunteer\Module\Carrier\Domain;
 
 use HardcorePhp\Infrastructure\Uuid\Uuid;
 

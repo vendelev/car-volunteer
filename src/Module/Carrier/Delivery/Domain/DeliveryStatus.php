@@ -12,4 +12,5 @@ enum DeliveryStatus: string
     case WaitConfirm = 'wait-confirm';
     case WaitDelivery = 'wait-delivery';
     case Delivered = 'delivered';
+    case Deleted = 'deleted';
 }

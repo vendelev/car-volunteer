@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CarVolunteer\Module\Carrier\Parcel\DeleteParcel\EntryPoint\TelegramAction;
+namespace CarVolunteer\Module\Carrier\Delivery\DeleteDelivery\EntryPoint\TelegramAction;
 
 use CarVolunteer\Domain\ActionInterface;
 use CarVolunteer\Domain\Conversation\Conversation;
@@ -13,20 +13,20 @@ use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteAccess;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Application\DeletePlayLoadFactory;
-use CarVolunteer\Module\Carrier\Parcel\DeleteParcel\Infrastructure\Responder\DeleteParcelTelegramResponder;
-use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelDeletedEvent;
-use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelStatus;
-use CarVolunteer\Module\Carrier\Parcel\Infrastructure\Repository\ParcelRepository;
+use CarVolunteer\Module\Carrier\Application\DeletePlayLoadFactory;
+use CarVolunteer\Module\Carrier\Delivery\DeleteDelivery\Infrastructure\Responder\DeleteDeliveryTelegramResponder;
+use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
+use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
+use CarVolunteer\Module\Carrier\Domain\DeliveryDeletedEvent;
 use Telephantast\MessageBus\MessageContext;
 
-final readonly class DeleteParcelAction implements ActionInterface
+final readonly class DeleteDeliveryAction implements ActionInterface
 {
     public function __construct(
-        private ParcelRepository $repository,
+        private DeliveryRepository $repository,
         private DeletePlayLoadFactory $playLoadFactory,
         private ActionRouteAccess $routeAccess,
-        private DeleteParcelTelegramResponder $responder,
+        private DeleteDeliveryTelegramResponder $responder,
     ) {
     }
 
@@ -34,8 +34,8 @@ final readonly class DeleteParcelAction implements ActionInterface
     {
         return new ActionInfo(
             self::class,
-            'Удалить посылку',
-            ActionRouteMap::ParcelDelete,
+            'Отменить доставку',
+            ActionRouteMap::DeliveryDelete,
             [UserRole::Manager]
         );
     }
@@ -47,21 +47,23 @@ final readonly class DeleteParcelAction implements ActionInterface
 
         $buttons = null;
         $roles = $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [];
-        $parcel = $this->repository->findOneBy(['id' => $playLoad->id]);
+        $delivery = $this->repository->findOneBy(['id' => $playLoad->id]);
 
         if (
-            $parcel
-            && $parcel->status !== ParcelStatus::Delivered->value
+            $delivery
+            && $delivery->status !== DeliveryStatus::Delivered->value
             && $this->routeAccess->can(self::getInfo()->accessRoles, $roles)
         ) {
             if (!$playLoad->confirm) {
                 $messageText = 'Нажмите кнопку "Подтверждаю" для удаления';
-                $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo(), $roles);
+                $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo(), $roles, $delivery->parcelId);
             } else {
-                $messageText = 'Посылка удалена';
-                $parcel->status = ParcelStatus::Deleted->value;
-                $messageContext->dispatch(new ParcelDeletedEvent($parcel));
-                $buttons = $this->responder->getAfterDeleteButtons($roles);
+                $messageText = 'Доставка отменена';
+                $messageContext->dispatch(new DeliveryDeletedEvent(
+                    deliveryId: $delivery->id,
+                    parcelId: $delivery->parcelId
+                ));
+                $buttons = $this->responder->getAfterDeleteButtons($roles, $delivery->parcelId);
             }
         } else {
             $messageText = 'Удаление не возможно';
