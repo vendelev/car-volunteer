@@ -27,7 +27,7 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
         $entity = new Parcel(
             id: Uuid::v7(),
             authorId: '2',
-            status: ParcelStatus::Packed->value,
+            status: ParcelStatus::Packed,
             title: '',
             description: '',
         );
@@ -80,7 +80,7 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
         $entity = new Parcel(
             id: Uuid::v7(),
             authorId: '2',
-            status: ParcelStatus::Packed->value,
+            status: ParcelStatus::Packed,
             title: '',
             description: '',
         );

@@ -26,7 +26,7 @@ class EditParcelDescriptionActionTest extends KernelTestCaseDecorator
         $entity = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Described->value,
+            status: ParcelStatus::Described,
             title: '',
             description: '',
         );

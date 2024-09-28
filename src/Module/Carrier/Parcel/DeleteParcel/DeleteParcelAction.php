@@ -50,7 +50,7 @@ final readonly class DeleteParcelAction implements ActionInterface
 
         if (
             $parcel
-            && $parcel->status !== ParcelStatus::Delivered->value
+            && $parcel->status !== ParcelStatus::Delivered
             && $this->routeAccess->can(self::getInfo()->accessRoles, $roles)
         ) {
             if (!$playLoad->confirm) {
@@ -58,7 +58,7 @@ final readonly class DeleteParcelAction implements ActionInterface
                 $buttons = $this->responder->getBeforeDeleteButtons(self::getInfo(), $roles);
             } else {
                 $messageText = 'Посылка удалена';
-                $parcel->status = ParcelStatus::Deleted->value;
+                $parcel->status = ParcelStatus::Deleted;
                 $messageContext->dispatch(new ParcelDeletedEvent($parcel));
                 $buttons = $this->responder->getAfterDeleteButtons($roles);
             }

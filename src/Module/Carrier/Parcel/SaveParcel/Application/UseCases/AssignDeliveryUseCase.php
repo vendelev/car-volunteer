@@ -23,7 +23,7 @@ final readonly class AssignDeliveryUseCase
 
         if ($entity !== null) {
             $entity->deliveryId = $deliveryId;
-            $entity->status = ParcelStatus::Delivery->value;
+            $entity->status = ParcelStatus::Delivery;
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();

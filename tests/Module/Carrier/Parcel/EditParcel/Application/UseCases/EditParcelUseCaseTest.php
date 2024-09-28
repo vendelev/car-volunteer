@@ -57,7 +57,7 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $entity1 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Described->value,
+            status: ParcelStatus::Described,
             title: '',
             description: '',
         );
@@ -75,7 +75,7 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $entity2 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Delivered->value,
+            status: ParcelStatus::Delivered,
             title: '',
             description: '',
         );
@@ -125,7 +125,7 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $entity1 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Described->value,
+            status: ParcelStatus::Described,
             title: '',
             description: '',
         );
@@ -175,7 +175,7 @@ class EditParcelUseCaseTest extends KernelTestCaseDecorator
         $entity1 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Described->value,
+            status: ParcelStatus::Described,
             title: '',
             description: '',
         );

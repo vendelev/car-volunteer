@@ -24,7 +24,7 @@ final readonly class SaveDeliveryHandler
         $entity = $this->repository->findOneBy(['id' => $event->deliveryId]);
 
         if ($entity !== null) {
-            $entity->status = DeliveryStatus::Deleted->value;
+            $entity->status = DeliveryStatus::Deleted;
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
         }

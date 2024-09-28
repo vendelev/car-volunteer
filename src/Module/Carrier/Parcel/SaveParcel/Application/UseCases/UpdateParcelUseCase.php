@@ -23,7 +23,7 @@ final readonly class UpdateParcelUseCase
         $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
 
         if ($entity !== null) {
-            $entity->status = $status->value;
+            $entity->status = $status;
 
             $this->save($entity);
         }

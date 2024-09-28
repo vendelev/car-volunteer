@@ -23,7 +23,7 @@ final readonly class SetDeliveredStatusUseCase
         $entity = $this->repository->find(['id' => $deliveryId]);
 
         if ($entity !== null) {
-            $entity->status = DeliveryStatus::Delivered->value;
+            $entity->status = DeliveryStatus::Delivered;
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();

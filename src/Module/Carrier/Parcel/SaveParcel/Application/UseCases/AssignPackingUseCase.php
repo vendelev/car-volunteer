@@ -23,7 +23,7 @@ final readonly class AssignPackingUseCase
 
         if ($entity !== null) {
             $entity->packingId = $packingId;
-            $entity->status = ParcelStatus::Packed->value;
+            $entity->status = ParcelStatus::Packed;
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();

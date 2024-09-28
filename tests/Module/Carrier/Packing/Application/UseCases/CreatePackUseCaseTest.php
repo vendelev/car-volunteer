@@ -27,7 +27,7 @@ class CreatePackUseCaseTest extends KernelTestCaseDecorator
             id: Uuid::v7(),
             pickerId: 'pickerId',
             parcelId: Uuid::v7(),
-            status: PackStatus::Packed->value,
+            status: PackStatus::Packed,
         );
 
         $manager = self::getService(ManagerRegistry::class)->getManager();
