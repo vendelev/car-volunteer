@@ -53,6 +53,7 @@ class ViewArchiveParcelsActionTest extends KernelTestCaseDecorator
         /** @var EntityManagerInterface&ManagerRegistry $manager */
         $manager = self::getService(ManagerRegistry::class)->getManager();
         $manager->getConnection()->beginTransaction();
+        $manager->getConnection()->executeQuery('truncate carrier.parcel');
 
         $manager->persist($entity1);
         $manager->persist($entity2);

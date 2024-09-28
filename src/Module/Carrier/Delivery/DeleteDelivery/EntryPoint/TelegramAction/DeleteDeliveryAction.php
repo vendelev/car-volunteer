@@ -36,7 +36,7 @@ final readonly class DeleteDeliveryAction implements ActionInterface
             self::class,
             'Отменить доставку',
             ActionRouteMap::DeliveryDelete,
-            [UserRole::Manager]
+            [UserRole::Manager, UserRole::Volunteer]
         );
     }
 
