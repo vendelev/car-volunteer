@@ -37,7 +37,7 @@ final readonly class ViewParcelUseCase
         }
 
         $actions = [];
-        if ($item->status !== ParcelStatus::Delivered->value) {
+        if ($item->status !== ParcelStatus::Delivered) {
             if (
                 $item->authorId === $userId
                 || $this->routeAccess->can(EditParcelTitleAction::getInfo()->accessRoles, $roles)
@@ -65,12 +65,12 @@ final readonly class ViewParcelUseCase
         } else {
             $actions[] = ActionRouteMap::DeliveryView;
 
-            if ($item->status !== ParcelStatus::Delivered->value) {
+            if ($item->status !== ParcelStatus::Delivered) {
                 $actions[] = ActionRouteMap::DeliveryFinish;
             }
         }
 
-        if ($item->status !== ParcelStatus::Delivered->value) {
+        if ($item->status !== ParcelStatus::Delivered) {
             $actions[] = ActionRouteMap::ParcelDelete;
         }
 
@@ -84,10 +84,10 @@ final readonly class ViewParcelUseCase
     {
         $qb = $this->parcelRepository->createQueryBuilder('p');
         $and = $qb->expr()->in('p.status', [
-            ParcelStatus::Described->value,
-            ParcelStatus::Approved->value,
-            ParcelStatus::Packed->value,
-            ParcelStatus::Delivery->value,
+            ParcelStatus::Described,
+            ParcelStatus::Approved,
+            ParcelStatus::Packed,
+            ParcelStatus::Delivery,
         ]);
 
         return $qb
@@ -109,7 +109,7 @@ final readonly class ViewParcelUseCase
 
         return $qb->where($and)
             ->setParameters(new ArrayCollection([
-                new Parameter('status', ParcelStatus::Delivered->value),
+                new Parameter('status', ParcelStatus::Delivered),
                 new Parameter('minDate', (new DateTimeImmutable())->modify('-14 days')->format('Y-m-d')),
             ]))
             ->orderBy('p.createAt', 'ASC')

@@ -34,7 +34,7 @@ final readonly class EditParcelUseCase
 
         if (
             $parcel
-            && $parcel->status !== ParcelStatus::Delivered->value
+            && $parcel->status !== ParcelStatus::Delivered
             && $this->routeAccess->get(ActionRouteMap::ParcelEditTitle, $roles)
         ) {
             if (!$playLoad->text) {
@@ -63,7 +63,7 @@ final readonly class EditParcelUseCase
 
         if (
             $parcel
-            && $parcel->status !== ParcelStatus::Delivered->value
+            && $parcel->status !== ParcelStatus::Delivered
             && $this->routeAccess->get(ActionRouteMap::ParcelEditDescription, $roles)
         ) {
             if (!$playLoad->text) {

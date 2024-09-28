@@ -38,7 +38,7 @@ final readonly class CreateDeliveryUseCase
 
         $entity = $this->repository->findOneBy([
             'parcelId' => $delivery->parcelId,
-            'status' => DeliveryStatus::WaitDelivery->value
+            'status' => DeliveryStatus::WaitDelivery
         ]);
 
         if ($entity !== null) {

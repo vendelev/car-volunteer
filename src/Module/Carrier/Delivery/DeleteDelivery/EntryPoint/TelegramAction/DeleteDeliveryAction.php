@@ -51,7 +51,7 @@ final readonly class DeleteDeliveryAction implements ActionInterface
 
         if (
             $delivery
-            && $delivery->status !== DeliveryStatus::Delivered->value
+            && $delivery->status !== DeliveryStatus::Delivered
             && $this->routeAccess->can(self::getInfo()->accessRoles, $roles)
         ) {
             if (!$playLoad->confirm) {

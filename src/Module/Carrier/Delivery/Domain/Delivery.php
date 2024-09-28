@@ -22,8 +22,8 @@ class Delivery
         public string $carrierId,
         #[ORM\Column(type: UuidType::class)]
         public Uuid $parcelId,
-        #[ORM\Column(type: Types::STRING, length: 255)]
-        public string $status,
+        #[ORM\Column(type: Types::STRING, length: 255, enumType: DeliveryStatus::class)]
+        public DeliveryStatus $status,
         #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
         public DateTimeImmutable $deliveryAt,
         #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]

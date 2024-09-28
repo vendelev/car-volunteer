@@ -20,8 +20,8 @@ class Parcel
         public Uuid $id,
         #[ORM\Column(type: Types::STRING, length: 20)]
         public string $authorId,
-        #[ORM\Column(type: Types::STRING, length: 255)]
-        public string $status,
+        #[ORM\Column(type: Types::STRING, length: 255, enumType: ParcelStatus::class)]
+        public ParcelStatus $status,
         #[ORM\Column(type: Types::STRING, length: 255)]
         public string $title,
         #[ORM\Column(type: Types::TEXT)]

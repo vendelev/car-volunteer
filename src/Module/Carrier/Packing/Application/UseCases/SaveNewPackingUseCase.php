@@ -23,7 +23,7 @@ final readonly class SaveNewPackingUseCase
             id: $packingId,
             pickerId: $pickerId,
             parcelId: $parcelId,
-            status: PackStatus::Packed->value
+            status: PackStatus::Packed
         );
 
         $this->entityManager->persist($entity);

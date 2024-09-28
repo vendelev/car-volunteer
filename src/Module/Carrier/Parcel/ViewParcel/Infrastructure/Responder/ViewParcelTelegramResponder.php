@@ -85,7 +85,7 @@ final readonly class ViewParcelTelegramResponder
                 $item->description,
                 ($item->packingId ? 'ⓟ Упаковано' : ''),
                 ($item->deliveryId ? 'ⓓ Доставка запланирована' : ''),
-                ($item->status === ParcelStatus::Delivered->value ? '☑ Доставлено' : '')
+                ($item->status === ParcelStatus::Delivered ? '☑ Доставлено' : '')
             ),
             new InlineKeyboardMarkup(array_map(static fn ($button) => [$button], $buttons))
         );
@@ -143,7 +143,7 @@ final readonly class ViewParcelTelegramResponder
                     param: new RouteParam('id', $item->id->toString()),
                     title: sprintf(
                         '%s%s%s %s (от %s)',
-                        ($item->status === ParcelStatus::Delivered->value ? '☑' : ''),
+                        ($item->status === ParcelStatus::Delivered ? '☑' : ''),
                         ($item->packingId ? 'ⓟ' : ''),
                         ($item->deliveryId ? 'ⓓ' : ''),
                         $item->title,

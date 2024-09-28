@@ -28,7 +28,7 @@ class ViewArchiveParcelsActionTest extends KernelTestCaseDecorator
         $entity1 = new Parcel(
             id: Uuid::v7(),
             authorId: '2',
-            status: ParcelStatus::Delivered->value,
+            status: ParcelStatus::Delivered,
             title: '',
             description: '',
             createAt: new DateTimeImmutable()
@@ -36,7 +36,7 @@ class ViewArchiveParcelsActionTest extends KernelTestCaseDecorator
         $entity2 = new Parcel(
             id: Uuid::v7(),
             authorId: '1',
-            status: ParcelStatus::Delivered->value,
+            status: ParcelStatus::Delivered,
             title: '',
             description: '',
             createAt: (new DateTimeImmutable())->modify('-15 days')
@@ -44,7 +44,7 @@ class ViewArchiveParcelsActionTest extends KernelTestCaseDecorator
         $entity3 = new Parcel(
             id: Uuid::v7(),
             authorId: '3',
-            status: ParcelStatus::Delivered->value,
+            status: ParcelStatus::Delivered,
             title: '',
             description: '',
             createAt: (new DateTimeImmutable())->modify('-14 days')

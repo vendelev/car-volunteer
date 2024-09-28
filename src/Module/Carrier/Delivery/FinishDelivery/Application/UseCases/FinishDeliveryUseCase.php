@@ -26,7 +26,7 @@ final readonly class FinishDeliveryUseCase
     {
         $entity = $this->repository->findOneBy(['parcelId' => $playLoad->parcelId]);
 
-        if ($entity === null || $entity->status !== DeliveryStatus::WaitDelivery->value) {
+        if ($entity === null || $entity->status !== DeliveryStatus::WaitDelivery) {
             return $playLoad;
         }
 

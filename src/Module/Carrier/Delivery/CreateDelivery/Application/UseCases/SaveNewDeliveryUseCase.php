@@ -23,7 +23,7 @@ final readonly class SaveNewDeliveryUseCase
             id: $deliveryId,
             carrierId: $carrierId,
             parcelId: $parcelId,
-            status: DeliveryStatus::WaitDelivery->value,
+            status: DeliveryStatus::WaitDelivery,
             deliveryAt: $deliveryDate,
         );
 

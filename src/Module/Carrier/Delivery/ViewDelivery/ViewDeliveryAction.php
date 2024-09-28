@@ -61,7 +61,7 @@ final readonly class ViewDeliveryAction implements ActionInterface
 
             $roles = $messageContext->getAttribute(AuthorizeAttribute::class)->roles ?? [];
 
-            if ($delivery->status !== DeliveryStatus::Delivered->value) {
+            if ($delivery->status !== DeliveryStatus::Delivered) {
                 $info = $this->routeAccess->get(ActionRouteMap::DeliveryDelete, $roles);
                 if ($info) {
                     $buttons[] = [$this->buttonResponder->generate(
