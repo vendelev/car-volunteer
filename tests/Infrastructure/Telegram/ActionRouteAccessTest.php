@@ -21,7 +21,7 @@ class ActionRouteAccessTest extends KernelTestCaseDecorator
     public function testGetWithNoAccess(): void
     {
         $service = self::getService(ActionRouteAccess::class);
-        self::assertNull($service->get(ActionRouteMap::DeliveryFinish, [UserRole::Manager]));
+        self::assertNull($service->get(ActionRouteMap::DeliveryFinish, [UserRole::Picker]));
     }
 
     public function testGetDontCheck(): void

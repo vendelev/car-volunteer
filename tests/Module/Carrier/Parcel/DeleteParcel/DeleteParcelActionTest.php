@@ -34,7 +34,6 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
 
         /** @var EntityManagerInterface&ManagerRegistry $manager */
         $manager = self::getService(ManagerRegistry::class)->getManager();
-        $manager->getConnection()->beginTransaction();
 
         $manager->persist($entity);
         $manager->flush();
@@ -71,8 +70,6 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
         self::assertCount(2, $handler->messages);
         self::assertEquals($entity->id, $message1->parcel->id);
         self::assertEquals('Посылка удалена', $message2->text);
-
-        $manager->getConnection()->rollBack();
     }
 
     public function testNoAccess(): void
@@ -87,7 +84,6 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
 
         /** @var EntityManagerInterface&ManagerRegistry $manager */
         $manager = self::getService(ManagerRegistry::class)->getManager();
-        $manager->getConnection()->beginTransaction();
 
         $manager->persist($entity);
         $manager->flush();
@@ -109,7 +105,5 @@ class DeleteParcelActionTest extends KernelTestCaseDecorator
 
         self::assertCount(1, $handler->messages);
         self::assertEquals('Удаление не возможно', $message->text);
-
-        $manager->getConnection()->rollBack();
     }
 }
