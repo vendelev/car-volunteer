@@ -27,6 +27,9 @@ final readonly class RunActionHandler
     ) {
     }
 
+    /**
+     * @param MessageContext<void, ReceiveMessageEvent> $messageContext
+     */
     #[Handler]
     public function receiveMessage(ReceiveMessageEvent $event, MessageContext $messageContext): void
     {

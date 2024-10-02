@@ -24,9 +24,7 @@ final readonly class NotifyNewParcelHandler
     }
 
     /**
-     * @template TResult
-     * @template TMessage of Message<TResult>
-     * @param MessageContext<TResult, TMessage> $messageContext
+     * @param MessageContext<void, ParcelCreatedEvent> $messageContext
      */
     #[Handler]
     public function handle(ParcelCreatedEvent $event, MessageContext $messageContext): void
