@@ -6,7 +6,6 @@ namespace CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Application\UseCas
 
 use CarVolunteer\Domain\Telegram\SendMessageCommand;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
-use CarVolunteer\Module\Carrier\Delivery\Domain\Delivery;
 use CarVolunteer\Module\Carrier\Delivery\Domain\DeliveryStatus;
 use CarVolunteer\Module\Carrier\Delivery\FinishDelivery\Domain\FinishDeliveryPlayLoad;
 use CarVolunteer\Module\Carrier\Delivery\Infrastructure\Repository\DeliveryRepository;
@@ -24,9 +23,12 @@ final readonly class FinishDeliveryUseCase
 
     public function handle(string $userId, FinishDeliveryPlayLoad $playLoad, bool $confirm): FinishDeliveryPlayLoad
     {
-        $entity = $this->repository->findOneBy(['parcelId' => $playLoad->parcelId]);
+        $entity = $this->repository->findOneBy([
+            'parcelId' => $playLoad->parcelId,
+            'status' => DeliveryStatus::WaitDelivery,
+        ]);
 
-        if ($entity === null || $entity->status !== DeliveryStatus::WaitDelivery) {
+        if ($entity === null) {
             return $playLoad;
         }
 
@@ -36,7 +38,10 @@ final readonly class FinishDeliveryUseCase
                 'Подтвердите, что посылка доставлена',
                 new InlineKeyboardMarkup([
                     [['text' => 'Доставлено', 'callback_data' => ActionRouteMap::DeliveryFinish->value . '?confirm=1']],
-                    [['text' => 'Отмена', 'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $playLoad->parcelId]],
+                    [[
+                        'text' => 'Отмена',
+                        'callback_data' => ActionRouteMap::ParcelView->value . '?id=' . $playLoad->parcelId
+                    ]],
                 ])
             ));
         } else {
