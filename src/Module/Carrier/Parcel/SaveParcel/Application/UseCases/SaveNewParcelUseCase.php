@@ -21,7 +21,7 @@ final readonly class SaveNewParcelUseCase
         $entity = new ParcelEntity(
             id: $parcel->id,
             authorId: $userId,
-            status: $parcel->status->value,
+            status: $parcel->status,
             title: $parcel->title ?? '-',
             description: $parcel->description ?? '',
             createAt: new DateTimeImmutable(),
