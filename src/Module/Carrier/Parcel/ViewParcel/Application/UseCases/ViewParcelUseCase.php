@@ -84,10 +84,10 @@ final readonly class ViewParcelUseCase
     {
         $qb = $this->parcelRepository->createQueryBuilder('p');
         $and = $qb->expr()->in('p.status', [
-            ParcelStatus::Described,
-            ParcelStatus::Approved,
-            ParcelStatus::Packed,
-            ParcelStatus::Delivery,
+            ParcelStatus::Described->value,
+            ParcelStatus::Approved->value,
+            ParcelStatus::Packed->value,
+            ParcelStatus::Delivery->value,
         ]);
 
         return $qb
