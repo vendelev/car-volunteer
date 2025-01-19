@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler;
 
+use CarVolunteer\Module\Carrier\Domain\CancelPackingCommand;
 use CarVolunteer\Module\Carrier\Domain\DeliveryDeletedEvent;
 use CarVolunteer\Module\Carrier\Domain\ParcelDeliveredEvent;
 use CarVolunteer\Module\Carrier\Parcel\Domain\ParcelChangeDescriptionEvent;
@@ -34,8 +35,14 @@ final readonly class SaveParcelHandler
     }
 
     #[Handler]
-    public function handleDeliveryDeleted(DeliveryDeletedEvent $event): void
+    public function handleDeliveryCanceled(DeliveryDeletedEvent $event): void
     {
         $this->useCase->deleteDelivery($event->parcelId);
+    }
+
+    #[Handler]
+    public function handleCancelPacking(CancelPackingCommand $event): void
+    {
+        $this->useCase->deletePacking($event->parcelId);
     }
 }

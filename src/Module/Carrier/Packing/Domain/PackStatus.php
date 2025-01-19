@@ -11,4 +11,5 @@ enum PackStatus: string
     case PhotoLoaded = 'photo-loaded';
     case WaitPack = 'wait-pack';
     case Packed = 'packed';
+    case Cancel = 'cancel';
 }

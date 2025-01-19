@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CarVolunteer\Module\Carrier\Packing\EntryPoint\BusHandler;
 
-use CarVolunteer\Module\Carrier\Domain\ParcelPackedEvent;
+use CarVolunteer\Module\Carrier\Domain\CancelPackingCommand;
 use CarVolunteer\Module\Carrier\Packing\Application\UseCases\PackingUseCase;
 use HardcorePhp\Infrastructure\MessageBusBundle\Mapping\Handler;
 
-final readonly class SaveNewPackHandler
+final readonly class CancelPackHandler
 {
     public function __construct(
         private PackingUseCase $useCase,
@@ -16,12 +16,8 @@ final readonly class SaveNewPackHandler
     }
 
     #[Handler]
-    public function handle(ParcelPackedEvent $event): void
+    public function handle(CancelPackingCommand $command): void
     {
-        $this->useCase->saveNewPacking(
-            pickerId: $event->pickerId,
-            parcelId: $event->parcelId,
-            packingId: $event->packingId,
-        );
+        $this->useCase->cancelPacking($command->parcelId);
     }
 }
