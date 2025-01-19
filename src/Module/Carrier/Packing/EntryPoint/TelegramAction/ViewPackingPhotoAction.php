@@ -12,6 +12,7 @@ use CarVolunteer\Domain\User\AuthorizeAttribute;
 use CarVolunteer\Domain\User\UserRole;
 use CarVolunteer\Infrastructure\Telegram\ActionInfo;
 use CarVolunteer\Infrastructure\Telegram\ActionRouteMap;
+use CarVolunteer\Module\Carrier\Domain\CheckParcelDeliveredQuery;
 use CarVolunteer\Module\Carrier\Packing\Infrastructure\Repository\PackingRepository;
 use CarVolunteer\Module\Carrier\Packing\Infrastructure\Responder\ViewPackingPhotoTelegramResponder;
 use HardcorePhp\Infrastructure\Uuid\Uuid;
@@ -45,7 +46,13 @@ final readonly class ViewPackingPhotoAction implements ActionInterface
         /** @var list<string> $photoIds */
         $photoIds = !empty($packing) ? $messageContext->dispatch(new GetAllPhotoQuery($packing->id)) : [];
 
-        $commands = $this->responder->viewPhoto($packing?->parcelId, $message->userId, $photoIds, $roles);
+        if (!empty($packing?->parcelId)) {
+            $isDelivery = $messageContext->dispatch(new CheckParcelDeliveredQuery($packing->parcelId));
+        } else {
+            $isDelivery = false;
+        }
+
+        $commands = $this->responder->viewPhoto($packing?->parcelId, $message->userId, $photoIds, $isDelivery, $roles);
         foreach ($commands as $command) {
             $messageContext->dispatch($command);
         }

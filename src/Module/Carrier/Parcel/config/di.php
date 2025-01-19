@@ -26,6 +26,7 @@ use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\AssignPa
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveNewParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\SaveParcel\EntryPoint\BusHandler\SaveParcelHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Application\UseCases\ViewParcelUseCase;
+use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\BusHandler\CheckParcelDeliveredHandler;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewArchiveParcelsAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelAction;
 use CarVolunteer\Module\Carrier\Parcel\ViewParcel\EntryPoint\TelegramAction\ViewParcelsAction;
@@ -79,5 +80,7 @@ return static function (ContainerConfigurator $configurator): void {
         ->set(DeleteParcelAction::class)
         ->set(DeleteParcelTelegramResponder::class)
 
-        ->set(ViewArchiveParcelsAction::class);
+        ->set(ViewArchiveParcelsAction::class)
+
+        ->set(CheckParcelDeliveredHandler::class);
 };

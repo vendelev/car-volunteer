@@ -16,6 +16,7 @@ use CarVolunteer\Module\Carrier\Parcel\ViewParcel\Domain\ViewParcelModel;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
+use HardcorePhp\Infrastructure\Uuid\Uuid;
 
 final readonly class ViewParcelUseCase
 {
@@ -114,5 +115,16 @@ final readonly class ViewParcelUseCase
             ]))
             ->orderBy('p.createAt', 'ASC')
             ->getQuery()->getResult();
+    }
+
+    public function checkParcelDelivered(Uuid $parcelId): bool
+    {
+        $item = $this->parcelRepository->findOneBy(['id' => $parcelId]);
+
+        if ($item === null) {
+            return false;
+        }
+
+        return $item->status === ParcelStatus::Delivered;
     }
 }
