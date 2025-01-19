@@ -27,16 +27,19 @@ final readonly class ViewPackingPhotoTelegramResponder
      * @param list<UserRole> $roles
      * @return list<SendPhotoCommand|SendMessageCommand>
      */
-    public function viewPhoto(?Uuid $parcelId, string $userId, array $photoIds, array $roles): array
+    public function viewPhoto(?Uuid $parcelId, string $userId, array $photoIds, bool $isDelivery, array $roles): array
     {
         $buttons = [];
-        $repack = $this->routeAccess->get(ActionRouteMap::CancelPacking, $roles);
 
-        if ($parcelId && $repack) {
-            $buttons[] = [$this->buttonResponder->generate(
-                actionInfo: $repack,
-                param: new RouteParam('parcelId', $parcelId->toString()),
-            )];
+        if ($isDelivery === false) {
+            $repack = $this->routeAccess->get(ActionRouteMap::CancelPacking, $roles);
+
+            if ($parcelId && $repack) {
+                $buttons[] = [$this->buttonResponder->generate(
+                    actionInfo: $repack,
+                    param: new RouteParam('parcelId', $parcelId->toString()),
+                )];
+            }
         }
 
         $info = $this->routeAccess->get(ActionRouteMap::ParcelList, $roles);
