@@ -45,7 +45,7 @@ final readonly class ViewPackingPhotoAction implements ActionInterface
         /** @var list<string> $photoIds */
         $photoIds = !empty($packing) ? $messageContext->dispatch(new GetAllPhotoQuery($packing->id)) : [];
 
-        $commands = $this->responder->viewPhoto($message->userId, $photoIds, $roles);
+        $commands = $this->responder->viewPhoto($packing?->parcelId, $message->userId, $photoIds, $roles);
         foreach ($commands as $command) {
             $messageContext->dispatch($command);
         }

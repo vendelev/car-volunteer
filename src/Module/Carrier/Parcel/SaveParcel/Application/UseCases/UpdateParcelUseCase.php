@@ -45,4 +45,16 @@ final readonly class UpdateParcelUseCase
             $this->save($entity);
         }
     }
+
+    public function deletePacking(Uuid $parcelId): void
+    {
+        $entity = $this->parcelRepository->findOneBy(['id' => $parcelId]);
+
+        if ($entity !== null) {
+            $entity->status = ParcelStatus::Described;
+            $entity->packingId = null;
+
+            $this->save($entity);
+        }
+    }
 }

@@ -18,6 +18,7 @@ enum ActionRouteMap: string
     case ParcelDelete = '/deleteParcel';
 
     case PackParcel = '/packParcel';
+    case CancelPacking = '/cancelPacking';
 
     case DeliveryCreate = '/createDelivery';
     case DeliveryDelete = '/deleteDelivery';

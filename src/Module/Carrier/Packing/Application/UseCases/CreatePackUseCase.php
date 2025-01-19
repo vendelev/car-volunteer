@@ -30,7 +30,7 @@ final readonly class CreatePackUseCase
     ): PackPlayLoad {
         $packing = $this->repository->findOneBy(['parcelId' => $pack->parcelId]);
 
-        if ($packing !== null) {
+        if ($packing !== null && $packing->status === PackStatus::Packed) {
             $pack->status = PackStatus::Packed;
 
             return $pack;
